@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">lolipop animation sample</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="open">close</string>
+    <string name="close">close</string>
+    <string name="hello_blank_fragment">Hello blank fragment2</string>
+    <string name="hello_blank_fragment1">hello_blank_fragment1</string>
+    <string name="date">Dec 04</string>
+    <string name="excerpt">This is a news excerpt sample</string>
+
+</resources>

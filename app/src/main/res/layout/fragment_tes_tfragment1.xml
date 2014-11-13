@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+
+    <view
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        class="android.support.v7.internal.widget.TintCheckBox"
+        android:id="@+id/view" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/abc_list_pressed_holo_dark"
+        android:id="@+id/view2" />
+
+    <view
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        class="android.support.v7.internal.widget.TintRadioButton"
+        android:id="@+id/view3" />
+
+    <view
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        class="android.support.v7.internal.widget.TintEditText"
+        android:id="@+id/view4" />
+</LinearLayout>
