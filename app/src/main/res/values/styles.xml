@@ -5,7 +5,6 @@
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-
         <!-- Actionbar color -->
         <item name="colorPrimary">@color/accent_material_dark</item>
         <!--Status bar color-->

@@ -1,27 +1,26 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <android.support.v7.widget.Toolbar
+    <include
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"></android.support.v7.widget.Toolbar>
+        layout="@layout/toolbar" />
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        android:layout_below="@+id/toolbar">
+        android:layout_height="match_parent">
 
         <!-- As the main content view, the view below consumes the entire
              space available using match_parent in both dimensions. -->
         <FrameLayout
             android:id="@+id/container"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -39,10 +38,10 @@
             android:layout_width="320dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            tools:layout="@layout/fragment_navigation" />
+            tools:layout="@layout/fragment_navigation_drawer" />
 
 
     </android.support.v4.widget.DrawerLayout>
 
 
-</RelativeLayout>
+</LinearLayout>

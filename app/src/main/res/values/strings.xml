@@ -10,5 +10,6 @@
     <string name="hello_blank_fragment1">hello_blank_fragment1</string>
     <string name="date">Dec 04</string>
     <string name="excerpt">This is a news excerpt sample</string>
+    <string name="title_activity_detailed">DetailedActivity</string>
 
 </resources>

@@ -10,9 +10,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!--you can find more information about layout at-->
+        <!--you can find more information about text layout at-->
         <!--http://www.google.com/design/spec/layout/metrics-keylines.html#-->
 
+
+        <view
+            android:id="@+id/imageView"
+            class="android.support.v7.internal.widget.TintImageView"
+            android:layout_width="match_parent"
+            android:adjustViewBounds="true"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/textView_title"
@@ -23,13 +30,6 @@
             android:text="@string/hello_world"
             android:textColor="@color/primary_text_default_material_light"
             android:theme="@style/Base.TextAppearance.AppCompat.Title" />
-
-        <view
-            android:id="@+id/imageView"
-            class="android.support.v7.internal.widget.TintImageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true" />
 
         <TextView
             android:id="@+id/textView_date"

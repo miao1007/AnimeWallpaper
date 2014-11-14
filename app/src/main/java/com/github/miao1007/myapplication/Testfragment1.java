@@ -52,7 +52,7 @@ public class Testfragment1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View mView = inflater.inflate(R.layout.fragment_tes_tfragment1, container, false);
+        View mView = inflater.inflate(R.layout.fragment_test_fragment1, container, false);
         mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         mSpinner = new TintSpinner(getActivity());
         String[] frags = new String[]{
@@ -75,8 +75,9 @@ public class Testfragment1 extends Fragment {
         });
         imageView = (ImageView) mView.findViewById(R.id.view2);
         mToolbar.addView(mSpinner);
-        return inflater.inflate(R.layout.fragment_tes_tfragment1, container, false);
+        return inflater.inflate(R.layout.fragment_test_fragment1, container, false);
     }
+
 
     @Override
     public void onDestroyView() {
