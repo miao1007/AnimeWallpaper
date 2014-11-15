@@ -7,6 +7,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 
+import com.github.miao1007.myapplication.ui.frag.CardFragment;
+import com.github.miao1007.myapplication.ui.frag.NavigationFragment;
+import com.github.miao1007.myapplication.ui.frag.Testfragment1;
+
 
 public class MainActivity extends ActionBarActivity implements NavigationFragment.NavigationDrawerCallbacks {
 
@@ -54,7 +58,7 @@ public class MainActivity extends ActionBarActivity implements NavigationFragmen
                 fragmentManager.beginTransaction().replace(R.id.container, Testfragment1.newInstance("eg1", "eg1"), "FRAG1").commit();
                 break;
             case 1:
-                fragmentManager.beginTransaction().replace(R.id.container, CardFragment.newInstance("eg2", "eg2"), "FRAG2").commit();
+                fragmentManager.beginTransaction().replace(R.id.container, new CardFragment()).commit();
                 break;
         }
 

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.github.miao1007.myapplication.CardFragment">
+    tools:context="com.github.miao1007.myapplication.ui.frag.CardFragment">
 
     <view
         android:id="@+id/recyclerView"

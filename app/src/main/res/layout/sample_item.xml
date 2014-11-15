@@ -18,8 +18,9 @@
             android:id="@+id/imageView"
             class="android.support.v7.internal.widget.TintImageView"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:layout_height="wrap_content" />
+            android:src="@drawable/lorempixel" />
 
         <TextView
             android:id="@+id/textView_title"

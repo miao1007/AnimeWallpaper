@@ -14,7 +14,7 @@ public class DetailedActivity extends ActionBarActivity {
 
     private Toolbar mToolbar;
     private ImageView mImageview;
-    public static final String EXTRA_IMAGE = "DetailActivity:image";
+    public static final String EXTRA_IMAGE = "URL";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +33,11 @@ public class DetailedActivity extends ActionBarActivity {
         }
         mImageview = (ImageView) findViewById(R.id.imageView_detail);
         Picasso.with(this)
-                .load("http://i.imgur.com/DvpvklR.png")
+                .load(getIntent().getStringExtra(EXTRA_IMAGE))
+                //You can get 400x200 showcase pictures at http://lorempixel.com/
+                .error(R.drawable.lorempixel)
+                .placeholder(R.drawable.lorempixel)
                 .into(mImageview);
-
-
     }
 
 

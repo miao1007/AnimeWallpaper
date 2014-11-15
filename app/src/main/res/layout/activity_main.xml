@@ -34,7 +34,7 @@
              the container. -->
         <fragment
             android:id="@+id/navigation"
-            android:name="com.github.miao1007.myapplication.NavigationFragment"
+            android:name="com.github.miao1007.myapplication.ui.frag.NavigationFragment"
             android:layout_width="320dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
