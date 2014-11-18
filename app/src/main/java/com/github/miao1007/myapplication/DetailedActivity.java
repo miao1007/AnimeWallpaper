@@ -62,22 +62,8 @@ public class DetailedActivity extends ActionBarActivity {
                 * MutedColor
                 * VibrantColor
                 * */
-                System.out.println("getDarkMutedColor = " + palette.getDarkMutedColor(defalutColor));
-                System.out.println("getMutedColor = " + palette.getMutedColor(defalutColor));
-                System.out.println("getVibrantColor = " + palette.getVibrantColor(defalutColor));
-                System.out.println("getDarkVibrantColor = " + palette.getDarkVibrantColor(defalutColor));
-                System.out.println("getLightMutedColor = " + palette.getLightMutedColor(defalutColor));
-                System.out.println("getLightVibrantColor = " + palette.getLightVibrantColor(defalutColor));
 
-                System.out.println("getMutedSwatch = " + palette.getMutedSwatch().getRgb());
-                System.out.println("getVibrantSwatch = " + palette.getVibrantSwatch().getRgb());
-                System.out.println("getDarkVibrantSwatch = " + palette.getDarkVibrantSwatch().getRgb());
-                System.out.println("getDarkMutedSwatch = " + palette.getDarkMutedSwatch().getRgb());
-                System.out.println("getLightMutedSwatch = " + palette.getLightMutedSwatch().getRgb());
-                System.out.println("getLightVibrantSwatch = " + palette.getLightVibrantSwatch().getRgb());
-
-
-                //we will have 14 swatches
+                  //we will have 14 swatches
                 for (int i = 0; i < swatches.size(); i++) {
                     System.out.println("swatches = " + swatches.get(i).getRgb());
                     View view = new View(DetailedActivity.this);

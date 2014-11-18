@@ -12,6 +12,9 @@ Feature
 ######RecyclerView Anmation&&Endless RecyclerView
 ![Image](recyclerview-anim.gif)
 
+######Palette Swatches
+![Image](palette-sample.png)
+
 Build Environment
 -------------
 Android Studio 0.9.2
