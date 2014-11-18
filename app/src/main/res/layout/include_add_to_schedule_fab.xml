@@ -1,0 +1,20 @@
+<view xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/add_schedule_button"
+    class="com.github.miao1007.myapplication.ui.widget.AddToScheduleFABFrameLayout"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:layout_marginLeft="8dp"
+    android:background="@color/accent_material_light"
+    android:clickable="true"
+    android:contentDescription="123"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/add_schedule_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:contentDescription="@null"
+        android:scaleType="center"
+        android:src="@drawable/add_schedule_button_icon_unchecked" />
+</view>

@@ -3,36 +3,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:theme="@style/Base.TextAppearance.AppCompat.Button"
-        android:text="@string/hello_world"
-        android:elevation="10dp"/>
 
 
-    <view
-        android:layout_width="wrap_content"
-
-        android:layout_height="wrap_content"
-        class="android.support.v7.internal.widget.TintCheckBox"
-        android:id="@+id/view" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/abc_list_pressed_holo_dark"
-        android:id="@+id/view2" />
-
-    <view
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        class="android.support.v7.internal.widget.TintRadioButton"
-        android:id="@+id/view3" />
-
-    <view
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        class="android.support.v7.internal.widget.TintEditText"
-        android:id="@+id/view4" />
 </LinearLayout>

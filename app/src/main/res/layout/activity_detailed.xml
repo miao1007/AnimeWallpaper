@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
+        layout="@layout/include_toolbar" />
 
     <view
         android:id="@+id/imageView_detail"
