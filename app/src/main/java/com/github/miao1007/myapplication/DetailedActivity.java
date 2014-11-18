@@ -1,7 +1,6 @@
 package com.github.miao1007.myapplication;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -9,22 +8,29 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
+import java.util.List;
 
 
 public class DetailedActivity extends ActionBarActivity {
 
     private Toolbar mToolbar;
     private ImageView mImageview;
+    private LinearLayout mLinearLayout;
     public static final String EXTRA_IMAGE = "URL";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed);
+        mLinearLayout = (LinearLayout) findViewById(R.id.linelayout);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
@@ -37,19 +43,53 @@ public class DetailedActivity extends ActionBarActivity {
         }
         mImageview = (ImageView) findViewById(R.id.imageView_detail);
 
-        //Picasso target get bitmap
+
+        //use Picasso target to get bitmap
+        final int defalutColor = getResources().getColor(R.color.accent_material_light);
         Target target = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 
-                //You can get 400x200 showcase pictures at http://lorempixel.com/
+
                 mImageview.setImageBitmap(bitmap);
                 Palette palette = Palette.generate(bitmap);
-                mToolbar.setBackgroundColor(palette.getDarkMutedColor(Color.RED));
+
+                mToolbar.setBackgroundColor(palette.getMutedColor(defalutColor));
+                List<Palette.Swatch> swatches = palette.getSwatches();
+
+                /*
+                * personally i'd better to use:
+                * MutedColor
+                * VibrantColor
+                * */
+                System.out.println("getDarkMutedColor = " + palette.getDarkMutedColor(defalutColor));
+                System.out.println("getMutedColor = " + palette.getMutedColor(defalutColor));
+                System.out.println("getVibrantColor = " + palette.getVibrantColor(defalutColor));
+                System.out.println("getDarkVibrantColor = " + palette.getDarkVibrantColor(defalutColor));
+                System.out.println("getLightMutedColor = " + palette.getLightMutedColor(defalutColor));
+                System.out.println("getLightVibrantColor = " + palette.getLightVibrantColor(defalutColor));
+
+                System.out.println("getMutedSwatch = " + palette.getMutedSwatch().getRgb());
+                System.out.println("getVibrantSwatch = " + palette.getVibrantSwatch().getRgb());
+                System.out.println("getDarkVibrantSwatch = " + palette.getDarkVibrantSwatch().getRgb());
+                System.out.println("getDarkMutedSwatch = " + palette.getDarkMutedSwatch().getRgb());
+                System.out.println("getLightMutedSwatch = " + palette.getLightMutedSwatch().getRgb());
+                System.out.println("getLightVibrantSwatch = " + palette.getLightVibrantSwatch().getRgb());
+
+
+                //we will have 14 swatches
+                for (int i = 0; i < swatches.size(); i++) {
+                    System.out.println("swatches = " + swatches.get(i).getRgb());
+                    View view = new View(DetailedActivity.this);
+                    view.setBackgroundColor(swatches.get(i).getRgb());
+                    view.setLayoutParams(new ViewGroup.LayoutParams(50,50));
+                    mLinearLayout.addView(view);
+                }
             }
 
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
+                //You can get 400x200 showcase pictures at http://lorempixel.com/
                 mImageview.setImageResource(R.drawable.lorempixel);
             }
 

@@ -17,5 +17,12 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true" />
 
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:id="@+id/linelayout"></LinearLayout>
+
 
 </LinearLayout>
