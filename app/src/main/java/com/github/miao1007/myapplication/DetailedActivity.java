@@ -55,6 +55,8 @@ public class DetailedActivity extends ActionBarActivity {
                 Palette palette = Palette.generate(bitmap);
 
                 mToolbar.setBackgroundColor(palette.getMutedColor(defalutColor));
+
+
                 List<Palette.Swatch> swatches = palette.getSwatches();
 
                 /*

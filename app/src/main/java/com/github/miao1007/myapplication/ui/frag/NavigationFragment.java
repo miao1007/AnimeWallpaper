@@ -35,12 +35,12 @@ public class NavigationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View mView = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
-        mDrawerListView = (ListView)mView.findViewById(R.id.listview);
+        mDrawerListView = (ListView) mView.findViewById(R.id.listview);
         String[] frags = new String[]{
-                "test1",
-                "test2"
+                Testfragment1.class.getSimpleName(),
+                CardFragment.class.getSimpleName()
         };
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,frags);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, frags);
         mDrawerListView.setAdapter(arrayAdapter);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

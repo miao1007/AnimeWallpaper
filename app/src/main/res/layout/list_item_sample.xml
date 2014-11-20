@@ -3,6 +3,7 @@
     class="android.support.v7.widget.CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
     android:theme="@style/CardView.Light">
 
     <LinearLayout
@@ -29,8 +30,7 @@
             android:layout_marginLeft="@dimen/abc_action_bar_default_padding_material"
             android:layout_marginRight="@dimen/abc_action_bar_default_padding_material"
             android:text="@string/hello_world"
-            android:textColor="@color/primary_text_default_material_light"
-            android:theme="@style/Base.TextAppearance.AppCompat.Title" />
+            android:textColor="@color/primary_text_default_material_light" />
 
         <TextView
             android:id="@+id/textView_date"
@@ -39,8 +39,7 @@
             android:layout_marginLeft="@dimen/abc_action_bar_default_padding_material"
             android:layout_marginRight="@dimen/abc_action_bar_default_padding_material"
             android:text="@string/date"
-            android:textColor="@color/primary_text_default_material_light"
-            android:theme="@style/Base.TextAppearance.AppCompat.Title" />
+            android:textColor="@color/primary_text_default_material_light" />
 
         <TextView
             android:id="@+id/textView_excerpt"
@@ -49,7 +48,6 @@
             android:layout_marginLeft="@dimen/abc_action_bar_default_padding_material"
             android:layout_marginRight="@dimen/abc_action_bar_default_padding_material"
             android:text="@string/excerpt"
-            android:textColor="@color/primary_text_default_material_light"
-            android:theme="@style/Base.TextAppearance.AppCompat.Title" />
+            android:textColor="@color/primary_text_default_material_light" />
     </LinearLayout>
 </view>
