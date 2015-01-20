@@ -4,5 +4,15 @@
     android:orientation="vertical">
 
 
+    <view
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        class="android.support.v7.widget.RecyclerView"
+        android:id="@+id/pager_tap" />
 
+    <view
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="android.support.v4.view.ViewPager"
+        android:id="@+id/pager_content" />
 </LinearLayout>

@@ -6,23 +6,76 @@
     tools:context="com.github.miao1007.myapplication.DetailedActivity">
 
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/include_toolbar" />
+  <include
+      android:id="@+id/toolbar"
+      layout="@layout/include_toolbar"/>
 
+  <view
+      android:id="@+id/imageView_detail"
+      class="android.support.v7.internal.widget.TintImageView"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:adjustViewBounds="true"/>
+
+  <LinearLayout
+      android:layout_marginTop="10dp"
+      android:layout_width="fill_parent"
+      android:layout_height="50dp"
+      android:orientation="horizontal"
+      android:id="@+id/linelayout">
+
+  </LinearLayout>
+
+  <!--Navigation_drawer_like_picasso_sample-->
+
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="200dp">
+
+    <!--blur background-->
     <view
-        android:id="@+id/imageView_detail"
+        android:id="@+id/detail_imageView_blur"
         class="android.support.v7.internal.widget.TintImageView"
+        android:src="@drawable/lorempixel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true" />
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
 
+    <!--gradient background-->
     <LinearLayout
-        android:layout_marginTop="10dp"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="horizontal"
-        android:id="@+id/linelayout"></LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/gradient_bg"
+        android:gravity="bottom"
+        android:orientation="vertical">
 
+      <TextView
+          android:id="@+id/navigation_drawer_username"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="16dp"
+          android:layout_marginLeft="16dp"
+          android:ellipsize="marquee"
+          android:text="circle and blur trans sample"
+          android:textAppearance="@android:style/TextAppearance.Large"
+          android:textColor="@android:color/white"/>
+    </LinearLayout>
+
+    <!--Circle avatar-->
+    <view
+        android:id="@+id/detail_imageView_circle"
+        class="android.support.v7.internal.widget.TintImageView"
+        android:layout_height="64dp"
+        android:layout_width="64dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="fitXY"/>
+
+  </RelativeLayout>
 
 </LinearLayout>
