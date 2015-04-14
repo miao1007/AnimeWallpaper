@@ -3,7 +3,6 @@ package com.github.miao1007.myapplication;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,13 +13,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.github.miao1007.myapplication.utils.BlurTransformation;
-import com.github.miao1007.myapplication.utils.CircleTransformation;
+import com.github.miao1007.myapplication.utils.picasso.BlurTransformation;
+import com.github.miao1007.myapplication.utils.picasso.CircleTransformation;
+import com.github.miao1007.myapplication.utils.picasso.GradientTransformation;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import java.util.List;
 
-public class DetailedActivity extends ActionBarActivity {
+public class DetailedActivity extends BaseActivity {
 
   @InjectView(R.id.toolbar) Toolbar mToolbar;
 
@@ -62,7 +62,8 @@ public class DetailedActivity extends ActionBarActivity {
         mImageview.setImageBitmap(bitmap);
         Palette palette = Palette.generate(bitmap);
 
-        mToolbar.setBackgroundColor(palette.getMutedColor(defalutColor));
+        setToolbarColor(mToolbar, palette.getMutedColor(defalutColor));
+
 
         List<Palette.Swatch> swatches = palette.getSwatches();
 
@@ -94,11 +95,11 @@ public class DetailedActivity extends ActionBarActivity {
       }
     };
 
-    Picasso.with(this).load(url).into(target);
+    Picasso.with(this).load(url).transform(new GradientTransformation()).into(target);
 
     Picasso.with(this).load(url).transform(new CircleTransformation()).into(mImageview_circle);
 
-    Picasso.with(this).load(url).transform(new BlurTransformation(this)).into(mImageview_blur);
+    Picasso.with(this).load(url).resize(200,0).transform(new BlurTransformation(this)).into(mImageview_blur);
 
   }
 

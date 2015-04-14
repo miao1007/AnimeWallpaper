@@ -1,4 +1,4 @@
-package com.github.miao1007.myapplication.utils;
+package com.github.miao1007.myapplication.utils.picasso;
 
 import android.content.Context;
 import android.graphics.Bitmap;

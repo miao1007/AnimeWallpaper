@@ -3,7 +3,6 @@ package com.github.miao1007.myapplication;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import butterknife.ButterKnife;
@@ -12,7 +11,7 @@ import com.github.miao1007.myapplication.ui.frag.CardFragment;
 import com.github.miao1007.myapplication.ui.frag.NavigationFragment;
 import com.github.miao1007.myapplication.ui.frag.ViewPagerfragment;
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends BaseActivity
     implements NavigationFragment.NavigationDrawerCallbacks {
 
   private String TAG = getClass().getSimpleName();
@@ -40,6 +39,7 @@ public class MainActivity extends ActionBarActivity
         new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open, R.string.close);
     mDrawerToggle.syncState();
     mDrawerLayout.setDrawerListener(mDrawerToggle);
+    setToolbarColor(mToolbar);
   }
 
   @Override

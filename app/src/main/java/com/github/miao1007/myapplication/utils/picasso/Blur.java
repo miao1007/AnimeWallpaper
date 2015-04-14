@@ -1,4 +1,4 @@
-package com.github.miao1007.myapplication.utils;
+package com.github.miao1007.myapplication.utils.picasso;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,7 +19,6 @@ public class Blur {
 
         if (VERSION.SDK_INT > 16) {
             Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
-
             final RenderScript rs = RenderScript.create(context);
             final Allocation input = Allocation.createFromBitmap(rs,
                     sentBitmap, Allocation.MipmapControl.MIPMAP_NONE,
