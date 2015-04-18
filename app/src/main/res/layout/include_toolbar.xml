@@ -1,13 +1,11 @@
-<!--you needn't to add id to include_toolbar,use <incluide> in activity instead.-->
-
-<!--you will get more at http://android-developers.blogspot.com/2014/10/appcompat-v21-material-design-for-pre.html-->
-
-<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<view xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary"
+    class="android.support.v7.widget.Toolbar"
+    android:id="@+id/toolbar"
+    android:background="@color/material_deep_teal_500"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     android:minHeight="?attr/actionBarSize"
-    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    android:elevation="5dp"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"/>

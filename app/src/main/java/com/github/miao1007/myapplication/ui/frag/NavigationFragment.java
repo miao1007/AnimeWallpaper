@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import com.github.miao1007.myapplication.R;
 
 public class NavigationFragment extends Fragment {

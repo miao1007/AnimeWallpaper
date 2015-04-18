@@ -14,10 +14,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-
 import com.github.miao1007.myapplication.R;
 import com.github.miao1007.myapplication.ui.adapter.HorizenAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 

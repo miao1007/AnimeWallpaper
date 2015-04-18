@@ -29,7 +29,7 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
-
+import android.widget.FrameLayout;
 import com.github.miao1007.myapplication.R;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -54,7 +54,7 @@ public class AddToScheduleFABFrameLayout extends CheckableFrameLayout {
         super(context, attrs, defStyleAttr);
 
         mRevealView = new View(context);
-        mRevealView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        mRevealView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         addView(mRevealView, 0);
         mRevealViewOffColor = getResources().getColor(R.color.accent_material_dark);
     }

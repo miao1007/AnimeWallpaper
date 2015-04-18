@@ -5,12 +5,14 @@
     android:layout_height="match_parent"
     tools:context="com.github.miao1007.myapplication.ui.frag.CardFragment">
 
-  <view
-      android:id="@+id/recyclerView"
-      android:theme="@style/CardView.Light"
-      class="android.support.v7.widget.RecyclerView"
+  <com.malinskiy.superrecyclerview.SuperRecyclerView
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      android:id="@+id/list"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
+      android:layout_height="match_parent"
+      app:recyclerClipToPadding="false"
+      app:scrollbarStyle="insideInset"/>
+
 
   <com.getbase.floatingactionbutton.FloatingActionsMenu
       android:id="@+id/detailed_multiple_actions"

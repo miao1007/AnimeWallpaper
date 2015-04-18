@@ -1,129 +1,50 @@
 package com.github.miao1007.myapplication;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.graphics.Palette;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.WindowManager;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.github.miao1007.myapplication.utils.picasso.BlurTransformation;
-import com.github.miao1007.myapplication.utils.picasso.CircleTransformation;
-import com.github.miao1007.myapplication.utils.picasso.GradientTransformation;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-import java.util.List;
+import com.github.miao1007.myapplication.service.konachan.ImageResult;
+import com.github.miao1007.myapplication.ui.frag.ImageDetailedCard;
 
 public class DetailedActivity extends BaseActivity {
 
-  @InjectView(R.id.toolbar) Toolbar mToolbar;
-
-  @InjectView(R.id.imageView_detail) ImageView mImageview;
-
-  @InjectView(R.id.detail_imageView_blur) ImageView mImageview_blur;
-
-  @InjectView(R.id.detail_imageView_circle) ImageView mImageview_circle;
-
-  @InjectView(R.id.linelayout) LinearLayout mLinearLayout;
+  @InjectView(R.id.detailed_viewpager) ViewPager mViewPager;
 
   public static final String EXTRA_IMAGE = "URL";
-
+  public static final int MAX_VIEWPAGER_COUNT = 500;
   public String url;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  private ImageResult imageResult;
+  private FragmentManager fragmentManager;
+
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_detailed);
     ButterKnife.inject(this);
-    if (mToolbar != null) {
-      setSupportActionBar(mToolbar);
-      mToolbar.inflateMenu(R.menu.menu_detailed);
-      // Set Navigation Toggle
-      getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-      getSupportActionBar().setDisplayShowTitleEnabled(false);
-    } else {
-      //throw new NullPointerException("Toolbar must be <include> in activity's layout!");
-    }
-
-    url = getIntent().getStringExtra(EXTRA_IMAGE);
-
-    //use Picasso target to get bitmap
-    final int defalutColor = getResources().getColor(R.color.accent_material_light);
-    Target target = new Target() {
-      @Override
-      public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-
-        mImageview.setImageBitmap(bitmap);
-        Palette palette = Palette.generate(bitmap);
-
-        setToolbarColor(mToolbar, palette.getMutedColor(defalutColor));
-
-
-        List<Palette.Swatch> swatches = palette.getSwatches();
-
-                /*
-                * personally i'd better to use:
-                * MutedColor
-                * VibrantColor
-                * */
-
-        //we will have 14 swatches
-        for (int i = 0; i < swatches.size(); i++) {
-          System.out.println("swatches = " + swatches.get(i).getRgb());
-          View view = new View(DetailedActivity.this);
-          view.setBackgroundColor(swatches.get(i).getRgb());
-          view.setLayoutParams(new ViewGroup.LayoutParams(50, 50));
-          mLinearLayout.addView(view);
-        }
-      }
-
-      @Override
-      public void onBitmapFailed(Drawable errorDrawable) {
-        //You can get 400x200 showcase pictures at http://lorempixel.com/
-        mImageview.setImageResource(R.drawable.lorempixel);
-      }
-
-      @Override
-      public void onPrepareLoad(Drawable placeHolderDrawable) {
-        mImageview.setImageResource(R.drawable.lorempixel);
-      }
-    };
-
-    Picasso.with(this).load(url).transform(new GradientTransformation()).into(target);
-
-    Picasso.with(this).load(url).transform(new CircleTransformation()).into(mImageview_circle);
-
-    Picasso.with(this).load(url).resize(200,0).transform(new BlurTransformation(this)).into(mImageview_blur);
+    getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+        WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+    imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);
+    fragmentManager = getSupportFragmentManager();
+    mViewPager.setAdapter(new ScreenSlidePagerAdapter(fragmentManager));
 
   }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.menu_detailed, menu);
-    return true;
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
-    int id = item.getItemId();
-
-    //noinspection SimplifiableIfStatement
-    if (id == R.id.action_settings) {
-      return true;
-    } else if (id == android.R.id.home) {
-      finish();
+  public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+    public ScreenSlidePagerAdapter(FragmentManager fm) {
+      super(fm);
     }
 
-    return super.onOptionsItemSelected(item);
+    @Override public Fragment getItem(int position) {
+      return ImageDetailedCard.newInstance(imageResult.getId() - position);
+    }
+
+    @Override public int getCount() {
+      return MAX_VIEWPAGER_COUNT;
+    }
   }
 }

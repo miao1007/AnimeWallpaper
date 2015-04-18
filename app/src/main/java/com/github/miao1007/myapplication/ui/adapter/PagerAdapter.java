@@ -2,7 +2,6 @@ package com.github.miao1007.myapplication.ui.adapter;
 
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.List;
 
 /**
