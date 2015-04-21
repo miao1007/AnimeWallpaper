@@ -1,4 +1,4 @@
-package com.github.miao1007.myapplication.service;
+package com.github.miao1007.myapplication.support.service;
 
 import java.util.HashMap;
 
@@ -7,9 +7,9 @@ import java.util.HashMap;
  */
 public class Query extends HashMap<String,Object> {
 
-  String TAGS = "tags";
-  String LIMIT = "limit";
-  String PAGE = "page";
+  public static final String TAGS = "tags";
+  public static final String LIMIT = "limit";
+  public static final String PAGE = "page";
 
   public Query() {
   }
@@ -39,7 +39,7 @@ public class Query extends HashMap<String,Object> {
   }
 
 
-  public Query build() {
+  public Query init() {
     ensureSaneDefaults();
     return this;
   }

@@ -6,9 +6,9 @@
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <!-- Actionbar color -->
-        <item name="colorPrimary">@color/accent_material_dark</item>
+        <item name="colorPrimary">@color/background_material_dark</item>
         <!--Status bar color-->
-        <item name="colorPrimaryDark">@color/accent_material_light</item>
+        <item name="colorPrimaryDark">@color/background_material_dark</item>
         <!--Window color-->
         <item name="android:windowBackground">@color/dim_foreground_material_dark</item>
     </style>

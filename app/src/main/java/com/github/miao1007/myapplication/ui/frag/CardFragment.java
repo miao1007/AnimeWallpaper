@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.github.miao1007.myapplication.R;
-import com.github.miao1007.myapplication.service.Query;
-import com.github.miao1007.myapplication.service.konachan.ImageResult;
-import com.github.miao1007.myapplication.service.konachan.KService;
+import com.github.miao1007.myapplication.support.service.Query;
+import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
+import com.github.miao1007.myapplication.support.service.konachan.KService;
 import com.github.miao1007.myapplication.ui.adapter.SampleAdapter;
 import com.github.miao1007.myapplication.utils.RetrofitUtils;
 import com.malinskiy.superrecyclerview.OnMoreListener;
@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import retrofit.Callback;
-import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -35,13 +34,15 @@ import retrofit.client.Response;
 public class CardFragment extends Fragment
     implements SwipeRefreshLayout.OnRefreshListener, Callback<List<ImageResult>> {
 
-  @InjectView(R.id.list) SuperRecyclerView mRecyclerView;
+  @InjectView(R.id.rv_frag_card) SuperRecyclerView mRecyclerView;
+  //@InjectView(R.id.btn_retry_card) Button mButton;
+  //@InjectView(R.id.pgb_loading_card) ContentLoadingProgressBar mProgressBar;
 
   private SampleAdapter mAdapter;
   private RecyclerView.LayoutManager mLayoutManager;
   private boolean isLoadingMore = false;
   private int currentPage = 1;
-  private HashMap<String, Object> query = new HashMap<>(4);
+  private Query query = new Query();
   ;
 
   public static final String TAG = "CardFragment";
@@ -66,9 +67,9 @@ public class CardFragment extends Fragment
 
     mLayoutManager = new LinearLayoutManager(getActivity());
     mRecyclerView.setLayoutManager(mLayoutManager);
-
     mRecyclerView.setAdapter(mAdapter);
-
+    mRecyclerView.hideMoreProgress();
+    mRecyclerView.hideProgress();
     mRecyclerView.setRefreshListener(this);
     mRecyclerView.setupMoreListener(new OnMoreListener() {
       @Override
@@ -77,18 +78,13 @@ public class CardFragment extends Fragment
         loadPage(query);
       }
     }, 10);
-    query = new Query().build();
+    query.init();
     loadPage(query);
     return view;
   }
 
   void loadPage(HashMap<String, Object> query) {
-
-    RestAdapter adapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL)
-        .setEndpoint(KService.END_PONIT_KONACHAN)
-        .build();
-
-    adapter.create(KService.class).getImageList(query, this);
+     RetrofitUtils.getCachedAdapter(KService.END_PONIT_KONACHAN).create(KService.class).getImageList(query, this);
   }
 
   //retrofit callback
@@ -101,14 +97,14 @@ public class CardFragment extends Fragment
     mAdapter.notifyDataSetChanged();
   }
 
-  //retrofit callback
+  //retrofit failure callback
   @Override public void failure(RetrofitError error) {
     RetrofitUtils.disErr(CardFragment.this.getActivity(), error);
   }
 
-  //swipe layout
+  //swipe layout refresh callback
   @Override public void onRefresh() {
-    query = new Query().build();
+    query.init();
     loadPage(query);
   }
 

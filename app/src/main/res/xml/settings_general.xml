@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <PreferenceCategory android:title="阅读设置">
+
+  </PreferenceCategory>
+
+  <PreferenceCategory android:title="其它">
+    <PreferenceScreen android:title="高级"
+        android:layout="@layout/preference_item">
+      <intent android:action=".ui.activity.SettingsMoreActivity"/>
+
+    </PreferenceScreen>
+    <PreferenceScreen android:title="关于"
+        android:key="about"
+        android:layout="@layout/preference_item">
+    </PreferenceScreen>
+  </PreferenceCategory>
+</PreferenceScreen>

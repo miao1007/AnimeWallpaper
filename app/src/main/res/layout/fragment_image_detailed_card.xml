@@ -3,21 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.github.miao1007.myapplication.DetailedActivity">
+    tools:context="com.github.miao1007.myapplication.ui.activity.DetailedActivity">
 
-  <view
-      android:id="@+id/imageView_detail"
-      class="android.support.v7.internal.widget.TintImageView"
+
+  <ImageView
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/iv_detailed_card"
       android:layout_width="match_parent"
-      android:transitionName="imageView_detail"
-      android:layout_height="wrap_content"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:scaleType="fitXY"
       android:adjustViewBounds="true"/>
 
 
   <LinearLayout android:layout_width="match_parent"
       android:orientation="vertical"
       android:id="@+id/container"
-      android:layout_height="match_parent"></LinearLayout>
+      android:layout_height="match_parent">
+  </LinearLayout>
 
 
 </LinearLayout>

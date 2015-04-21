@@ -1,4 +1,4 @@
-package com.github.miao1007.myapplication.service.konachan;
+package com.github.miao1007.myapplication.support.service.konachan;
 
 import java.util.List;
 import java.util.Map;

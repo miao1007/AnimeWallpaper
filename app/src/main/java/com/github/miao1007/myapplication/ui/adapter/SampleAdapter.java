@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.github.miao1007.myapplication.DetailedActivity;
+import com.github.miao1007.myapplication.ui.activity.DetailedActivity;
 import com.github.miao1007.myapplication.R;
-import com.github.miao1007.myapplication.service.konachan.ImageResult;
+import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 

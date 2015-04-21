@@ -1,6 +1,7 @@
-package com.github.miao1007.myapplication;
+package com.github.miao1007.myapplication.ui.activity;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -9,9 +10,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import com.github.miao1007.myapplication.R;
+import com.github.miao1007.myapplication.ui.activity.base.BaseActivity;
 import com.github.miao1007.myapplication.ui.frag.CardFragment;
 import com.github.miao1007.myapplication.ui.frag.NavigationFragment;
-import com.github.miao1007.myapplication.ui.frag.ViewPagerfragment;
 
 public class MainActivity extends BaseActivity
     implements NavigationFragment.NavigationDrawerCallbacks {
@@ -41,7 +43,7 @@ public class MainActivity extends BaseActivity
         new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open, R.string.close);
     mDrawerToggle.syncState();
     mDrawerLayout.setDrawerListener(mDrawerToggle);
-    setToolbarColor(mToolbar);
+    setUpToolbarColor(mToolbar);
   }
 
   @Override
@@ -60,9 +62,7 @@ public class MainActivity extends BaseActivity
         fragmentManager.beginTransaction().replace(R.id.container, new CardFragment()).commit();
         break;
       case 1:
-        fragmentManager.beginTransaction()
-            .replace(R.id.container, new ViewPagerfragment())
-            .commit();
+        startActivity(new Intent(this,SettingsActivity.class));
         break;
     }
   }

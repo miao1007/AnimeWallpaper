@@ -1,7 +1,8 @@
-package com.github.miao1007.myapplication;
+package com.github.miao1007.myapplication.ui.activity.base;
 
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
@@ -18,7 +19,7 @@ public class BaseActivity extends ActionBarActivity {
 
   public static final int ANIM_DORITION = 1000;
 
-  @TargetApi(21) protected void setToolbarColor(final Toolbar mToolbar, int toColor) {
+  @TargetApi(21) protected void setUpToolbarColor(final Toolbar mToolbar, int toColor) {
     ColorDrawable colorDrawable = (ColorDrawable) mToolbar.getBackground();
 
     int from = colorDrawable.getColor();
@@ -28,14 +29,14 @@ public class BaseActivity extends ActionBarActivity {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
       ValueAnimator colorAnimation = ValueAnimator.ofArgb(from, toColor);
-      colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-        @Override public void onAnimationUpdate(ValueAnimator animator) {
+      ValueAnimator.AnimatorUpdateListener listener = new ValueAnimator.AnimatorUpdateListener() {
+        @Override public void onAnimationUpdate(ValueAnimator animation) {
           mToolbar.invalidate();
-          w.setStatusBarColor((Integer) animator.getAnimatedValue());
-          mToolbar.setBackgroundColor((Integer) animator.getAnimatedValue());
+          w.setStatusBarColor((Integer) animation.getAnimatedValue());
+          mToolbar.setBackgroundColor((Integer) animation.getAnimatedValue());
         }
-      });
+      };
+      colorAnimation.addUpdateListener(listener);
       colorAnimation.setDuration(ANIM_DORITION).start();
       return;
     }
@@ -51,9 +52,24 @@ public class BaseActivity extends ActionBarActivity {
     AnimateUtils.animateViewColor(mToolbar, toColor);
   }
 
-  protected void setToolbarColor(Toolbar mToolbar) {
+  protected void setUpToolbarColor(Toolbar mToolbar) {
     ColorDrawable colorDrawable = (ColorDrawable) mToolbar.getBackground();
-    setToolbarColor(mToolbar, colorDrawable.getColor());
+    setUpToolbarColor(mToolbar, colorDrawable == null ? 0x00 : colorDrawable.getColor());
   }
 
+
+  //make statusbar translucent when api-19+
+  @TargetApi(19)
+  protected void requstTranslucentStatusbar(){
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+
+      getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+          WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+    }
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+      getWindow().setStatusBarColor(Color.TRANSPARENT);
+    }
+  }
 }
