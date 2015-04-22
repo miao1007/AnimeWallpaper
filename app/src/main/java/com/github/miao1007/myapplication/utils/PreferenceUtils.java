@@ -11,7 +11,7 @@ public class PreferenceUtils {
 
   static String TAG = LogUtils.makeLogTag(PreferenceUtils.class);
 
-  public static String getPrefString(Context context, String key, final String defaultValue) {
+  public static String getPrefString(Context context,String key, final String defaultValue) {
     final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
     return settings.getString(key, defaultValue);
   }

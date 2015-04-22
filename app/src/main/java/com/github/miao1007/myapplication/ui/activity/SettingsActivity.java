@@ -40,7 +40,7 @@ public class SettingsActivity extends BaseActivity {
         findPreference("about").setOnPreferenceClickListener(
             new Preference.OnPreferenceClickListener() {
               @Override public boolean onPreferenceClick(Preference preference) {
-                new Libs.Builder().withFields(R.string.class.getFields()).start(getActivity());
+                new Libs.Builder().withActivityTitle("About").withFields(R.string.class.getFields()).start(getActivity());
                 return false;
               }
             });
