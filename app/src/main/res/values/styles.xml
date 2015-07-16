@@ -1,12 +1,11 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <!-- Actionbar color -->
-        <item name="colorPrimary">@color/background_material_dark</item>
-        <!--Status bar color-->
-        <item name="colorPrimaryDark">@color/background_material_dark</item>
-    </style>
+  <!-- Base application theme. -->
+  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">#ff4198eb</item>
+    <item name="colorPrimaryDark">#ff4198eb</item>
+    <item name="colorAccent">#ff4198eb</item>
+  </style>
 
 </resources>

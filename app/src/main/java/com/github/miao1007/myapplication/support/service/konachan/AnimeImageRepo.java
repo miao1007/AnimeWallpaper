@@ -9,7 +9,7 @@ import retrofit.http.QueryMap;
 /**
  * Created by leon on 4/14/15.
  */
-public interface KService {
+public interface AnimeImageRepo {
 
 
   String END_PONIT_KONACHAN = "https://konachan.com/post.json";
@@ -19,6 +19,7 @@ public interface KService {
   String PAGE = "page";
   String RATING = "rating";
 
+  //@Header("")
   @GET("/") void getImageList(@QueryMap Map<String, Object> option,
       Callback<List<ImageResult>> callback);
 

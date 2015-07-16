@@ -19,7 +19,7 @@ package com.github.miao1007.myapplication.utils;
 import android.util.Log;
 
 public class LogUtils {
-    private static final String LOG_PREFIX = "flynews";
+    private static final String LOG_PREFIX = "miao_";
     private static final int LOG_PREFIX_LENGTH = LOG_PREFIX.length();
     private static final int MAX_LOG_TAG_LENGTH = 23;
 

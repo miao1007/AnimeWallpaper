@@ -7,12 +7,12 @@
 
 
   <include
-      android:id="@+id/base_frag_toolbar"
+      android:id="@+id/toolbar_holder"
       layout="@layout/include_toolbar"/>
 
   <FrameLayout
       android:id="@+id/base_fragment_container"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
+      android:layout_height="match_parent"/>
 
 </LinearLayout>

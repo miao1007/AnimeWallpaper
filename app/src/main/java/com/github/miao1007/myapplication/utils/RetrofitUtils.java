@@ -66,7 +66,7 @@ public class RetrofitUtils {
         .setClient(new OkClient(okHttpClient))
         .setRequestInterceptor(new RequestInterceptor() {
           @Override public void intercept(RequestFacade request) {
-            request.addHeader("Cache-Control", "public, max-age=" + 60 * 60 * 4);
+            //request.addHeader("Cache-Control", "public, max-age=" + 60 * 60 * 4);
           }
         })
         .build();

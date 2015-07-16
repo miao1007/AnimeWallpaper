@@ -1,23 +1,28 @@
 package com.github.miao1007.myapplication.ui.frag;
 
-import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.github.miao1007.myapplication.R;
 import com.github.miao1007.myapplication.support.service.Query;
+import com.github.miao1007.myapplication.support.service.konachan.AnimeImageRepo;
 import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
-import com.github.miao1007.myapplication.support.service.konachan.KService;
-import com.github.miao1007.myapplication.ui.adapter.SampleAdapter;
+import com.github.miao1007.myapplication.ui.activity.DetailedActivity;
+import com.github.miao1007.myapplication.ui.adapter.MyAdapter;
+import com.github.miao1007.myapplication.utils.LogUtils;
 import com.github.miao1007.myapplication.utils.RetrofitUtils;
-import com.malinskiy.superrecyclerview.OnMoreListener;
-import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,20 +37,23 @@ import retrofit.client.Response;
 * 3. CardView Supported
 * */
 public class CardFragment extends Fragment
-    implements SwipeRefreshLayout.OnRefreshListener, Callback<List<ImageResult>> {
+    implements SwipeRefreshLayout.OnRefreshListener, Callback<List<ImageResult>>,
+    MyAdapter.OnItemClickListener, MyAdapter.OnLoadMoreListener {
 
-  @InjectView(R.id.rv_frag_card) SuperRecyclerView mRecyclerView;
+  @InjectView(R.id.rv_frag_card) RecyclerView mRecyclerView;
   //@InjectView(R.id.btn_retry_card) Button mButton;
   //@InjectView(R.id.pgb_loading_card) ContentLoadingProgressBar mProgressBar;
 
-  private SampleAdapter mAdapter;
+  private MyAdapter mAdapter;
   private RecyclerView.LayoutManager mLayoutManager;
   private boolean isLoadingMore = false;
   private int currentPage = 1;
   private Query query = new Query();
-  ;
+  private Toolbar mToolbar;
+  private Spinner mSpinner;
 
-  public static final String TAG = "CardFragment";
+
+  public static final String TAG = LogUtils.makeLogTag(CardFragment.class);
 
   private List<ImageResult> imageResults = new ArrayList<ImageResult>();
 
@@ -63,36 +71,65 @@ public class CardFragment extends Fragment
     // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_card, container, false);
     ButterKnife.inject(this, view);
-    mAdapter = new SampleAdapter(imageResults);
-
+    mAdapter = new MyAdapter(imageResults, mRecyclerView);
+    mAdapter.setOnLoadMoreListener(this);
+    mAdapter.setOnItemClickListener(this);
     mLayoutManager = new LinearLayoutManager(getActivity());
     mRecyclerView.setLayoutManager(mLayoutManager);
     mRecyclerView.setAdapter(mAdapter);
-    mRecyclerView.hideMoreProgress();
-    mRecyclerView.hideProgress();
-    mRecyclerView.setRefreshListener(this);
-    mRecyclerView.setupMoreListener(new OnMoreListener() {
-      @Override
-      public void onMoreAsked(int numberOfItems, int numberBeforeMore, int currentItemPos) {
-        // Fetch more from Api or DB
-        loadPage(query);
-      }
-    }, 10);
     query.init();
     loadPage(query);
+    mToolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
+    mSpinner = new Spinner(getActivity());
+    String[] frags = new String[]{
+        "category1",
+        "category2",
+        "category3",
+    };
+    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,frags);
+    mSpinner.setAdapter(arrayAdapter);
+    mToolbar.addView(mSpinner);
     return view;
   }
 
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    Log.d(TAG,"onDestroyView");
+    if (mToolbar != null && mSpinner != null) {
+      mToolbar.removeView(mSpinner);
+    }
+  }
+
+  @Override public void onDetach() {
+    super.onDetach();
+    ButterKnife.reset(this);
+  }
+
+
+  @Override public void onLoadMore(int pos) {
+    Log.d(TAG, "onLoadMore " + pos);
+    loadPage(query);
+  }
+
   void loadPage(HashMap<String, Object> query) {
-     RetrofitUtils.getCachedAdapter(KService.END_PONIT_KONACHAN).create(KService.class).getImageList(query, this);
+    RetrofitUtils.getCachedAdapter(AnimeImageRepo.END_PONIT_YANDE)
+        .create(AnimeImageRepo.class)
+        .getImageList(query, this);
+  }
+
+  @Override public void onItemClick(View v, int position) {
+    Log.d(TAG, "onItemClick" + position);
+    Intent intent = new Intent(v.getContext(), DetailedActivity.class);
+    intent.putExtra(DetailedActivity.EXTRA_IMAGE, imageResults.get(position));
+    v.getContext().startActivity(intent);
   }
 
   //retrofit callback
   @Override public void success(List<ImageResult> newimageResults, Response response) {
 
-    int currentPage = ((int) query.get(KService.PAGE));
-    query.put(KService.PAGE, currentPage + 1);
-
+    int currentPage = ((int) query.get(AnimeImageRepo.PAGE));
+    query.put(AnimeImageRepo.PAGE, currentPage + 1);
     imageResults.addAll(newimageResults);
     mAdapter.notifyDataSetChanged();
   }
@@ -108,10 +145,6 @@ public class CardFragment extends Fragment
     loadPage(query);
   }
 
-  @Override public void onDetach() {
-    super.onDetach();
-    ButterKnife.reset(this);
-  }
 }
 
 

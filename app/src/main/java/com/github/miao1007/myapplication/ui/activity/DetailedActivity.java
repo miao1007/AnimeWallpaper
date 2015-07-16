@@ -11,12 +11,12 @@ public class DetailedActivity extends BaseFragmentActivity implements ImagePrevi
 
   private ImageResult imageResult;
 
-  @Override public Fragment getFragment() {
+  @Override public Fragment getSupportFragment() {
     imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);
     return ImagePreviewCard.newInstance(imageResult);
   }
 
   @Override public void onArticleSelected(int color) {
-    setUpToolbarColor(mToolbar,color);
+    //setUpToolbarColor(mToolbar,color);
   }
 }

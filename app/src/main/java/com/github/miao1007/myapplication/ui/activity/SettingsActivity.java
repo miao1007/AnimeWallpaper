@@ -2,30 +2,17 @@ package com.github.miao1007.myapplication.ui.activity;
 
 import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.github.miao1007.myapplication.R;
-import com.github.miao1007.myapplication.ui.activity.base.BaseActivity;
-import com.mikepenz.aboutlibraries.Libs;
+import com.github.miao1007.myapplication.ui.activity.base.BaseFragmentActivity;
+import com.github.miao1007.myapplication.ui.frag.base.PreferenceCompatFragment;
 
-public class SettingsActivity extends BaseActivity {
-
-  @InjectView(R.id.include_settings_toolbar) Toolbar mToolbar;
-
-  @Override protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_settings);
-
-    ButterKnife.inject(this);
-    setSupportActionBar(mToolbar);
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    PreferenceFragment fragment = new PreferenceFragment() {
+public class SettingsActivity extends BaseFragmentActivity {
+  @Override public Fragment getSupportFragment() {
+    Fragment fragment = new PreferenceCompatFragment() {
       @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
           Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
@@ -40,22 +27,15 @@ public class SettingsActivity extends BaseActivity {
         findPreference("about").setOnPreferenceClickListener(
             new Preference.OnPreferenceClickListener() {
               @Override public boolean onPreferenceClick(Preference preference) {
-                new Libs.Builder().withActivityTitle("About").withFields(R.string.class.getFields()).start(getActivity());
+                //new Libs.Builder().withActivityTitle("About")
+                //    .withFields(R.string.class.getFields())
+                //    .start(getActivity());
+
                 return false;
               }
             });
       }
     };
-
-    getFragmentManager().beginTransaction()
-        .replace(R.id.include_settings_container, fragment)
-        .commit();
-  }
-
-  @Override public boolean onOptionsItemSelected(MenuItem item) {
-    if (item.getItemId() == android.R.id.home) {
-      onBackPressed();
-    }
-    return super.onOptionsItemSelected(item);
+    return fragment;
   }
 }
