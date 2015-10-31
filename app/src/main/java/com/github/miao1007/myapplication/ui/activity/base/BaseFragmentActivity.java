@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.github.miao1007.myapplication.R;
+import com.github.miao1007.myapplication.utils.FlyMeUtils;
 import com.github.miao1007.myapplication.utils.LollipopUtils;
 
 /**
@@ -25,8 +26,10 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     // Init the swipe back
+    setTheme(android.R.style.Theme_DeviceDefault_Light_NoActionBar);
     setContentView(R.layout.activity_base_fragment);
     ButterKnife.inject(this);
+    FlyMeUtils.setDarkStatusBar(this,true);
     LollipopUtils.setStatusbarColor(this, mToolbarHolder);
     trySetupToolbar(mToolbar);
     getSupportFragmentManager().beginTransaction()
@@ -39,7 +42,7 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
   public void trySetupToolbar(Toolbar mToolbar) {
     try {
       setSupportActionBar(mToolbar);
-      getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+      //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     } catch (NullPointerException e) {
       Log.e(getClass().getSimpleName(), "toolbar is null!");
     }

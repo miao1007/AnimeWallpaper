@@ -9,7 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 /**
- * Created by leon on 4/14/15.
+ * Created by leon on 10/31/15.
  */
 public class LollipopUtils {
 
@@ -25,7 +25,7 @@ public class LollipopUtils {
     return result;
   }
 
-  public static void setStatusbarColor(Activity activity, View holder) {
+  public static void setStatusbarColor(Activity activity, View view) {
 
     //对于Lollipop 的设备，只需要在style.xml中设置colorPrimaryDark即可
 
@@ -34,23 +34,7 @@ public class LollipopUtils {
     if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
       w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
           WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-      int statusBarHeight = getStatusBarHeight(activity);
-      holder.setPadding(0, statusBarHeight, 0, 0);
-      return;
-    }
-  }
-
-  public static void hideStatusbar(Activity activity) {
-
-    //对于Lollipop的设备，只需要在style.xml中设置colorPrimaryDark即可
-
-    //对于4.4的设备，如下即可
-    Window w = activity.getWindow();
-
-    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-      w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-          WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-      return;
+      view.setPadding(0, getStatusBarHeight(activity), 0, 0);
     }
   }
 }

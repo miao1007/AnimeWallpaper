@@ -15,22 +15,21 @@ import butterknife.InjectView;
 import com.github.miao1007.myapplication.R;
 import com.github.miao1007.myapplication.support.service.Query;
 import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
-import com.github.miao1007.myapplication.utils.animation.AnimateUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class ImagePreviewCard extends Fragment {
 
-  @InjectView(R.id.container) LinearLayout mLinearLayout;
-  @InjectView(R.id.iv_detailed_card) ImageView mImageview;
-
   public static final String EXTRA_IMAGE = "URL";
   public static final String TAG = ImagePreviewCard.class.getSimpleName();
-  private ImageResult imageResult;
+  @InjectView(R.id.container) LinearLayout mLinearLayout;
+  @InjectView(R.id.iv_detailed_card) ImageView mImageview;
   int defalutColor;
   Query query;
   PhotoViewAttacher attacher;
+  OnImageLoadedListener mCallback;
+  private ImageResult imageResult;
 
   public ImagePreviewCard() {
   }
@@ -71,7 +70,6 @@ public class ImagePreviewCard extends Fragment {
             Palette palette =
                 Palette.generate(((BitmapDrawable) mImageview.getDrawable()).getBitmap());
             //setUpToolbarColor(mToolbar, palette.getMutedColor(defalutColor));
-            AnimateUtils.animateViewColor(mLinearLayout, palette.getMutedColor(defalutColor));
             mCallback.onArticleSelected(palette.getMutedColor(defalutColor));
           }
 
@@ -86,15 +84,7 @@ public class ImagePreviewCard extends Fragment {
     ButterKnife.reset(this);
   }
 
-  OnImageLoadedListener mCallback;
-
-  // Container Activity must implement this interface
-  public interface OnImageLoadedListener {
-    void onArticleSelected(int color);
-  }
-
-  @Override
-  public void onAttach(Activity activity) {
+  @Override public void onAttach(Activity activity) {
     super.onAttach(activity);
 
     // This makes sure that the container activity has implemented
@@ -102,10 +92,13 @@ public class ImagePreviewCard extends Fragment {
     try {
       mCallback = (OnImageLoadedListener) activity;
     } catch (ClassCastException e) {
-      throw new ClassCastException(activity.toString()
-          + " must implement OnHeadlineSelectedListener");
+      throw new ClassCastException(
+          activity.toString() + " must implement OnHeadlineSelectedListener");
     }
   }
 
-
+  // Container Activity must implement this interface
+  public interface OnImageLoadedListener {
+    void onArticleSelected(int color);
+  }
 }
