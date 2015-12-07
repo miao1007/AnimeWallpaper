@@ -15,6 +15,7 @@ import butterknife.InjectView;
 import com.github.miao1007.myapplication.R;
 import com.github.miao1007.myapplication.support.service.Query;
 import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
+import com.github.miao1007.myapplication.utils.picasso.BlurTransformation;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -62,21 +63,10 @@ public class ImagePreviewCard extends Fragment {
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     Picasso.with(getActivity())
-        .load(imageResult.getPreviewUrl())
-        .placeholder(R.drawable.gradient_bg)
-        .into(mImageview, new Callback() {
-          @Override public void onSuccess() {
-
-            Palette palette =
-                Palette.generate(((BitmapDrawable) mImageview.getDrawable()).getBitmap());
-            //setUpToolbarColor(mToolbar, palette.getMutedColor(defalutColor));
-            mCallback.onArticleSelected(palette.getMutedColor(defalutColor));
-          }
-
-          @Override public void onError() {
-
-          }
-        });
+        .load(imageResult.getJpegUrl())
+        .placeholder(R.drawable.lorempixel)
+        //.transform(new BlurTransformation(getContext()))
+        .into(mImageview);
   }
 
   @Override public void onDetach() {
