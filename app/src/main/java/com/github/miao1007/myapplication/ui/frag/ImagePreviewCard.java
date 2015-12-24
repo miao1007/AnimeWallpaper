@@ -1,7 +1,9 @@
 package com.github.miao1007.myapplication.ui.frag;
 
 import android.app.Activity;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.graphics.Palette;
@@ -15,9 +17,14 @@ import butterknife.InjectView;
 import com.github.miao1007.myapplication.R;
 import com.github.miao1007.myapplication.support.service.Query;
 import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
-import com.github.miao1007.myapplication.utils.picasso.BlurTransformation;
-import com.squareup.picasso.Callback;
+import com.github.miao1007.myapplication.ui.activity.DetailedActivity;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class ImagePreviewCard extends Fragment {
@@ -62,11 +69,35 @@ public class ImagePreviewCard extends Fragment {
 
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    Picasso.with(getActivity())
-        .load(imageResult.getJpegUrl())
-        .placeholder(R.drawable.lorempixel)
+
+    Target target = new Target() {
+      @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+        Observable.just(bitmap)
+            .map(new Func1<Bitmap, Integer>() {
+              @Override public Integer call(Bitmap bitmap) {
+                return Palette.from(bitmap).generate().getMutedColor(Color.WHITE);
+              }
+            }).subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Action1<Integer>() {
+              @Override public void call(Integer integer) {
+                getActivity().getWindow().getDecorView().setBackgroundColor(integer);
+              }
+            });
+
+      }
+
+      @Override public void onBitmapFailed(Drawable errorDrawable) {
+
+      }
+
+      @Override public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+      }
+    };
+    Picasso.with(getActivity()).load(imageResult.getJpegUrl()).placeholder(R.drawable.lorempixel)
         //.transform(new BlurTransformation(getContext()))
-        .into(mImageview);
+        .into(target);
   }
 
   @Override public void onDetach() {

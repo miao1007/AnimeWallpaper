@@ -25,6 +25,7 @@ public class LollipopUtils {
     return result;
   }
 
+
   public static void setStatusbarColor(Activity activity, View view) {
 
     //对于Lollipop 的设备，只需要在style.xml中设置colorPrimaryDark即可
