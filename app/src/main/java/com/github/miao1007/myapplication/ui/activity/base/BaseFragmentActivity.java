@@ -11,7 +11,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.github.miao1007.myapplication.R;
 import com.github.miao1007.myapplication.utils.FlyMeUtils;
-import com.github.miao1007.myapplication.utils.LollipopUtils;
+import com.github.miao1007.myapplication.utils.StatusbarUtils;
 
 /**
  * Created by leon on 1/28/15.
@@ -30,7 +30,7 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
     setContentView(R.layout.activity_base_fragment);
     ButterKnife.inject(this);
     FlyMeUtils.setDarkStatusBar(this,true);
-    LollipopUtils.setStatusbarColor(this, mToolbarHolder);
+    StatusbarUtils.setStatusbarColor(this, mToolbarHolder);
     trySetupToolbar(mToolbar);
     getSupportFragmentManager().beginTransaction()
         .replace(R.id.base_fragment_container, getSupportFragment())

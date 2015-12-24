@@ -30,6 +30,6 @@ public final class PaletteTransformation implements Transformation {
 
     @Override
     public String key() {
-        return "";
+        return "PaletteTransformation";
     }
 }

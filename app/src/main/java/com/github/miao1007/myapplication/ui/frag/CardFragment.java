@@ -20,7 +20,7 @@ import com.github.miao1007.myapplication.support.service.Query;
 import com.github.miao1007.myapplication.support.service.konachan.AnimeImageRepo;
 import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
 import com.github.miao1007.myapplication.ui.activity.DetailedActivity;
-import com.github.miao1007.myapplication.ui.adapter.MyAdapter;
+import com.github.miao1007.myapplication.ui.adapter.CardAdapter;
 import com.github.miao1007.myapplication.utils.LogUtils;
 import com.github.miao1007.myapplication.utils.RetrofitUtils;
 import java.util.ArrayList;
@@ -38,13 +38,13 @@ import retrofit.client.Response;
 * */
 public class CardFragment extends Fragment
     implements SwipeRefreshLayout.OnRefreshListener, Callback<List<ImageResult>>,
-    MyAdapter.OnItemClickListener, MyAdapter.OnLoadMoreListener {
+    CardAdapter.OnItemClickListener, CardAdapter.OnLoadMoreListener {
 
   @InjectView(R.id.rv_frag_card) RecyclerView mRecyclerView;
   //@InjectView(R.id.btn_retry_card) Button mButton;
   //@InjectView(R.id.pgb_loading_card) ContentLoadingProgressBar mProgressBar;
 
-  private MyAdapter mAdapter;
+  private CardAdapter mAdapter;
   private RecyclerView.LayoutManager mLayoutManager;
   private boolean isLoadingMore = false;
   private int currentPage = 1;
@@ -71,7 +71,12 @@ public class CardFragment extends Fragment
     // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_card, container, false);
     ButterKnife.inject(this, view);
-    mAdapter = new MyAdapter(imageResults, mRecyclerView);
+    setUpList();
+    return view;
+  }
+
+  private void setUpList() {
+    mAdapter = new CardAdapter(imageResults, mRecyclerView);
     mAdapter.setOnLoadMoreListener(this);
     mAdapter.setOnItemClickListener(this);
     mLayoutManager = new LinearLayoutManager(getActivity());
@@ -79,18 +84,8 @@ public class CardFragment extends Fragment
     mRecyclerView.setAdapter(mAdapter);
     query.init();
     loadPage(query);
-    mToolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
-    mSpinner = new Spinner(getActivity());
-    String[] frags = new String[]{
-        "category1",
-        "category2",
-        "category3",
-    };
-    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,frags);
-    mSpinner.setAdapter(arrayAdapter);
-    mToolbar.addView(mSpinner);
-    return view;
   }
+
 
   @Override
   public void onDestroyView() {
@@ -113,7 +108,7 @@ public class CardFragment extends Fragment
   }
 
   void loadPage(HashMap<String, Object> query) {
-    RetrofitUtils.getCachedAdapter(AnimeImageRepo.END_PONIT_YANDE)
+    RetrofitUtils.getCachedAdapter(AnimeImageRepo.END_PONIT_KONACHAN)
         .create(AnimeImageRepo.class)
         .getImageList(query, this);
   }

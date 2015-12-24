@@ -1,31 +1,33 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.github.miao1007.myapplication.ui.activity.DetailedActivity">
 
-
   <ImageView
       xmlns:android="http://schemas.android.com/apk/res/android"
-      android:id="@+id/iv_detailed_card"
+      android:id="@+id/blur_holder"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:scaleType="fitXY"
+      android:layout_height="match_parent"
+      android:scaleType="centerCrop"
       android:adjustViewBounds="true"/>
 
-  <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
 
-      android:text="score"/>
-
-  <LinearLayout android:layout_width="match_parent"
-      android:orientation="vertical"
-      android:id="@+id/container"
+  <!--real layout-->
+  <RelativeLayout android:layout_width="match_parent"
       android:layout_height="match_parent">
 
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="ariinine blue_eyes brown_hair dress flowers horns long_hair original petals ponytail ribbons rose"/>
-  </LinearLayout>
+
+    <ImageView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/iv_detailed_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"/>
+  </RelativeLayout>
 
 
-</LinearLayout>
+</FrameLayout>

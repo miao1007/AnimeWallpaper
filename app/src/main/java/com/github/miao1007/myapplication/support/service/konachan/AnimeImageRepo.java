@@ -12,7 +12,7 @@ import retrofit.http.QueryMap;
 public interface AnimeImageRepo {
 
 
-  String END_PONIT_KONACHAN = "https://konachan.com/post.json";
+  String END_PONIT_KONACHAN = "http://konachan.net/post.json";
   String END_PONIT_YANDE = "https://yande.re/post.json";
   String TAGS = "tags";
   String LIMIT = "limit";

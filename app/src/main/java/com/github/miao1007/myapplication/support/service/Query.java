@@ -46,7 +46,7 @@ public class Query extends HashMap<String,Object> {
 
   private void ensureSaneDefaults() {
     if (!this.containsKey(TAGS)) {
-      this.put(TAGS, "rating:s oshino_shinobu");
+      this.put(TAGS, "rating:s suzumiya_haruhi");
 
     }
 
