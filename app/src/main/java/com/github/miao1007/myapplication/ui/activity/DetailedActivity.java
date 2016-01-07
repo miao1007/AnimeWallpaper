@@ -37,6 +37,33 @@ public class DetailedActivity extends AppCompatActivity {
     ButterKnife.inject(this);
     StatusbarUtils.setTranslucent(this);
     imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);
+    //Picasso.with(this)
+    //    .load(imageResult.getSampleUrl())
+    //    .transform(new CircleTransformation())
+    //    .config(Bitmap.Config.ARGB_4444)
+    //    .into(ivDetailedCard, new Callback.EmptyCallback() {
+    //      @Override public void onSuccess() {
+    //        Observable.just(ivDetailedCard)
+    //            .map(new Func1<ImageView, Bitmap>() {
+    //              @Override public Bitmap call(ImageView imageView) {
+    //                return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+    //              }
+    //            })
+    //            .map(new Func1<Bitmap, Integer>() {
+    //              @Override public Integer call(Bitmap bitmap) {
+    //                return Palette.from(bitmap).generate().getMutedColor(Color.WHITE);
+    //              }
+    //            })
+    //            .subscribeOn(Schedulers.computation())
+    //            .observeOn(AndroidSchedulers.mainThread())
+    //            .subscribe(new Action1<Integer>() {
+    //              @Override public void call(Integer toColor) {
+    //                //set background color
+    //                AnimateUtils.animateViewColor(getWindow().getDecorView(), toColor);
+    //              }
+    //            });
+    //      }
+    //    });
     Picasso.with(this).load(imageResult.getPreviewUrl())
         //.transform(new CircleTransformation())
         .config(Bitmap.Config.ARGB_8888).into(ivDetailedCard, new Callback.EmptyCallback() {

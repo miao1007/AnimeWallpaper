@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,29 +41,8 @@ public class CardAdapter extends RecyclerView.Adapter {
   private boolean loading;
   private OnLoadMoreListener onLoadMoreListener;
 
-  public CardAdapter(List<ImageResult> myDataSet, RecyclerView recyclerView) {
+  public CardAdapter(List<ImageResult> myDataSet) {
     mDataset = myDataSet;
-
-    if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-
-      final LinearLayoutManager linearLayoutManager =
-          (LinearLayoutManager) recyclerView.getLayoutManager();
-      recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-        @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-          super.onScrolled(recyclerView, dx, dy);
-          totalItemCount = linearLayoutManager.getItemCount();
-          lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-          if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-            // End has been reached
-            // Do something
-            if (onLoadMoreListener != null) {
-              onLoadMoreListener.onLoadMore(totalItemCount);
-            }
-            loading = true;
-          }
-        }
-      });
-    }
   }
 
   public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
