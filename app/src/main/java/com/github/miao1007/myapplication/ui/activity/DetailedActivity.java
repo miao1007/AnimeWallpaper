@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.github.miao1007.myapplication.R;
+import com.github.miao1007.myapplication.support.service.konachan.ImageRepo;
 import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
 import com.github.miao1007.myapplication.utils.StatusbarUtils;
 import com.github.miao1007.myapplication.utils.animation.AnimateUtils;
@@ -64,30 +65,32 @@ public class DetailedActivity extends AppCompatActivity {
     //            });
     //      }
     //    });
-    Picasso.with(this).load(imageResult.getPreviewUrl())
+    Picasso.with(this)
+        .load(imageResult.getPreviewUrl().replace(ImageRepo.END_POINT, ImageRepo.END_POINT_CDN))
         //.transform(new CircleTransformation())
-        .config(Bitmap.Config.ARGB_8888).into(ivDetailedCard, new Callback.EmptyCallback() {
-      @Override public void onSuccess() {
-        Observable.just(ivDetailedCard)
-            .map(new Func1<ImageView, Bitmap>() {
-              @Override public Bitmap call(ImageView imageView) {
-                return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-              }
-            })
-            .map(new Func1<Bitmap, Bitmap>() {
-              @Override public Bitmap call(Bitmap bitmap) {
-                return Blur.fastblur(DetailedActivity.this, bitmap, 20);
-              }
-            })
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Action1<Bitmap>() {
-              @TargetApi(Build.VERSION_CODES.JELLY_BEAN) @Override
-              public void call(Bitmap toColor) {
-                AnimateUtils.animateViewBitmap(ivDetailedCardBlur, toColor);
-              }
-            });
-      }
-    });
+        .config(Bitmap.Config.ARGB_8888)
+        .into(ivDetailedCard, new Callback.EmptyCallback() {
+          @Override public void onSuccess() {
+            Observable.just(ivDetailedCard)
+                .map(new Func1<ImageView, Bitmap>() {
+                  @Override public Bitmap call(ImageView imageView) {
+                    return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                  }
+                })
+                .map(new Func1<Bitmap, Bitmap>() {
+                  @Override public Bitmap call(Bitmap bitmap) {
+                    return Blur.fastblur(DetailedActivity.this, bitmap, 20);
+                  }
+                })
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Bitmap>() {
+                  @TargetApi(Build.VERSION_CODES.JELLY_BEAN) @Override
+                  public void call(Bitmap toColor) {
+                    AnimateUtils.animateViewBitmap(ivDetailedCardBlur, toColor);
+                  }
+                });
+          }
+        });
   }
 }

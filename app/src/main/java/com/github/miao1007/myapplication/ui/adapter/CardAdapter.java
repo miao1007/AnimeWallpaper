@@ -6,20 +6,22 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.github.miao1007.myapplication.R;
+import com.github.miao1007.myapplication.support.service.konachan.ImageRepo;
 import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
 import com.github.miao1007.myapplication.utils.animation.AnimateUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -30,55 +32,37 @@ import rx.schedulers.Schedulers;
 /**
  * Created by leon on 6/30/15.
  */
-public class CardAdapter extends RecyclerView.Adapter {
-  static public OnItemClickListener onItemClickListener;
+public class CardAdapter extends BaseAdapter<ImageResult> {
+
   private final int VIEW_ITEM = 1;
-  private final int VIEW_PROG = 0;
-  private List<ImageResult> mDataset;
-  // The minimum amount of items to have below your current scroll position before loading more.
-  private int visibleThreshold = 2;
-  private int lastVisibleItem, totalItemCount;
-  private boolean loading;
-  private OnLoadMoreListener onLoadMoreListener;
 
-  public CardAdapter(List<ImageResult> myDataSet) {
-    mDataset = myDataSet;
+  public CardAdapter() {
+    super(new ArrayList<ImageResult>());
   }
 
-  public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-    this.onItemClickListener = onItemClickListener;
-  }
-
-  @Override public int getItemViewType(int position) {
-    return mDataset.get(position) != null ? VIEW_ITEM : VIEW_PROG;
+  public CardAdapter(List<ImageResult> mDataset) {
+    super(mDataset);
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    RecyclerView.ViewHolder vh;
-    if (viewType == VIEW_ITEM) {
-      return onCreateItemViewHolder(parent, viewType);
-    } else {
-      View v = LayoutInflater.from(parent.getContext())
-          .inflate(R.layout.include_progressbar, parent, false);
-
-      vh = new ProgressViewHolder(v);
-      return vh;
-    }
+    return onCreateItemViewHolder(parent, viewType);
   }
 
   public RecyclerView.ViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
     RecyclerView.ViewHolder vh;
+    Log.d(TAG, "onCreateItemViewHolder");
     View v =
         LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_sample, parent, false);
     vh = new MyViewHolder(v);
     return vh;
   }
 
-  public void onBindItemViewHolder(final MyViewHolder holder, int position) {
+  @Override void onBindItemViewHolder(BaseViewHolder baseViewHolder, int position) {
+    final MyViewHolder holder = (MyViewHolder) baseViewHolder;
     final Context context = holder.itemView.getContext();
-    ImageResult result = mDataset.get(position);
+    ImageResult result = getData().get(position);
     Picasso.with(context)
-        .load(mDataset.get(position).getPreviewUrl())
+        .load(result.getPreviewUrl().replace(ImageRepo.END_POINT, ImageRepo.END_POINT_CDN))
         .placeholder(R.drawable.lorempixel)
         //.transform(new BlurTransformation(getContext()))
         .into(holder.imageView, new Callback.EmptyCallback() {
@@ -108,35 +92,7 @@ public class CardAdapter extends RecyclerView.Adapter {
     holder.textView_tag.setText(result.getTags());
   }
 
-  @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-    if (holder instanceof MyViewHolder) {
-      onBindItemViewHolder((MyViewHolder) holder, position);
-    } else {
-      ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
-    }
-  }
-
-  public void setLoaded() {
-    loading = false;
-  }
-
-  @Override public int getItemCount() {
-    return mDataset.size();
-  }
-
-  public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
-    this.onLoadMoreListener = onLoadMoreListener;
-  }
-
-  public interface OnItemClickListener {
-    void onItemClick(View v, int position);
-  }
-
-  public interface OnLoadMoreListener {
-    void onLoadMore(int pos);
-  }
-
-  public static class MyViewHolder extends RecyclerView.ViewHolder {
+  public static class MyViewHolder extends BaseViewHolder {
 
     @InjectView(R.id.iv_card_preview) ImageView imageView;
     @InjectView(R.id.tv_card_author) TextView textView_author;
@@ -146,25 +102,6 @@ public class CardAdapter extends RecyclerView.Adapter {
     public MyViewHolder(View itemView) {
       super(itemView);
       ButterKnife.inject(this, itemView);
-      itemView.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-          //Intent intent = new Intent(v.getContext(), DetailedActivity.class);
-          //intent.putExtra(DetailedActivity.EXTRA_IMAGE, imageResults.get(getPosition()));
-          //v.getContext().startActivity(intent);
-          if (onItemClickListener != null) {
-            onItemClickListener.onItemClick(v, getPosition());
-          }
-        }
-      });
-    }
-  }
-
-  public static class ProgressViewHolder extends RecyclerView.ViewHolder {
-    public ProgressBar progressBar;
-
-    public ProgressViewHolder(View v) {
-      super(v);
-      progressBar = (ProgressBar) v.findViewById(R.id.include_progressbar);
     }
   }
 }
