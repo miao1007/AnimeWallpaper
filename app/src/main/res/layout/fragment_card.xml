@@ -1,12 +1,46 @@
-<android.support.v4.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:id="@+id/swipe"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_height="match_parent"
+    android:orientation="vertical">
 
-
-  <android.support.v7.widget.RecyclerView
-      android:id="@+id/rv_frag_card"
+  <android.support.design.widget.CoordinatorLayout
+      android:id="@+id/content"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
-</android.support.v4.widget.SwipeRefreshLayout>
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:id="@+id/swipe"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_height="match_parent">
+
+
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/rv_frag_card"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+      <android.support.v7.widget.Toolbar
+          app:layout_scrollFlags="scroll|enterAlways"
+          android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+          app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+          android:id="@+id/toolbar"
+          android:layout_width="match_parent"
+          android:layout_height="?attr/actionBarSize"
+          android:background="?attr/colorPrimary"
+          android:elevation="4dp"/>
+    </android.support.design.widget.AppBarLayout>
+
+  </android.support.design.widget.CoordinatorLayout>
+
+
+</LinearLayout>

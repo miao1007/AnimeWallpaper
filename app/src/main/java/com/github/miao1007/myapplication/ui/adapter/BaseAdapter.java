@@ -12,13 +12,10 @@ import java.util.List;
  */
 public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
 
-  static final String TAG= LogUtils.makeLogTag(BaseViewHolder.class);
-
-  int page = 1;
-
+  static final String TAG = LogUtils.makeLogTag(BaseViewHolder.class);
   public static OnItemClickListener onItemClickListener;
-
   public OnLoadMoreListener loadMoreListener;
+  int page = 1;
   List<T> data;
 
   public BaseAdapter(List<T> data) {
@@ -57,7 +54,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
     //check for last item
     if ((position >= getItemCount() - 1)) {
       page++;
-      Log.d(TAG,"loadMore:" + page);
+      Log.d(TAG, "loadMore:" + page);
       loadMoreListener.loadMore(page);
     }
     onBindItemViewHolder(((BaseViewHolder) holder), position);

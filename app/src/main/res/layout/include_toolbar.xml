@@ -5,12 +5,4 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="?attr/colorPrimaryDark">
-    <android.support.v7.widget.Toolbar
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"/>
 </RelativeLayout>

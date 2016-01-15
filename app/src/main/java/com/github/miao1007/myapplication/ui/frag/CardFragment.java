@@ -3,15 +3,17 @@ package com.github.miao1007.myapplication.ui.frag;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.github.miao1007.myapplication.R;
@@ -22,6 +24,7 @@ import com.github.miao1007.myapplication.ui.adapter.BaseAdapter;
 import com.github.miao1007.myapplication.ui.adapter.CardAdapter;
 import com.github.miao1007.myapplication.utils.LogUtils;
 import com.github.miao1007.myapplication.utils.RetrofitUtils;
+import com.github.miao1007.myapplication.utils.StatusbarUtils;
 import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +44,8 @@ public class CardFragment extends Fragment
   //@InjectView(R.id.pgb_loading_card) ContentLoadingProgressBar mProgressBar;
   @InjectView(R.id.rv_frag_card) RecyclerView mRecyclerView;
   @InjectView(R.id.swipe) SwipeRefreshLayout mSwipe;
+  @InjectView(R.id.toolbar) Toolbar mToolbar;
+  @InjectView(R.id.appBarLayout) AppBarLayout mAppBarLayout;
   boolean isLoadingMore;
   private Map<String, Object> query = new HashMap<>(4);
 
@@ -63,6 +68,7 @@ public class CardFragment extends Fragment
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_card, container, false);
     ButterKnife.inject(this, view);
+    StatusbarUtils.setStatusbarColor(getActivity(), mAppBarLayout);
     setUpList();
     return view;
   }
