@@ -80,9 +80,9 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
     public BaseViewHolder(View itemView) {
       super(itemView);
       itemView.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
+        @Override public void onClick(View itemView) {
           if (onItemClickListener != null) {
-            onItemClickListener.onItemClick(v, getPosition());
+            onItemClickListener.onItemClick(itemView, getPosition());
           }
         }
       });

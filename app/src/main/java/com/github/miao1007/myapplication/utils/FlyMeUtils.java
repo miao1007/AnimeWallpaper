@@ -1,7 +1,11 @@
 package com.github.miao1007.myapplication.utils;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.os.Build;
+import android.view.View;
 import android.view.WindowManager;
+import com.github.miao1007.myapplication.R;
 import java.lang.reflect.Field;
 
 /**
@@ -14,6 +18,13 @@ public class FlyMeUtils {
    * 设置状态栏字体为暗色 仅魅族有效
    */
   public static void setDarkStatusBar(Activity activity, boolean isDark) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      //activity.getWindow().setBackgroundDrawableResource(R.mipmap.window_bg);
+      //activity.getWindow().getDecorView().getSystemUiVisibility()
+      //int flag = isDark?View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR:View.DARK
+      activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+      //activity.getWindow().setStatusBarColor(Color.TRANSPARENT);
+    }
     WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
     try {
       Class<?> instance = Class.forName("android.view.WindowManager$LayoutParams");
@@ -26,8 +37,8 @@ public class FlyMeUtils {
       } else {
         field.set(lp, (~value) & origin);
       }
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Exception ignored) {
+      //
     }
   }
 }

@@ -1,36 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ImageView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/iv_card_preview"
     android:layout_width="match_parent"
-    android:id="@+id/item_bg"
-    android:layout_height="wrap_content" android:orientation="vertical">
-
-  <ImageView
-      xmlns:android="http://schemas.android.com/apk/res/android"
-      android:id="@+id/iv_card_preview"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:scaleType="fitXY"
-      android:adjustViewBounds="true"/>
-
-  <TextView
-      android:id="@+id/tv_card_author"
-      android:layout_height="wrap_content"
-      android:layout_width="wrap_content"
-      android:fontFamily="sans-serif-medium"
-      android:lines="1"
-      android:ellipsize="end"
-      android:textSize="16sp"
-      android:text="test"
-      />
-
-  <TextView
-      android:id="@+id/tv_card_tags"
-      android:layout_height="wrap_content"
-      android:layout_width="wrap_content"
-      android:layout_marginTop="2dp"
-      android:lines="1"
-      android:ellipsize="end"
-      android:textSize="15sp"
-      android:text="test"/>
-</LinearLayout>
+    android:layout_height="wrap_content"
+    android:scaleType="fitXY"
+    android:adjustViewBounds="true"/>

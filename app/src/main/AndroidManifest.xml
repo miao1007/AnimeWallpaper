@@ -29,6 +29,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:theme="@style/DetailedTheme"
             android:name=".ui.activity.DetailedActivity"
             android:label="@string/title_activity_detailed" >
         </activity>

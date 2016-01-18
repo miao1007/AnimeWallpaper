@@ -17,7 +17,7 @@ import android.widget.ImageView;
  */
 public class AnimateUtils {
 
-  public static final int ANIM_DORITION = 1000;
+  public static final int ANIM_DORITION = 400;
 
   public static void animateViewColor(final View view, int toColor) {
 
@@ -36,6 +36,11 @@ public class AnimateUtils {
   }
 
   public static void animateViewBitmap(@NonNull final ImageView root, Bitmap bitmap) {
+    if (bitmap == null && root.getDrawable()!=null){
+      ObjectAnimator.ofFloat(root, View.ALPHA, 1f, 0f).setDuration(ANIM_DORITION).start();
+      return;
+    }
+
     Drawable[] layers = new Drawable[2];
     layers[0] = root.getDrawable();
     layers[1] = new BitmapDrawable(root.getResources(), bitmap);

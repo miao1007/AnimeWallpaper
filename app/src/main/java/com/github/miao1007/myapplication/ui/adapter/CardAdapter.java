@@ -63,41 +63,14 @@ public class CardAdapter extends BaseAdapter<ImageResult> {
     ImageResult result = getData().get(position);
     Picasso.with(context)
         .load(result.getPreviewUrl().replace(ImageRepo.END_POINT, ImageRepo.END_POINT_CDN))
-        .placeholder(R.drawable.lorempixel)
+        .placeholder(R.drawable.place_holder)
         //.transform(new BlurTransformation(getContext()))
-        .into(holder.imageView, new Callback.EmptyCallback() {
-          @Override public void onSuccess() {
-            Observable.just(holder.imageView)
-                .map(new Func1<ImageView, Bitmap>() {
-                  @Override public Bitmap call(ImageView imageView) {
-                    return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                  }
-                })
-                .map(new Func1<Bitmap, Integer>() {
-                  @Override public Integer call(Bitmap bitmap) {
-                    return Palette.from(bitmap).generate().getMutedColor(Color.WHITE);
-                  }
-                })
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Integer>() {
-                  @Override public void call(Integer toColor) {
-                    //set background color
-                    AnimateUtils.animateViewColor(holder.bg, toColor);
-                  }
-                });
-          }
-        });
-    holder.textView_author.setText(result.getAuthor());
-    holder.textView_tag.setText(result.getTags());
+        .into(holder.imageView);
   }
 
   public static class MyViewHolder extends BaseViewHolder {
 
-    @InjectView(R.id.iv_card_preview) ImageView imageView;
-    @InjectView(R.id.tv_card_author) TextView textView_author;
-    @InjectView(R.id.tv_card_tags) TextView textView_tag;
-    @InjectView(R.id.item_bg) LinearLayout bg;
+    public @InjectView(R.id.iv_card_preview) ImageView imageView;
 
     public MyViewHolder(View itemView) {
       super(itemView);

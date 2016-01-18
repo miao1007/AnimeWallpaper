@@ -11,7 +11,13 @@
     <item name="android:textColor">@color/primary_text</item>
     <item name="android:textColorSecondary">@color/secondary_text</item>
     <item name="android:icon">@color/icons</item>
-  <item name="android:divider">@color/divider</item>
+    <item name="android:divider">@color/divider</item>
+  </style>
+
+  <style name="DetailedTheme" parent="AppTheme">
+    <item name="android:windowIsTranslucent">true</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowAnimationStyle">@null</item>
 
   </style>
 

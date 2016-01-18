@@ -20,7 +20,6 @@ import com.github.miao1007.myapplication.utils.StatusbarUtils;
  */
 public abstract class BaseFragmentActivity extends AppCompatActivity {
 
-  @InjectView(R.id.toolbar) Toolbar mToolbar;
   @InjectView(R.id.toolbar_holder) RelativeLayout mToolbarHolder;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +29,7 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
     setContentView(R.layout.activity_base_fragment);
     ButterKnife.inject(this);
     FlyMeUtils.setDarkStatusBar(this,true);
-    StatusbarUtils.setStatusbarColor(this, mToolbarHolder);
-    trySetupToolbar(mToolbar);
+    StatusbarUtils.setTranslucentAndFit(this, mToolbarHolder);
     getSupportFragmentManager().beginTransaction()
         .replace(R.id.base_fragment_container, getSupportFragment())
         .commit();

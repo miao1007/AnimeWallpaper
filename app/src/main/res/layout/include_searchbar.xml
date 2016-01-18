@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize">
+
+
+  <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="match_parent"
+      android:layout_margin="8dp"
+      android:layout_height="match_parent"
+      android:background="@drawable/search_shape_bg">
+
+    <TextView android:layout_centerVertical="true" android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/internal_tv_search"
+        android:text="@android:string/search_go"
+        android:textColor="#8e8e93"
+        android:layout_height="wrap_content" android:drawableLeft="@drawable/search_icon"/>
+
+
+    <ImageView android:layout_alignParentRight="true"
+        android:visibility="gone"
+        android:id="@+id/internal_iv_clear"
+        android:layout_width="14dp" android:layout_height="14dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/clear"/>
+
+  </RelativeLayout>
+</FrameLayout>

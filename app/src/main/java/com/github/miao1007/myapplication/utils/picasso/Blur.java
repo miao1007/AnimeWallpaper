@@ -17,6 +17,9 @@ public class Blur {
     @SuppressLint("NewApi")
     public static Bitmap fastblur(Context context, Bitmap sentBitmap, int radius) {
 
+      /**
+       * see {@link <a href="http://chiuki.github.io/android-shaders-filters/"></a>}
+       */
         if (VERSION.SDK_INT > 16) {
             Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
             final RenderScript rs = RenderScript.create(context);
