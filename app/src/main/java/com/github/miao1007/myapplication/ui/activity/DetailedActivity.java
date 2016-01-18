@@ -137,18 +137,8 @@ public class DetailedActivity extends AppCompatActivity {
                     Log.d(TAG, "TOP=" + top + " HEIGHT=" + height + " WIDTH=" + width);
                     float delta = ((float) width) / ((float) height);
                     Log.d(TAG, delta + "");
-                    Animation anim =
-                        new ScaleAnimation(1f, delta, // Start and end values for the X axis scaling
-                            1f, delta, // Start and end values for the Y axis scaling
-                            Animation.RELATIVE_TO_SELF, 0.5f, // scale from mid of x
-                            Animation.RELATIVE_TO_SELF, 0f); // scale from start of y,人生苦短，不要计算
-                    Animation trans = new TranslateAnimation(0, 0f, (top), 0);
-                    AnimationSet set = new AnimationSet(true);
-                    set.addAnimation(anim);
-                    set.addAnimation(trans);
-                    set.setFillEnabled(true);
-                    set.setFillAfter(true);
-                    set.setAnimationListener(new Animation.AnimationListener() {
+                    anim(ivDetailedCard, top, height, width, true,
+                        new Animation.AnimationListener() {
                       @Override public void onAnimationStart(Animation animation) {
 
                       }
@@ -161,14 +151,54 @@ public class DetailedActivity extends AppCompatActivity {
 
                       }
                     });
-                    set.setDuration(AnimateUtils.ANIM_DORITION);
-                    //AnimateUtils.animateViewBitmap(ivDetailedCardBlur, bitmap);
-
-                    ivDetailedCard.startAnimation(set);
                   }
                 });
           }
         });
+  }
+
+  /**
+   * 动画封装，千万不要剁手该正负
+   * @param view
+   * @param top
+   * @param height
+   * @param width
+   * @param isEnter
+   * @param listener
+   */
+  void anim(View view, int top, int height, int width, boolean isEnter,
+      Animation.AnimationListener listener) {
+    float delta = ((float) width) / ((float) height);
+    float fromDelta, toDelta, fromY, toY;
+    //toggle down
+    //on back pressed
+    if (isEnter) {
+
+      fromDelta = 1f;
+      toDelta = delta;
+      fromY = top;
+      toY = 0;
+    } else {
+
+      fromDelta = delta;
+      toDelta = 1f;
+      fromY = 0;
+      toY = top;
+    }
+    Animation anim = new ScaleAnimation(fromDelta, toDelta,
+        // Start and end values for the X axis scaling
+        fromDelta, toDelta, // Start and end values for the Y axis scaling
+        Animation.RELATIVE_TO_SELF, 0.5f, // scale from mid of x
+        Animation.RELATIVE_TO_SELF, 0f); // scale from start of y,人生苦短，不要计算
+    Animation trans = new TranslateAnimation(0, 0f, fromY, toY);
+    AnimationSet set = new AnimationSet(true);
+    set.addAnimation(anim);
+    set.addAnimation(trans);
+    set.setFillEnabled(true);
+    set.setFillAfter(true);
+    set.setAnimationListener(listener);
+    set.setDuration(AnimateUtils.ANIM_DORITION);
+    view.startAnimation(set);
   }
 
   /**
@@ -178,19 +208,7 @@ public class DetailedActivity extends AppCompatActivity {
     height = getIntent().getIntExtra(EXTRA_HEIGHT, 1);
     width = getIntent().getIntExtra(EXTRA_WIDTH, 1);
     top = getIntent().getIntExtra(EXTRA_TOP, 1);
-    float delta = ((float) width) / ((float) height);
-    Animation anim = new ScaleAnimation(delta, 1f,
-        // Start and end values for the X axis scaling
-        delta, 1f, // Start and end values for the Y axis scaling
-        Animation.RELATIVE_TO_SELF, 0.5f, // scale from mid of x
-        Animation.RELATIVE_TO_SELF, 0f); // scale from start of y,人生苦短，不要计算
-    Animation trans = new TranslateAnimation(0, 0f, 0, top);
-    AnimationSet set = new AnimationSet(true);
-    set.addAnimation(anim);
-    set.addAnimation(trans);
-    set.setFillEnabled(true);
-    set.setFillAfter(true);
-    set.setAnimationListener(new Animation.AnimationListener() {
+    anim(ivDetailedCard, top, height, width, false, new Animation.AnimationListener() {
       @Override public void onAnimationStart(Animation animation) {
 
       }
@@ -203,7 +221,5 @@ public class DetailedActivity extends AppCompatActivity {
 
       }
     });
-    set.setDuration(AnimateUtils.ANIM_DORITION);
-    ivDetailedCard.startAnimation(set);
   }
 }

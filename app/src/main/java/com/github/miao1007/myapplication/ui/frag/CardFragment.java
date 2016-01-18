@@ -1,6 +1,5 @@
 package com.github.miao1007.myapplication.ui.frag;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.AppBarLayout;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -104,10 +102,6 @@ public class CardFragment extends Fragment
     ButterKnife.reset(this);
   }
 
-  //todo load config from sp
-  @Override public void onAttach(Context context) {
-    super.onAttach(context);
-  }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -192,23 +186,12 @@ public class CardFragment extends Fragment
         });
   }
 
-  public void scaleView(View v, float startScale, float endScale) {
-    Animation anim = new ScaleAnimation(1f, 1.5f, // Start and end values for the X axis scaling
-        startScale, endScale, // Start and end values for the Y axis scaling
-        Animation.RELATIVE_TO_SELF, 0.5f, // scale from mid of x
-        Animation.RELATIVE_TO_SELF, 0.5f); // scale from mid of y
-    anim.setDuration(400);
-    anim.setFillAfter(true); // Needed to keep the result of the animation
-    v.startAnimation(anim);
-  }
-
   @Override public void onItemClick(View v, int position) {
-    //scaleView(v,1f,1.5f);
-    //Animation animation = AnimationUtils.loadAnimation(v.getContext(),R.anim.scan_len);
-    //v.startAnimation(animation);
-    Parcelable parcelable = ((CardAdapter) mRecyclerView.getAdapter()).getData().get(position);
-    Log.d(TAG,"TOP=" + v.getTop()+" HEIGHT=" +v.getHeight()+" WIDTH=" +v.getWidth());
-    DetailedActivity.startActivity(v.getContext(), parcelable, v.getTop(),v.getHeight(),v.getWidth());
+    Parcelable imgInfo = ((CardAdapter) mRecyclerView.getAdapter()).getData().get(position);
+    int top = v.getTop();
+    int heigh = v.getHeight();
+    int width = v.getWidth();
+    DetailedActivity.startActivity(v.getContext(), imgInfo, top, heigh, width);
   }
 
   //swipe layout refresh callback

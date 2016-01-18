@@ -14,11 +14,12 @@
     <item name="android:divider">@color/divider</item>
   </style>
 
-  <style name="DetailedTheme" parent="AppTheme">
-    <item name="android:windowIsTranslucent">true</item>
-    <item name="android:windowBackground">@android:color/transparent</item>
-    <item name="android:windowAnimationStyle">@null</item>
-
-  </style>
+<style name="DetailedTheme" parent="AppTheme">
+  <!--背景透明-->
+  <item name="android:windowIsTranslucent">true</item>
+  <item name="android:windowBackground">@android:color/transparent</item>
+  <!--无进入动画-->
+  <item name="android:windowAnimationStyle">@null</item>
+</style>
 
 </resources>
