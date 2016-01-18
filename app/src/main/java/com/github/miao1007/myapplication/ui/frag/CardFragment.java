@@ -207,7 +207,8 @@ public class CardFragment extends Fragment
     //Animation animation = AnimationUtils.loadAnimation(v.getContext(),R.anim.scan_len);
     //v.startAnimation(animation);
     Parcelable parcelable = ((CardAdapter) mRecyclerView.getAdapter()).getData().get(position);
-    DetailedActivity.startActivity(v.getContext(), parcelable, v.getTop());
+    Log.d(TAG,"TOP=" + v.getTop()+" HEIGHT=" +v.getHeight()+" WIDTH=" +v.getWidth());
+    DetailedActivity.startActivity(v.getContext(), parcelable, v.getTop(),v.getHeight(),v.getWidth());
   }
 
   //swipe layout refresh callback
