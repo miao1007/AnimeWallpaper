@@ -31,6 +31,28 @@
         android:layout_height="52dp">
 
 
+      <ImageView
+          android:layout_alignParentLeft="true"
+          android:id="@+id/detailed_back"
+          android:src="@drawable/back"
+          android:maxLength="8"
+          android:layout_centerVertical="true"
+          android:layout_marginLeft="16dp"
+          android:layout_width="20dp"
+          android:layout_height="match_parent"/>
+
+      <ImageView
+          android:src="@drawable/tag" android:layout_alignParentRight="true"
+          android:maxLength="8"
+          android:id="@+id/detailed_tags"
+          android:foregroundGravity="center_vertical"
+          android:layout_centerVertical="true"
+          android:layout_marginRight="16dp"
+          android:scaleType="centerInside"
+          android:layout_width="20dp"
+          android:layout_height="match_parent"/>
+
+
     </com.github.miao1007.myapplication.ui.widget.NavigationBar>
 
     <ImageView
@@ -40,6 +62,88 @@
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginBottom="24dp"
+        android:id="@+id/ll_detailed_downloads"
+        android:gravity="bottom"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+      <LinearLayout android:layout_width="wrap_content"
+          android:orientation="vertical"
+          android:id="@+id/ll_detailed_download_lq"
+
+          android:layout_weight="1"
+          android:background="?attr/selectableItemBackground"
+          android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/download"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+        />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:text="LQ"/>
+
+      </LinearLayout>
+      <LinearLayout android:layout_width="wrap_content"
+          android:orientation="vertical"
+          android:layout_weight="1"
+          android:id="@+id/ll_detailed_download_hq"
+
+          android:background="?attr/selectableItemBackground"
+
+          android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/download"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+        />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:text="HQ"/>
+
+      </LinearLayout>
+      <LinearLayout android:layout_width="wrap_content"
+          android:orientation="vertical"
+          android:layout_weight="1"
+          android:id="@+id/ll_detailed_download_uhq"
+
+          android:background="?attr/selectableItemBackground"
+
+          android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/download"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+        />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:text="UHQ"/>
+
+      </LinearLayout>
+
+
+    </LinearLayout>
+
 
   </LinearLayout>
 

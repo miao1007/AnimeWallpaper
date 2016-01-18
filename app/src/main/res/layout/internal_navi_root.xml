@@ -6,16 +6,6 @@
     android:elevation="0dp"
     android:layout_height="52dp">
                
-
-  <TextView
-      android:text="Text1"
-      android:textSize="20sp"
-      android:maxLength="8"
-      android:layout_centerVertical="true"
-      android:layout_marginLeft="16dp"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>
-
   <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
       android:text="@string/app_name"
       android:id="@+id/internal_navi_title"
@@ -34,14 +24,5 @@
       android:layout_centerVertical="true"
       android:indeterminateDrawable="@drawable/progress_indicator"/>
 
-  <TextView
-      android:text="Text2"
-      android:textSize="20sp"
-      android:maxLength="8"
-      android:layout_alignParentRight="true"
-      android:layout_centerVertical="true"
-      android:layout_marginRight="16dp"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>
 
 </merge>
