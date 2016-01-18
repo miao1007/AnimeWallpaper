@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
@@ -103,15 +104,11 @@ public class DetailedActivity extends AppCompatActivity {
     imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);
 
     Picasso.with(this)
+        //we use qiniu CDN
         .load(imageResult.getPreviewUrl().replace(ImageRepo.END_POINT, ImageRepo.END_POINT_CDN))
-        //.transform(new CircleTransformation())
         .config(Bitmap.Config.ARGB_8888)
         .into(ivDetailedCard, new Callback.EmptyCallback() {
           @Override public void onSuccess() {
-            //ivDetailedCard.setVisibility(View.VISIBLE);
-            //Animation animation = new TranslateAnimation(0, 0, height, 0);
-            //animation.setDuration(400);
-            //ivDetailedCard.startAnimation(animation);
             Observable.just(ivDetailedCard)
                 .map(new Func1<ImageView, Bitmap>() {
                   @Override public Bitmap call(ImageView imageView) {
@@ -129,11 +126,9 @@ public class DetailedActivity extends AppCompatActivity {
                   @TargetApi(Build.VERSION_CODES.JELLY_BEAN) @Override
                   public void call(final Bitmap bitmap) {
 
-                    ivDetailedCard.setVisibility(View.VISIBLE);
                     height = getIntent().getIntExtra(EXTRA_HEIGHT, 1);
                     width = getIntent().getIntExtra(EXTRA_WIDTH, 1);
                     top = getIntent().getIntExtra(EXTRA_TOP, 1);
-                    ivDetailedCard.setVisibility(View.GONE);
                     Log.d(TAG, "TOP=" + top + " HEIGHT=" + height + " WIDTH=" + width);
                     float delta = ((float) width) / ((float) height);
                     Log.d(TAG, delta + "");
@@ -158,28 +153,19 @@ public class DetailedActivity extends AppCompatActivity {
   }
 
   /**
-   * 动画封装，千万不要剁手该正负
-   * @param view
-   * @param top
-   * @param height
-   * @param width
-   * @param isEnter
-   * @param listener
+   * 动画封装，千万不要剁手改正负
    */
   void anim(View view, int top, int height, int width, boolean isEnter,
       Animation.AnimationListener listener) {
+    //记住括号哦，我这里调试了一小时
     float delta = ((float) width) / ((float) height);
     float fromDelta, toDelta, fromY, toY;
-    //toggle down
-    //on back pressed
     if (isEnter) {
-
       fromDelta = 1f;
       toDelta = delta;
       fromY = top;
       toY = 0;
     } else {
-
       fromDelta = delta;
       toDelta = 1f;
       fromY = 0;
@@ -189,13 +175,16 @@ public class DetailedActivity extends AppCompatActivity {
         // Start and end values for the X axis scaling
         fromDelta, toDelta, // Start and end values for the Y axis scaling
         Animation.RELATIVE_TO_SELF, 0.5f, // scale from mid of x
-        Animation.RELATIVE_TO_SELF, 0f); // scale from start of y,人生苦短，不要计算
+        Animation.RELATIVE_TO_SELF, 0f); // scale from start of y
     Animation trans = new TranslateAnimation(0, 0f, fromY, toY);
     AnimationSet set = new AnimationSet(true);
+    //添加并行动画
     set.addAnimation(anim);
     set.addAnimation(trans);
+    //动画结束后保持原样
     set.setFillEnabled(true);
     set.setFillAfter(true);
+    //监听器
     set.setAnimationListener(listener);
     set.setDuration(AnimateUtils.ANIM_DORITION);
     view.startAnimation(set);
@@ -205,11 +194,9 @@ public class DetailedActivity extends AppCompatActivity {
    * Cancel all exit animation
    */
   @Override public void finish() {
-    height = getIntent().getIntExtra(EXTRA_HEIGHT, 1);
-    width = getIntent().getIntExtra(EXTRA_WIDTH, 1);
-    top = getIntent().getIntExtra(EXTRA_TOP, 1);
     anim(ivDetailedCard, top, height, width, false, new Animation.AnimationListener() {
       @Override public void onAnimationStart(Animation animation) {
+        AnimateUtils.animateViewBitmap(ivDetailedCardBlur, null);
 
       }
 
