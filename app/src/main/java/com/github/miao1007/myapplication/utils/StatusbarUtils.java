@@ -18,6 +18,15 @@ import java.lang.reflect.Field;
 public final class StatusbarUtils {
 
   static final String TAG = "StatusbarUtils";
+  boolean lightStatusBar;
+  //透明且背景不占用控件的statusbar
+  boolean transparentStatusbar;
+  Activity activity;
+  public StatusbarUtils(Activity activity, boolean lightStatusBar, boolean transparentStatusbar) {
+    this.lightStatusBar = lightStatusBar;
+    this.transparentStatusbar = transparentStatusbar;
+    this.activity = activity;
+  }
 
   public static boolean isKitkat() {
     return Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT;
@@ -25,17 +34,6 @@ public final class StatusbarUtils {
 
   public static boolean isMoreLollipop() {
     return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-  }
-
-  boolean lightStatusBar;
-  //透明且背景不占用控件的statusbar
-  boolean transparentStatusbar;
-  Activity activity;
-
-  public StatusbarUtils(Activity activity, boolean lightStatusBar, boolean transparentStatusbar) {
-    this.lightStatusBar = lightStatusBar;
-    this.transparentStatusbar = transparentStatusbar;
-    this.activity = activity;
   }
 
   public static Builder from(Activity activity) {
@@ -91,8 +89,6 @@ public final class StatusbarUtils {
    * 全透明方案：自定义的view一般是透明的，所以全部由parent决定颜色，不需要进行任何设置
    * Lollipop方案：自定义的view设置为primary，parent设置为primaryDark，就是谷歌推荐的
    * Bugme方案：自定义的view透明，parent设置为primary/primaryDark，就是全部一种颜色
-   * @param activity
-   * @param view
    */
   @Deprecated public static void setTranslucentAndFit(Activity activity, View view) {
 

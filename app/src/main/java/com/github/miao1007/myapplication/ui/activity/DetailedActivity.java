@@ -26,6 +26,7 @@ import com.github.miao1007.myapplication.R;
 import com.github.miao1007.myapplication.support.service.konachan.ImageRepo;
 import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
 import com.github.miao1007.myapplication.ui.widget.NavigationBar;
+import com.github.miao1007.myapplication.ui.widget.Position;
 import com.github.miao1007.myapplication.utils.LogUtils;
 import com.github.miao1007.myapplication.utils.StatusbarUtils;
 import com.github.miao1007.myapplication.utils.animation.AnimateUtils;
@@ -83,10 +84,7 @@ public class DetailedActivity extends AppCompatActivity {
   @OnClick(R.id.iv_detailed_card) void download(final ImageView v) {
     final File file = getFilesDir();
     Log.d(TAG, file.toString());
-    PhotoViewActivity.Position position =
-        new PhotoViewActivity.Position(v.getLeft(), v.getRight(), v.getTop(), v.getBottom(),
-            v.getWidth(), v.getHeight());
-    PhotoViewActivity.startActivity(v.getContext(), position);
+    PhotoViewActivity.startScaleActivity(v.getContext(), Position.from(v));
     //file.isDirectory()
     //Picasso.with(this)
     //    .load(imageResult.getSampleUrl())

@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -42,6 +43,7 @@ public class NavigationBar extends RelativeLayout {
   public void setProgress(boolean isLoading) {
     if (mProgress != null) {
       mProgress.setVisibility(isLoading ? VISIBLE : GONE);
+      Log.d(TAG, Position.from(mProgress).toString());
     }
   }
 
@@ -86,11 +88,41 @@ public class NavigationBar extends RelativeLayout {
       return;
     }
     for (int i = 0; i < getChildCount(); i++) {
+      Log.d(TAG, "before=" + getChildAt(i).toString());
       if (getChildAt(i) != null) {
         getChildAt(i).setPadding(getChildAt(i).getPaddingLeft(),
             height + getChildAt(i).getPaddingTop(), getChildAt(i).getPaddingRight(),
             getChildAt(i).getPaddingBottom());
       }
+      Log.d(TAG, "after=" + getChildAt(i).toString());
     }
   }
+
+  //@Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+  //  super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+  //  if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+  //    return;
+  //  }
+  //  int height = StatusbarUtils.getStatusBarHeight(this.getContext());
+  //  //en.. it's a hard code
+  //  //getChildAt(0) is define as title, so always paddingTop = 0
+  //  if (getChildAt(0) != null && getChildAt(0).getPaddingTop() < height) {
+  //    getLayoutParams().height += height;
+  //  } else {
+  //    //have set padding
+  //    return;
+  //  }
+  //  for (int i = 0; i < getChildCount(); i++) {
+  //    Log.d(TAG, "before=" + getChildAt(i).toString());
+  //    if (getChildAt(i) != null) {
+  //      getChildAt(i).setPadding(getChildAt(i).getPaddingLeft(),
+  //          height + getChildAt(i).getPaddingTop(), getChildAt(i).getPaddingRight(),
+  //          getChildAt(i).getPaddingBottom());
+  //    }
+  //    Log.d(TAG, "after=" + getChildAt(i).toString());
+  //  }
+  //}
+
 }
+
+
