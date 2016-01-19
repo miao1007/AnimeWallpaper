@@ -7,10 +7,10 @@ import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * Created by leon on 10/31/15.
@@ -19,7 +19,7 @@ public final class StatusbarUtils {
 
   static final String TAG = "StatusbarUtils";
   boolean lightStatusBar;
-  //透明且背景不占用控件的statusbar
+  //透明且背景不占用控件的statusbar，这里姑且叫做沉浸
   boolean transparentStatusbar;
   Activity activity;
   public StatusbarUtils(Activity activity, boolean lightStatusBar, boolean transparentStatusbar) {
@@ -41,25 +41,6 @@ public final class StatusbarUtils {
   }
 
   /**
-   * 让statusbar与window重叠，表明window不再padding于statusbar
-   * 在Bugme下，默认是透明的
-   * 在
-   */
-  @TargetApi(19) public static void setTranslucent(Activity activity) {
-    //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-    //  activity.getWindow()
-    //      .setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-    //          WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-    //}
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-      Window window = activity.getWindow();
-      //window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-      window.setStatusBarColor(Color.TRANSPARENT);
-    }
-  }
-
-  /**
    * Default status dp = 24 or 25
    * mhdpi = dp * 1
    * hdpi = dp * 1.5
@@ -67,7 +48,7 @@ public final class StatusbarUtils {
    * xxhdpi = dp * 3
    * eg : 1920x1080, xxhdpi, => status/all = 25/640(dp) = 75/1080(px)
    *
-   * and toolbar's dp = 48
+   * don't forget toolbar's dp = 48
    *
    * @return px
    */
@@ -84,59 +65,65 @@ public final class StatusbarUtils {
   }
 
   /**
-   * (24dp ＋ 48dp)
-   * 对于Kitkat的设备，首先让statusbar与window重叠，然后设置toolbar父元素的padding，最终statusbar的颜色由父元素back决定
-   * 全透明方案：自定义的view一般是透明的，所以全部由parent决定颜色，不需要进行任何设置
-   * Lollipop方案：自定义的view设置为primary，parent设置为primaryDark，就是谷歌推荐的
-   * Bugme方案：自定义的view透明，parent设置为primary/primaryDark，就是全部一种颜色
+   * 调用私有API处理颜色
    */
-  @Deprecated public static void setTranslucentAndFit(Activity activity, View view) {
-
-    if (view == null) {
-      throw new NullPointerException("The Holder view is NULL!");
-    }
-
-    //对于Lollipop 的设备，只需要在style.xml中设置colorPrimaryDark即可
-
-    //对于4.4的设备，如下设置padding即可，颜色同样在style.xml中配置
-    if (isKitkat()) {
-      setTranslucent(activity);
-      //((View) view.getParent()).setPadding(0, getStatusBarHeight(activity), 0, 0);
-      view.getLayoutParams().height += getStatusBarHeight(activity);
-      view.setPadding(0, getStatusBarHeight(activity), 0, 0);
-    }
-    if (isMoreLollipop()) {
-      setTranslucent(activity);
-      ((ViewGroup.MarginLayoutParams) ((View) view.getParent()).getLayoutParams()).setMargins(0,
-          getStatusBarHeight(activity), 0, 0);
-    }
+  public void processPrivateAPI() {
+    processFlyme(lightStatusBar);
+    processMIUI(lightStatusBar);
   }
 
   public void process() {
     int current = Build.VERSION.SDK_INT;
-
+    //处理4.4沉浸
     if (current == Build.VERSION_CODES.KITKAT) {
       processKitkat();
     }
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      processM();
+    //6.0处理沉浸与颜色，5.0只可以处理沉浸(不建议用白色背景)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      processLollipopAbove();
     }
+    //调用私有API处理颜色
+    processPrivateAPI();
   }
 
+  /**
+   * 处理4.4沉浸
+   */
   @TargetApi(Build.VERSION_CODES.KITKAT) void processKitkat() {
     //int current = activity.getWindow().gef
-    int flag = 0;
+    Window win = activity.getWindow();
+    WindowManager.LayoutParams winParams = win.getAttributes();
+    final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
     if (transparentStatusbar) {
-      activity.getWindow()
-          .setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-              WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+      winParams.flags |= bits;
     } else {
-      activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+      winParams.flags &= ~bits;
     }
-    processFlymelightStatusBar(lightStatusBar);
+    win.setAttributes(winParams);
   }
 
-  private void processFlymelightStatusBar(boolean isLightStatusBar) {
+  /**
+   * 改变小米的状态栏字体颜色为黑色, 要求MIUI6以上
+   * Tested on: MIUIV7 5.0 Redmi-Note3
+   */
+  void processMIUI(boolean lightStatusBar) {
+    Class<? extends Window> clazz = activity.getWindow().getClass();
+    try {
+      int darkModeFlag = 0;
+      Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+      Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
+      darkModeFlag = field.getInt(layoutParams);
+      Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
+      extraFlagField.invoke(activity.getWindow(), lightStatusBar ? darkModeFlag : 0, darkModeFlag);
+    } catch (Exception ignored) {
+
+    }
+  }
+
+  /**
+   * 改变魅族的状态栏字体为黑色，要求FlyMe4以上
+   */
+  private void processFlyme(boolean isLightStatusBar) {
     WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
     try {
       Class<?> instance = Class.forName("android.view.WindowManager$LayoutParams");
@@ -154,14 +141,23 @@ public final class StatusbarUtils {
     }
   }
 
-  @TargetApi(Build.VERSION_CODES.M) void processM() {
+  /**
+   * 处理Lollipop以上
+   * Lollipop可以设置为沉浸，不能设置字体颜色
+   * M(API23)可以设定
+   */
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP) void processLollipopAbove() {
     Window window = activity.getWindow();
-    int flag = 0;
+    int flag = window.getDecorView().getSystemUiVisibility();
     if (lightStatusBar) {
+      /**
+       * see {@link <a href="https://developer.android.com/reference/android/R.attr.html#windowLightStatusBar"></a>}
+       */
       flag |= (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
           | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
     if (transparentStatusbar) {
+      //改变字体颜色
       flag |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
     }
     window.getDecorView().setSystemUiVisibility(flag);
