@@ -2,7 +2,6 @@ package com.github.miao1007.myapplication.ui.frag;
 
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,11 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -26,9 +21,9 @@ import com.github.miao1007.myapplication.ui.activity.DetailedActivity;
 import com.github.miao1007.myapplication.ui.adapter.BaseAdapter;
 import com.github.miao1007.myapplication.ui.adapter.CardAdapter;
 import com.github.miao1007.myapplication.ui.widget.NavigationBar;
+import com.github.miao1007.myapplication.utils.FlyMeUtils;
 import com.github.miao1007.myapplication.utils.LogUtils;
 import com.github.miao1007.myapplication.utils.RetrofitUtils;
-import com.github.miao1007.myapplication.utils.StatusbarUtils;
 import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.List;
@@ -47,53 +42,21 @@ public class CardFragment extends Fragment
   //@InjectView(R.id.btn_retry_card) Button mButton;
   //@InjectView(R.id.pgb_loading_card) ContentLoadingProgressBar mProgressBar;
   @InjectView(R.id.rv_frag_card) RecyclerView mRecyclerView;
-  @InjectView(R.id.appBarLayout) AppBarLayout mAppBarLayout;
   boolean isLoadingMore;
-  @InjectView(R.id.internal_tv_cancel) TextView mInternalTvCancel;
-  @InjectView(R.id.internal_tv_search) TextView mInternalTvSearch;
-  @InjectView(R.id.internal_iv_search) ImageView mInternalIvSearch;
-  @InjectView(R.id.internal_iv_clear) ImageView mInternalIvClear;
-  @InjectView(R.id.internal_rl_search) RelativeLayout mInternalRlSearch;
-  @InjectView(R.id.internal_holder_search) RelativeLayout mInternalHolderSearch;
+
   @InjectView(R.id.navigation_bar) NavigationBar mNavigationBar;
+  @InjectView(R.id.iv_card_search) ImageView mIvCardSearch;
   private Map<String, Object> query = new HashMap<>(4);
 
   public CardFragment() {
     // Required empty public constructor
   }
 
-  @OnClick(R.id.internal_holder_search) void search(View v) {
-    mInternalTvCancel.setVisibility(View.VISIBLE);
-    mInternalTvSearch.setVisibility(View.GONE);
-    Animation cancel_show_anim = new AlphaAnimation(0.0f, 1f);
-    //translateAnimation.setInterpolator(this.k);
-    cancel_show_anim.setDuration(400);
-    cancel_show_anim.setFillEnabled(true);
-    cancel_show_anim.setFillAfter(true);
-    mInternalTvCancel.startAnimation(cancel_show_anim);
-  }
+  boolean is = false;
 
-  @OnClick(R.id.internal_tv_cancel) void cancel() {
-    mInternalTvSearch.setVisibility(View.VISIBLE);
-    //mInternalIvSearch.getLayoutParams().
-    //mInternalTvSearch.setVisibility(View.GONE);
-    Animation cancel_show_anim = new AlphaAnimation(0.0f, 1f);
-    //translateAnimation.setInterpolator(this.k);
-    cancel_show_anim.setDuration(400);
-    cancel_show_anim.setAnimationListener(new Animation.AnimationListener() {
-      @Override public void onAnimationStart(Animation animation) {
-
-      }
-
-      @Override public void onAnimationEnd(Animation animation) {
-        mInternalTvCancel.setVisibility(View.GONE);
-      }
-
-      @Override public void onAnimationRepeat(Animation animation) {
-
-      }
-    });
-    mInternalTvCancel.startAnimation(cancel_show_anim);
+  @OnClick(R.id.iv_card_search) void search() {
+    is = !is;
+    FlyMeUtils.setLightStatusBar(getActivity(), is);
   }
 
   @Override public void onDetach() {
@@ -102,12 +65,10 @@ public class CardFragment extends Fragment
     ButterKnife.reset(this);
   }
 
-
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_card, container, false);
     ButterKnife.inject(this, view);
-    StatusbarUtils.setTranslucentAndFit(getActivity(), mNavigationBar);
     setUpList();
     return view;
   }

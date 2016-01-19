@@ -13,7 +13,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
@@ -40,6 +39,9 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+/**
+ * 用户默认的交互区主要在左下角
+ */
 public class DetailedActivity extends AppCompatActivity {
 
   public static final String EXTRA_IMAGE = "URL";
@@ -81,40 +83,44 @@ public class DetailedActivity extends AppCompatActivity {
   @OnClick(R.id.iv_detailed_card) void download(final ImageView v) {
     final File file = getFilesDir();
     Log.d(TAG, file.toString());
+    PhotoViewActivity.Position position =
+        new PhotoViewActivity.Position(v.getLeft(), v.getRight(), v.getTop(), v.getBottom(),
+            v.getWidth(), v.getHeight());
+    PhotoViewActivity.startActivity(v.getContext(), position);
     //file.isDirectory()
-    Picasso.with(this)
-        .load(imageResult.getSampleUrl())
-        .placeholder(v.getDrawable())
-        .into(v, new Callback() {
-          @Override public void onSuccess() {
-            //for (View view = v.getParent(); v)
-            ((ViewGroup) v.getParent()).setClipChildren(false);
-            float del_scale = ((float) getWindowManager().getDefaultDisplay().getHeight())
-                / ((float) v.getHeight());
-            float del_y = ((float) v.getTop()) / ((float) v.getBottom());
-
-            Animation anim =
-                new ScaleAnimation(1f, del_scale, // Start and end values for the X axis scaling
-                    1f, del_scale, // Start and end values for the Y axis scaling
-                    Animation.RELATIVE_TO_SELF, 0.5f, // scale from mid of x
-                    Animation.RELATIVE_TO_SELF, del_y); // scale from mid of y
-            anim.setDuration(AnimateUtils.ANIM_DORITION);
-            AnimateUtils.animateViewBitmap(ivDetailedCardBlur, null);
-            anim.setFillAfter(true); // Needed to keep the result of the animation
-            v.startAnimation(anim);
-          }
-
-          @Override public void onError() {
-
-          }
-        });
+    //Picasso.with(this)
+    //    .load(imageResult.getSampleUrl())
+    //    .placeholder(v.getDrawable())
+    //    .into(v, new Callback() {
+    //      @Override public void onSuccess() {
+    //        //for (View view = v.getParent(); v)
+    //        ((ViewGroup) v.getParent()).setClipChildren(false);
+    //        float del_scale = ((float) getWindowManager().getDefaultDisplay().getHeight())
+    //            / ((float) v.getHeight());
+    //        float del_y = ((float) v.getTop()) / ((float) v.getBottom());
+    //
+    //        Animation anim =
+    //            new ScaleAnimation(1f, del_scale, // Start and end values for the X axis scaling
+    //                1f, del_scale, // Start and end values for the Y axis scaling
+    //                Animation.RELATIVE_TO_SELF, 0.5f, // scale from mid of x
+    //                Animation.RELATIVE_TO_SELF, del_y); // scale from mid of y
+    //        anim.setDuration(AnimateUtils.ANIM_DORITION);
+    //        AnimateUtils.animateViewBitmap(ivDetailedCardBlur, null);
+    //        anim.setFillAfter(true); // Needed to keep the result of the animation
+    //        v.startAnimation(anim);
+    //      }
+    //
+    //      @Override public void onError() {
+    //
+    //      }
+    //    });
   }
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    StatusbarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(false).process();
     setContentView(R.layout.fragment_image_detailed_card);
     ButterKnife.inject(this);
-    StatusbarUtils.setTranslucentAndFit(this, mNavigationBar);
     mNavigationBar.setProgress(true);
     mNavigationBar.setTextColor(Color.WHITE);
     imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);
@@ -226,6 +232,7 @@ public class DetailedActivity extends AppCompatActivity {
 
       @Override public void onAnimationEnd(Animation animation) {
         DetailedActivity.super.finish();
+        overridePendingTransition(0, 0);
       }
 
       @Override public void onAnimationRepeat(Animation animation) {

@@ -28,7 +28,7 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
     setTheme(android.R.style.Theme_DeviceDefault_Light_NoActionBar);
     setContentView(R.layout.activity_base_fragment);
     ButterKnife.inject(this);
-    FlyMeUtils.setDarkStatusBar(this,true);
+    FlyMeUtils.setLightStatusBar(this,true);
     StatusbarUtils.setTranslucentAndFit(this, mToolbarHolder);
     getSupportFragmentManager().beginTransaction()
         .replace(R.id.base_fragment_container, getSupportFragment())

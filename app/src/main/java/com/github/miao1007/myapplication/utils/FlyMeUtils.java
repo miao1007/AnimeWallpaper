@@ -1,11 +1,9 @@
 package com.github.miao1007.myapplication.utils;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
 import android.view.WindowManager;
-import com.github.miao1007.myapplication.R;
 import java.lang.reflect.Field;
 
 /**
@@ -14,17 +12,28 @@ import java.lang.reflect.Field;
 public class FlyMeUtils {
 
   /**
-   * setDarkStatusBar on FlyMe
+   * setLightStatusBar on FlyMe
    * 设置状态栏字体为暗色 仅魅族有效
    */
-  public static void setDarkStatusBar(Activity activity, boolean isDark) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      //activity.getWindow().setBackgroundDrawableResource(R.mipmap.window_bg);
-      //activity.getWindow().getDecorView().getSystemUiVisibility()
-      //int flag = isDark?View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR:View.DARK
-      activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-      //activity.getWindow().setStatusBarColor(Color.TRANSPARENT);
+  public static void setLightStatusBar(Activity activity, boolean isLight) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      //1. 让状态栏与window重叠
+      //2. 设置状态栏字体颜色
+      //activity.getWindow()
+      //    .setFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS,
+      //        WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+      View window = activity.getWindow().getDecorView();
+      if (isLight) {
+        window.setSystemUiVisibility(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
+            | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+      } else {
+        window.setSystemUiVisibility(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
+            & (~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR));
+      }
+
+      return;
     }
+
     WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
     try {
       Class<?> instance = Class.forName("android.view.WindowManager$LayoutParams");
@@ -32,7 +41,7 @@ public class FlyMeUtils {
       Field field = instance.getDeclaredField("meizuFlags");
       field.setAccessible(true);
       int origin = field.getInt(lp);
-      if (isDark) {
+      if (isLight) {
         field.set(lp, origin | value);
       } else {
         field.set(lp, (~value) & origin);

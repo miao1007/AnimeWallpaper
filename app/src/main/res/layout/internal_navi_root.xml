@@ -3,9 +3,10 @@
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:elevation="0dp"
     android:layout_height="52dp">
                
+
+  <!--Do not set padding on it, see {@code NavigationBar}-->
   <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
       android:text="@string/app_name"
       android:id="@+id/internal_navi_title"

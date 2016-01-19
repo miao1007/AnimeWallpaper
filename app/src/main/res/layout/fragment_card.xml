@@ -1,105 +1,127 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?attr/colorPrimaryDark">
+    android:orientation="vertical" tools:context=".ui.activity.MainActivity">
 
 
+  <!--you MUST set background before adding elevation-->
   <com.github.miao1007.myapplication.ui.widget.NavigationBar android:layout_width="match_parent"
       android:id="@+id/navigation_bar"
+      android:elevation="4dp"
+      android:background="#f6f6f6"
       android:layout_height="52dp">
 
-
+    <ImageView
+        android:src="@drawable/search_64" android:layout_alignParentRight="true"
+        android:maxLength="8"
+        android:id="@+id/iv_card_search"
+        android:foregroundGravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:scaleType="centerInside"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"/>
   </com.github.miao1007.myapplication.ui.widget.NavigationBar>
 
+
+  <!--RecyclerView-->
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/rv_frag_card"
+      android:clipChildren="false"
+      tools:listitem="@layout/list_item_sample"
+
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
+
   <!--framelayout-->
-  <android.support.design.widget.CoordinatorLayout
-      xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-      android:layout_height="match_parent">
+  <!--<android.support.design.widget.CoordinatorLayout-->
+  <!--android:fitsSystemWindows="true"-->
+  <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+  <!--xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"-->
+  <!--android:layout_height="match_parent">-->
 
-    <!--RecyclerView-->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_frag_card"
-        android:clipChildren="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+  <!--&lt;!&ndash;RecyclerView&ndash;&gt;-->
+  <!--<android.support.v7.widget.RecyclerView-->
+  <!--android:id="@+id/rv_frag_card"-->
+  <!--android:clipChildren="false"-->
+  <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+  <!--android:layout_width="match_parent"-->
+  <!--android:layout_height="match_parent"/>-->
 
-    <!--内部放可以自动滚动的线性布局，并添加flag-->
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-      <!--search-->
-      <!--当recycler上划/滚动时gudong消失-->
-      <RelativeLayout
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          android:layout_width="match_parent"
-          android:elevation="4dp"
-          android:id="@+id/internal_holder_search"
-          app:layout_scrollFlags="scroll|snap"
-          android:layout_height="52dp">
-
-        <TextView android:layout_width="wrap_content"
-            android:textSize="16sp"
-            android:visibility="gone"
-            android:id="@+id/internal_tv_cancel"
-            android:gravity="center_vertical"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true" android:text="@android:string/cancel"
-            android:layout_height="match_parent" android:layout_margin="8dp"
-
-        />
-
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:id="@+id/internal_rl_search"
-            android:layout_toLeftOf="@id/internal_tv_cancel"
-            android:layout_margin="8dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/search_shape_bg">
+  <!--&lt;!&ndash;内部放可以自动滚动的线性布局，并添加flag&ndash;&gt;-->
+  <!--<android.support.design.widget.AppBarLayout-->
+  <!--android:id="@+id/appBarLayout"-->
+  <!--android:layout_width="match_parent"-->
+  <!--android:layout_height="wrap_content">-->
 
 
-          <!--未点击时，在中间；点击后消失-->
-          <TextView android:layout_centerVertical="true" android:layout_width="wrap_content"
-              android:id="@+id/internal_tv_search"
-              android:layout_centerInParent="true"
-              android:textSize="16sp"
-              android:text="@android:string/search_go"
-              android:textColor="#8e8e93"
-              android:layout_height="wrap_content"/>
+  <!--&lt;!&ndash;search&ndash;&gt;-->
+  <!--&lt;!&ndash;当recycler上划/滚动时gudong消失&ndash;&gt;-->
+  <!--<RelativeLayout-->
+  <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+  <!--android:layout_width="match_parent"-->
+  <!--android:background="@android:color/holo_red_dark"-->
+  <!--android:id="@+id/internal_holder_search"-->
+  <!--app:layout_scrollFlags="scroll|snap"-->
+  <!--android:layout_height="52dp">-->
 
-          <!--未点击时，在中间偏左；点击后layout_marginLeft = 8dp-->
-          <ImageView android:layout_width="16dp" android:layout_height="16dp"
-              android:layout_marginRight="2dp"
-              android:layout_marginLeft="8dp"
-              android:id="@+id/internal_iv_search"
-              android:layout_centerVertical="true"
-              android:src="@drawable/search_icon"
-              android:layout_toLeftOf="@id/internal_tv_search"
-          />
+  <!--<TextView android:layout_width="wrap_content"-->
+  <!--android:textSize="16sp"-->
+  <!--android:visibility="gone"-->
+  <!--android:id="@+id/internal_tv_cancel"-->
+  <!--android:gravity="center_vertical"-->
+  <!--android:layout_centerVertical="true"-->
+  <!--android:layout_alignParentRight="true" android:text="@android:string/cancel"-->
+  <!--android:layout_height="match_parent" android:layout_margin="8dp"-->
 
-          <!--未点击时，无；输入字后，出现，-->
-          <ImageView android:layout_alignParentRight="true"
-              android:visibility="visible"
-              android:layout_marginRight="8dp"
-              android:id="@+id/internal_iv_clear"
-              android:layout_width="14dp" android:layout_height="14dp"
-              android:layout_centerVertical="true"
-              android:src="@drawable/clear"/>
+  <!--/>-->
 
-
-        </RelativeLayout>
-
-      </RelativeLayout>
+  <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+  <!--android:layout_width="match_parent"-->
+  <!--android:id="@+id/internal_rl_search"-->
+  <!--android:layout_toLeftOf="@id/internal_tv_cancel"-->
+  <!--android:layout_margin="8dp"-->
+  <!--android:layout_height="match_parent"-->
+  <!--android:background="@drawable/search_shape_bg">-->
 
 
-    </android.support.design.widget.AppBarLayout>
+  <!--&lt;!&ndash;未点击时，在中间；点击后消失&ndash;&gt;-->
+  <!--<TextView android:layout_centerVertical="true" android:layout_width="wrap_content"-->
+  <!--android:id="@+id/internal_tv_search"-->
+  <!--android:layout_centerInParent="true"-->
+  <!--android:textSize="16sp"-->
+  <!--android:text="@android:string/search_go"-->
+  <!--android:textColor="#8e8e93"-->
+  <!--android:layout_height="wrap_content"/>-->
+
+  <!--&lt;!&ndash;未点击时，在中间偏左；点击后layout_marginLeft = 8dp&ndash;&gt;-->
+  <!--<ImageView android:layout_width="16dp" android:layout_height="16dp"-->
+  <!--android:layout_marginRight="2dp"-->
+  <!--android:layout_marginLeft="8dp"-->
+  <!--android:id="@+id/internal_iv_search"-->
+  <!--android:layout_centerVertical="true"-->
+  <!--android:src="@drawable/search_icon"-->
+  <!--android:layout_toLeftOf="@id/internal_tv_search"-->
+  <!--/>-->
+
+  <!--&lt;!&ndash;未点击时，无；输入字后，出现，&ndash;&gt;-->
+  <!--<ImageView android:layout_alignParentRight="true"-->
+  <!--android:visibility="visible"-->
+  <!--android:layout_marginRight="8dp"-->
+  <!--android:id="@+id/internal_iv_clear"-->
+  <!--android:layout_width="14dp" android:layout_height="14dp"-->
+  <!--android:layout_centerVertical="true"-->
+  <!--android:src="@drawable/clear"/>-->
 
 
-  </android.support.design.widget.CoordinatorLayout>
+  <!--</RelativeLayout>-->
+
+  <!--</RelativeLayout>-->
+
+
+  <!--</android.support.design.widget.AppBarLayout>-->
+
+
+  <!--</android.support.design.widget.CoordinatorLayout>-->
 
 </LinearLayout>

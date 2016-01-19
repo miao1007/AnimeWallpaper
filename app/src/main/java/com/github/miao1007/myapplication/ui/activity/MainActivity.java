@@ -13,7 +13,7 @@ import butterknife.InjectView;
 import com.github.miao1007.myapplication.R;
 import com.github.miao1007.myapplication.ui.frag.CardFragment;
 import com.github.miao1007.myapplication.ui.frag.ViewPagerfragment;
-import com.github.miao1007.myapplication.utils.FlyMeUtils;
+import com.github.miao1007.myapplication.utils.StatusbarUtils;
 
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
@@ -25,10 +25,9 @@ public class MainActivity extends AppCompatActivity
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    StatusbarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(true).process();
     setContentView(R.layout.activity_main);
     ButterKnife.inject(this);
-    FlyMeUtils.setDarkStatusBar(this,true);
-    //  setUpToolbar();
     setUpDrawer();
   }
   //
