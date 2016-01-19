@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+
+    android:background="@color/trans_black_bg"
+    android:layout_width="match_parent">
+
+  <LinearLayout
+
+      xmlns:tools="http://schemas.android.com/tools"
+      android:orientation="vertical"
+      android:layout_gravity="bottom"
+      android:clickable="true"
+      android:background="#f8f8f8"
+      android:layout_width="match_parent"
+      android:layout_height="240dp">
+    <TextView android:layout_width="wrap_content" android:layout_height="48dp"
+        android:text="Searching for relevant tags"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#000000"
+        android:id="@+id/internal_actionsheet_title"
+        android:textSize="20sp"
+        android:gravity="center_horizontal|center_vertical"
+    />
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="?attr/actionBarDivider"/>
+
+
+    <ListView android:layout_width="match_parent"
+        tools:listitem="@android:layout/simple_list_item_1"
+        android:id="@+id/internal_actionsheet_list"
+        android:layout_height="match_parent">
+
+
+    </ListView>
+
+  </LinearLayout>
+
+</FrameLayout>

@@ -22,6 +22,7 @@ public final class StatusbarUtils {
   //透明且背景不占用控件的statusbar，这里姑且叫做沉浸
   boolean transparentStatusbar;
   Activity activity;
+
   public StatusbarUtils(Activity activity, boolean lightStatusBar, boolean transparentStatusbar) {
     this.lightStatusBar = lightStatusBar;
     this.transparentStatusbar = transparentStatusbar;

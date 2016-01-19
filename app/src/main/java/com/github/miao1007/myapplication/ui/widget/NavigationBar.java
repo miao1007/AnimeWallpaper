@@ -66,7 +66,7 @@ public class NavigationBar extends RelativeLayout {
    * remember use merge instead of RelativeLayout
    */
   private void initView(Context context) {
-    View.inflate(context, R.layout.internal_navi_root, this);  //correct way to inflate..
+    View.inflate(context, R.layout.internal_navigationbar, this);  //correct way to inflate..
     ButterKnife.inject(this);
   }
 

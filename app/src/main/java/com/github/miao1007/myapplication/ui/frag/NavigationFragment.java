@@ -37,7 +37,7 @@ public class NavigationFragment extends Fragment {
         mDrawerListView = (ListView) mView.findViewById(R.id.listview);
         String[] frags = new String[]{
                 ViewPagerfragment.class.getSimpleName(),
-                CardFragment.class.getSimpleName()
+            ViewPagerfragment.class.getSimpleName()
         };
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, frags);
         mDrawerListView.setAdapter(arrayAdapter);

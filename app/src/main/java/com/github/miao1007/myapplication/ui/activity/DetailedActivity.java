@@ -22,6 +22,8 @@ import android.widget.LinearLayout;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import com.bigkoo.alertview.AlertView;
+import com.bigkoo.alertview.OnItemClickListener;
 import com.github.miao1007.myapplication.R;
 import com.github.miao1007.myapplication.support.service.konachan.ImageRepo;
 import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
@@ -73,12 +75,20 @@ public class DetailedActivity extends AppCompatActivity {
     context.startActivity(intent);
   }
 
+
   @OnClick(R.id.detailed_back) void back() {
     onBackPressed();
   }
 
   @OnClick(R.id.detailed_tags) void tags() {
-    //todo
+    //先用这个，省时间
+    final String[] tags = imageResult.getTags().split(" ");
+    new AlertView("relevant tags", null, getString(android.R.string.cancel), null, tags, this,
+        AlertView.Style.ActionSheet, new OnItemClickListener() {
+      @Override public void onItemClick(Object o, int position) {
+        MainActivity.startActivity(DetailedActivity.this, tags[position]);
+      }
+    }).setCancelable(true).show();
   }
 
   @OnClick(R.id.iv_detailed_card) void download(final ImageView v) {
