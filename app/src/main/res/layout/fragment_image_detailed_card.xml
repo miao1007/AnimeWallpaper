@@ -29,6 +29,8 @@
 
     <com.github.miao1007.myapplication.ui.widget.NavigationBar android:layout_width="match_parent"
         android:id="@+id/navigation_bar"
+        android:background="?attr/selectableItemBackground"
+
         android:layout_height="52dp">
 
 
@@ -36,19 +38,21 @@
           android:layout_alignParentLeft="true"
           android:id="@+id/detailed_back"
           android:src="@drawable/back" android:layout_centerVertical="true"
-          android:layout_marginLeft="16dp"
-          android:layout_width="20dp"
+          android:paddingLeft="16dp"
+          android:paddingRight="16dp"
+          android:scaleType="fitCenter"
+          android:layout_width="52dp"
           android:layout_height="match_parent"/>
 
       <ImageView
           android:src="@drawable/tag" android:layout_alignParentRight="true"
           android:maxLength="8"
           android:id="@+id/detailed_tags"
-          android:foregroundGravity="center_vertical"
-          android:layout_centerVertical="true"
-          android:layout_marginRight="16dp"
-          android:scaleType="centerInside"
-          android:layout_width="20dp"
+
+          android:paddingLeft="16dp"
+          android:paddingRight="16dp"
+          android:scaleType="fitCenter"
+          android:layout_width="52dp"
           android:layout_height="match_parent"/>
 
 

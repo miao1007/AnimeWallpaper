@@ -86,7 +86,9 @@ public class DetailedActivity extends AppCompatActivity {
     new AlertView("relevant tags", null, getString(android.R.string.cancel), null, tags, this,
         AlertView.Style.ActionSheet, new OnItemClickListener() {
       @Override public void onItemClick(Object o, int position) {
-        MainActivity.startActivity(DetailedActivity.this, tags[position]);
+        if (position != -1) {
+          MainActivity.startActivity(DetailedActivity.this, tags[position]);
+        }
       }
     }).setCancelable(true).show();
   }

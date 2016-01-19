@@ -88,13 +88,13 @@ public class NavigationBar extends RelativeLayout {
       return;
     }
     for (int i = 0; i < getChildCount(); i++) {
-      Log.d(TAG, "before=" + getChildAt(i).toString());
+      //Log.d(TAG, "before=" + getChildAt(i).toString());
       if (getChildAt(i) != null) {
         getChildAt(i).setPadding(getChildAt(i).getPaddingLeft(),
             height + getChildAt(i).getPaddingTop(), getChildAt(i).getPaddingRight(),
             getChildAt(i).getPaddingBottom());
       }
-      Log.d(TAG, "after=" + getChildAt(i).toString());
+      //Log.d(TAG, "after=" + getChildAt(i).toString());
     }
   }
 
