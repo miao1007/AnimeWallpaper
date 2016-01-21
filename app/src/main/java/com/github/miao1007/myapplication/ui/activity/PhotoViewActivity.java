@@ -31,7 +31,7 @@ public class PhotoViewActivity extends AppCompatActivity {
   //static final public String EXTRA_TOP = "EXTRA_TOP";
   //static final public String EXTRA_BOTTOM = "EXTRA_BOTTOM";
   //static final public String EXTRA_WIDTH = "EXTRA_WIDTH";
-  //static final public String EXTRA_HEIGHT = "EXTRA_HEIGHT";
+  //static final public String EXTRA_POSITION = "EXTRA_POSITION";
 
   public static Position getPosition(Intent intent) {
     return intent.getParcelableExtra(EXTRA_LEFT);

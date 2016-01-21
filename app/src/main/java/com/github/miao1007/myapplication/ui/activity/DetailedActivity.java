@@ -47,34 +47,30 @@ import rx.schedulers.Schedulers;
  */
 public class DetailedActivity extends AppCompatActivity {
 
-  public static final String EXTRA_IMAGE = "URL";
-  public static final String EXTRA_HEIGHT = "EXTRA_HEIGHT";
-  public static final String EXTRA_TOP = "EXTRA_TOP";
-  public static final String EXTRA_WIDTH = "EXTRA_WIDTH";
+  private static final String EXTRA_IMAGE = "URL";
+  private static final String EXTRA_POSITION = "EXTRA_POSITION";
+
   public static final String TAG = LogUtils.makeLogTag(DetailedActivity.class);
 
   @InjectView(R.id.iv_detailed_card) ImageView ivDetailedCard;
   @InjectView(R.id.blur_bg) ImageView ivDetailedCardBlur;
   @InjectView(R.id.image_holder) LinearLayout mImageHolder;
 
-  int height;
-  int width;
-  int top;
   ImageResult imageResult;
   @InjectView(R.id.navigation_bar) NavigationBar mNavigationBar;
   @InjectView(R.id.ll_detailed_downloads) LinearLayout mLlDetailedDownloads;
 
-  public static void startActivity(Context context, Parcelable parcelable, int top, int height,
-      int width) {
+  public static void startActivity(Context context, Position position, Parcelable parcelable) {
     Intent intent = new Intent(context, DetailedActivity.class);
     //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
     intent.putExtra(EXTRA_IMAGE, parcelable);
-    intent.putExtra(EXTRA_HEIGHT, height);
-    intent.putExtra(EXTRA_WIDTH, width);
-    intent.putExtra(EXTRA_TOP, top);
+    intent.putExtra(EXTRA_POSITION, position);
     context.startActivity(intent);
   }
 
+  public static Position getPosition(Intent intent) {
+    return intent.getParcelableExtra(EXTRA_POSITION);
+  }
 
   @OnClick(R.id.detailed_back) void back() {
     onBackPressed();
@@ -158,13 +154,7 @@ public class DetailedActivity extends AppCompatActivity {
                   @TargetApi(Build.VERSION_CODES.JELLY_BEAN) @Override
                   public void call(final Bitmap bitmap) {
 
-                    height = getIntent().getIntExtra(EXTRA_HEIGHT, 1);
-                    width = getIntent().getIntExtra(EXTRA_WIDTH, 1);
-                    top = getIntent().getIntExtra(EXTRA_TOP, 1);
-                    Log.d(TAG, "TOP=" + top + " HEIGHT=" + height + " WIDTH=" + width);
-                    float delta = ((float) width) / ((float) height);
-                    Log.d(TAG, delta + "");
-                    anim(ivDetailedCard, top, height, width, true,
+                    anim(ivDetailedCard, getPosition(getIntent()), true,
                         new Animation.AnimationListener() {
                           @Override public void onAnimationStart(Animation animation) {
                             Animation trans =
@@ -195,21 +185,21 @@ public class DetailedActivity extends AppCompatActivity {
   /**
    * 动画封装，千万不要剁手改正负
    */
-  void anim(View view, int top, int height, int width, boolean isEnter,
+  void anim(View view, Position position, boolean isEnter,
       Animation.AnimationListener listener) {
     //记住括号哦，我这里调试了一小时
-    float delta = ((float) width) / ((float) height);
+    float delta = ((float) (position.width)) / ((float) (position.heigth));
     float fromDelta, toDelta, fromY, toY;
     if (isEnter) {
       fromDelta = 1f;
       toDelta = delta;
-      fromY = top;
+      fromY = position.top;
       toY = 0;
     } else {
       fromDelta = delta;
       toDelta = 1f;
       fromY = 0;
-      toY = top;
+      toY = position.top;
     }
     Animation anim = new ScaleAnimation(fromDelta, toDelta,
         // Start and end values for the X axis scaling
@@ -234,7 +224,7 @@ public class DetailedActivity extends AppCompatActivity {
    * Cancel all exit animation
    */
   @Override public void finish() {
-    anim(ivDetailedCard, top, height, width, false, new Animation.AnimationListener() {
+    anim(ivDetailedCard, getPosition(getIntent()), false, new Animation.AnimationListener() {
       @Override public void onAnimationStart(Animation animation) {
         mLlDetailedDownloads.animate().alpha(0f).setDuration(AnimateUtils.ANIM_DORITION).start();
         AnimateUtils.animateViewBitmap(ivDetailedCardBlur, null);

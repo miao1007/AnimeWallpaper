@@ -20,6 +20,7 @@ import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
 import com.github.miao1007.myapplication.ui.adapter.BaseAdapter;
 import com.github.miao1007.myapplication.ui.adapter.CardAdapter;
 import com.github.miao1007.myapplication.ui.widget.NavigationBar;
+import com.github.miao1007.myapplication.ui.widget.Position;
 import com.github.miao1007.myapplication.utils.LogUtils;
 import com.github.miao1007.myapplication.utils.RetrofitUtils;
 import com.github.miao1007.myapplication.utils.StatusbarUtils;
@@ -149,10 +150,7 @@ public class MainActivity extends AppCompatActivity
 
   @Override public void onItemClick(View v, int position) {
     Parcelable imgInfo = ((CardAdapter) mRecyclerView.getAdapter()).getData().get(position);
-    int top = v.getTop();
-    int heigh = v.getHeight();
-    int width = v.getWidth();
-    DetailedActivity.startActivity(v.getContext(), imgInfo, top, heigh, width);
+    DetailedActivity.startActivity(v.getContext(), Position.from(v), imgInfo);
   }
 
   //swipe layout refresh callback
