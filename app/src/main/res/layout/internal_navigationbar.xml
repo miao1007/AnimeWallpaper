@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--navigationbar 4x13 = 52-->
-<merge
+<!--navigationbar 4x13 = 52 it w/h will be override-->
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="52dp">
+    android:layout_height="?attr/actionBarSize">
                
+
+  <ImageView android:layout_width="match_parent" android:layout_height="match_parent"
+      android:id="@+id/internal_navi_bg"
+  />
 
   <!--Do not set padding on it, see {@code NavigationBar}-->
   <TextView android:layout_width="wrap_content"
-      android:layout_height="match_parent"
+      android:layout_height="?attr/actionBarSize"
       android:text="@string/app_name"
       android:id="@+id/internal_navi_title"
       android:maxLines="1"
+      android:layout_alignParentBottom="true"
       android:maxLength="10"
-      android:gravity="center_vertical"
       android:textSize="24sp"
-      android:layout_centerInParent="true"/>
+      android:gravity="center_vertical"
+      android:layout_centerHorizontal="true"/>
 
   <!--make sure layout_height == full-->
   <ProgressBar
       android:id="@+id/internal_navi_progress"
       android:layout_width="20dp"
+      android:gravity="center_vertical"
+      android:layout_alignParentBottom="true"
       android:visibility="visible"
       android:layout_toLeftOf="@id/internal_navi_title"
-      android:layout_height="match_parent"
+      android:layout_height="?attr/actionBarSize"
       android:layout_marginRight="4dp"
-      android:layout_centerVertical="true"
       android:indeterminateDrawable="@drawable/progress_indicator"/>
 
 
-</merge>
+</RelativeLayout>

@@ -20,7 +20,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import com.bigkoo.alertview.AlertView;
 import com.bigkoo.alertview.OnItemClickListener;
@@ -52,13 +52,15 @@ public class DetailedActivity extends AppCompatActivity {
 
   public static final String TAG = LogUtils.makeLogTag(DetailedActivity.class);
 
-  @InjectView(R.id.iv_detailed_card) ImageView ivDetailedCard;
-  @InjectView(R.id.blur_bg) ImageView ivDetailedCardBlur;
-  @InjectView(R.id.image_holder) LinearLayout mImageHolder;
+  @Bind(R.id.iv_detailed_card) ImageView ivDetailedCard;
+  @Bind(R.id.blur_bg) ImageView ivDetailedCardBlur;
+  @Bind(R.id.image_holder) LinearLayout mImageHolder;
 
   ImageResult imageResult;
-  @InjectView(R.id.navigation_bar) NavigationBar mNavigationBar;
-  @InjectView(R.id.ll_detailed_downloads) LinearLayout mLlDetailedDownloads;
+  @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
+  @Bind(R.id.ll_detailed_downloads) LinearLayout mLlDetailedDownloads;
+
+  AlertView alertView;
 
   public static void startActivity(Context context, Position position, Parcelable parcelable) {
     Intent intent = new Intent(context, DetailedActivity.class);
@@ -79,56 +81,37 @@ public class DetailedActivity extends AppCompatActivity {
   @OnClick(R.id.detailed_tags) void tags() {
     //先用这个，省时间
     final String[] tags = imageResult.getTags().split(" ");
-    new AlertView("relevant tags", null, getString(android.R.string.cancel), null, tags, this,
+    alertView =
+        new AlertView("relevant tags", null, getString(android.R.string.cancel), null, tags, this,
         AlertView.Style.ActionSheet, new OnItemClickListener() {
       @Override public void onItemClick(Object o, int position) {
         if (position != -1) {
           MainActivity.startActivity(DetailedActivity.this, tags[position]);
         }
       }
-    }).setCancelable(true).show();
+        }).setCancelable(true);
+    alertView.show();
   }
 
   @OnClick(R.id.iv_detailed_card) void download(final ImageView v) {
     final File file = getFilesDir();
     Log.d(TAG, file.toString());
     PhotoViewActivity.startScaleActivity(v.getContext(), Position.from(v));
-    //file.isDirectory()
-    //Picasso.with(this)
-    //    .load(imageResult.getSampleUrl())
-    //    .placeholder(v.getDrawable())
-    //    .into(v, new Callback() {
-    //      @Override public void onSuccess() {
-    //        //for (View view = v.getParent(); v)
-    //        ((ViewGroup) v.getParent()).setClipChildren(false);
-    //        float del_scale = ((float) getWindowManager().getDefaultDisplay().getHeight())
-    //            / ((float) v.getHeight());
-    //        float del_y = ((float) v.getTop()) / ((float) v.getBottom());
-    //
-    //        Animation anim =
-    //            new ScaleAnimation(1f, del_scale, // Start and end values for the X axis scaling
-    //                1f, del_scale, // Start and end values for the Y axis scaling
-    //                Animation.RELATIVE_TO_SELF, 0.5f, // scale from mid of x
-    //                Animation.RELATIVE_TO_SELF, del_y); // scale from mid of y
-    //        anim.setDuration(AnimateUtils.ANIM_DORITION);
-    //        AnimateUtils.animateViewBitmap(ivDetailedCardBlur, null);
-    //        anim.setFillAfter(true); // Needed to keep the result of the animation
-    //        v.startAnimation(anim);
-    //      }
-    //
-    //      @Override public void onError() {
-    //
-    //      }
-    //    });
   }
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     StatusbarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(false).process();
     setContentView(R.layout.fragment_image_detailed_card);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
     mNavigationBar.setProgress(true);
     mNavigationBar.setTextColor(Color.WHITE);
+    //mNavigationBar.setLeftClickListener(new View.OnClickListener() {
+    //  @Override public void onClick(View v) {
+    //    onBackPressed();
+    //  }
+    //});
+    //mNavigationBar.setRightClickListener(new O);
     imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);
 
     Picasso.with(this)
@@ -190,16 +173,18 @@ public class DetailedActivity extends AppCompatActivity {
     //记住括号哦，我这里调试了一小时
     float delta = ((float) (position.width)) / ((float) (position.heigth));
     float fromDelta, toDelta, fromY, toY;
+    float delt_Y=position.top - view.getTop();
+    float delt_X = position.left - view.getLeft();
     if (isEnter) {
       fromDelta = 1f;
       toDelta = delta;
-      fromY = position.top;
+      fromY = delt_Y;
       toY = 0;
     } else {
       fromDelta = delta;
       toDelta = 1f;
       fromY = 0;
-      toY = position.top;
+      toY = delt_Y;
     }
     Animation anim = new ScaleAnimation(fromDelta, toDelta,
         // Start and end values for the X axis scaling
@@ -220,10 +205,12 @@ public class DetailedActivity extends AppCompatActivity {
     view.startAnimation(set);
   }
 
-  /**
-   * Cancel all exit animation
-   */
-  @Override public void finish() {
+  @Override public void onBackPressed() {
+    if (alertView != null && alertView.isShowing()) {
+      alertView.dismiss();
+      return;
+    }
+
     anim(ivDetailedCard, getPosition(getIntent()), false, new Animation.AnimationListener() {
       @Override public void onAnimationStart(Animation animation) {
         mLlDetailedDownloads.animate().alpha(0f).setDuration(AnimateUtils.ANIM_DORITION).start();
@@ -231,7 +218,7 @@ public class DetailedActivity extends AppCompatActivity {
       }
 
       @Override public void onAnimationEnd(Animation animation) {
-        DetailedActivity.super.finish();
+        DetailedActivity.super.onBackPressed();
         overridePendingTransition(0, 0);
       }
 

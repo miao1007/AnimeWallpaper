@@ -5,20 +5,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.github.miao1007.myapplication.R;
 import com.github.miao1007.myapplication.support.service.konachan.ImageRepo;
 import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
 import com.github.miao1007.myapplication.ui.adapter.BaseAdapter;
 import com.github.miao1007.myapplication.ui.adapter.CardAdapter;
+import com.github.miao1007.myapplication.ui.widget.BlurDrawable;
 import com.github.miao1007.myapplication.ui.widget.NavigationBar;
 import com.github.miao1007.myapplication.ui.widget.Position;
 import com.github.miao1007.myapplication.utils.LogUtils;
@@ -35,17 +35,16 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity
-    implements SwipeRefreshLayout.OnRefreshListener, CardAdapter.OnItemClickListener,
-    BaseAdapter.OnLoadMoreListener {
+    implements CardAdapter.OnItemClickListener, BaseAdapter.OnLoadMoreListener {
 
   public static final String TAG = LogUtils.makeLogTag(MainActivity.class);
   static final String EXTRA_MAP = "ext";
-  //@InjectView(R.id.btn_retry_card) Button mButton;
-  //@InjectView(R.id.pgb_loading_card) ContentLoadingProgressBar mProgressBar;
-  @InjectView(R.id.rv_frag_card) RecyclerView mRecyclerView;
+  //@Bind(R.id.btn_retry_card) Button mButton;
+  //@Bind(R.id.pgb_loading_card) ContentLoadingProgressBar mProgressBar;
   boolean isLoadingMore;
-  @InjectView(R.id.navigation_bar) NavigationBar mNavigationBar;
-  @InjectView(R.id.iv_card_search) ImageView mIvCardSearch;
+  @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
+  @Bind(R.id.rv_frag_card) RecyclerView mRvFragCard;
+  @Bind(R.id.iv_card_search) ImageView mIvCardSearch;
   private Map<String, Object> query = new HashMap<>(4);
 
   static void startActivity(Context context, String query) {
@@ -62,9 +61,8 @@ public class MainActivity extends AppCompatActivity
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     StatusbarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(true).process();
-
     setContentView(R.layout.fragment_card);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
     setUpList();
     String tag = parseIntent(getIntent());
     if (tag != null) {
@@ -80,12 +78,14 @@ public class MainActivity extends AppCompatActivity
     mAdapter.setLoadMoreListener(this);
     mAdapter.setItemClickListener(this);
     final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-    mRecyclerView.setLayoutManager(mLayoutManager);
-    mRecyclerView.setAdapter(mAdapter);
-    mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+    mRvFragCard.setLayoutManager(mLayoutManager);
+    mRvFragCard.setAdapter(mAdapter);
+    mNavigationBar.setViewToBlur(mRvFragCard);
+    mRvFragCard.addOnScrollListener(new RecyclerView.OnScrollListener() {
       @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+
           Picasso.with(recyclerView.getContext()).resumeTag(TAG);
         } else {
           Picasso.with(recyclerView.getContext()).pauseTag(TAG);
@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity
 
       @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
+        //if (Math.abs(dy))
       }
     });
     onRefresh();
@@ -125,8 +126,8 @@ public class MainActivity extends AppCompatActivity
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Subscriber<ImageResult>() {
           @Override public void onCompleted() {
-            if (mRecyclerView != null && mRecyclerView.getAdapter() != null) {
-              mRecyclerView.getAdapter().notifyDataSetChanged();
+            if (mRvFragCard != null && mRvFragCard.getAdapter() != null) {
+              mRvFragCard.getAdapter().notifyDataSetChanged();
             }
             if (mNavigationBar != null) {
               mNavigationBar.setProgress(false);
@@ -143,21 +144,22 @@ public class MainActivity extends AppCompatActivity
           }
 
           @Override public void onNext(ImageResult imageResult) {
-            ((CardAdapter) mRecyclerView.getAdapter()).getData().add(imageResult);
+            ((CardAdapter) mRvFragCard.getAdapter()).getData().add(imageResult);
           }
         });
   }
 
   @Override public void onItemClick(View v, int position) {
-    Parcelable imgInfo = ((CardAdapter) mRecyclerView.getAdapter()).getData().get(position);
+    Parcelable imgInfo = ((CardAdapter) mRvFragCard.getAdapter()).getData().get(position);
+
     DetailedActivity.startActivity(v.getContext(), Position.from(v), imgInfo);
   }
 
   //swipe layout refresh callback
-  @Override public void onRefresh() {
+  public void onRefresh() {
     Log.d(TAG, "onRefresh:query = " + query);
-    ((CardAdapter) mRecyclerView.getAdapter()).getData().clear();
-    mRecyclerView.getAdapter().notifyDataSetChanged();
+    ((CardAdapter) mRvFragCard.getAdapter()).getData().clear();
+    mRvFragCard.getAdapter().notifyDataSetChanged();
     loadMore(1);
   }
 

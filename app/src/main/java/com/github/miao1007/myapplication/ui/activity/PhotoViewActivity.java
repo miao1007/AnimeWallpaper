@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.github.miao1007.myapplication.R;
 import com.github.miao1007.myapplication.ui.widget.Position;
 import com.github.miao1007.myapplication.utils.LogUtils;
@@ -26,7 +26,7 @@ public class PhotoViewActivity extends AppCompatActivity {
 
   static final String TAG = LogUtils.makeLogTag(PhotoViewActivity.class);
   static final public String EXTRA_LEFT = "EXTRA_LEFT";
-  @InjectView(R.id.iv_photo) ImageView mIvPhoto;
+  @Bind(R.id.iv_photo) ImageView mIvPhoto;
   //static final public String EXTRA_RIGHT = "EXTRA_RIGHT";
   //static final public String EXTRA_TOP = "EXTRA_TOP";
   //static final public String EXTRA_BOTTOM = "EXTRA_BOTTOM";
@@ -47,7 +47,7 @@ public class PhotoViewActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     StatusbarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(false).process();
     setContentView(R.layout.activity_photoview);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
     Picasso.with(this).load(R.drawable.place_holder)
         .into(mIvPhoto, new Callback() {
           @Override public void onSuccess() {

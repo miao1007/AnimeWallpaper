@@ -23,7 +23,7 @@ public final class StatusbarUtils {
   boolean transparentStatusbar;
   Activity activity;
 
-  public StatusbarUtils(Activity activity, boolean lightStatusBar, boolean transparentStatusbar) {
+  private  StatusbarUtils(Activity activity, boolean lightStatusBar, boolean transparentStatusbar) {
     this.lightStatusBar = lightStatusBar;
     this.transparentStatusbar = transparentStatusbar;
     this.activity = activity;

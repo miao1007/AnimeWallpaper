@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import butterknife.InjectView;
+import butterknife.Bind;
 import com.github.miao1007.myapplication.R;
 
 /**
@@ -18,8 +18,8 @@ import com.github.miao1007.myapplication.R;
  */
 public class ActionSheet extends LinearLayout {
 
-  @InjectView(R.id.internal_actionsheet_title) TextView mTvActionsheetTitle;
-  @InjectView(R.id.internal_actionsheet_list) ListView mRvActionsheetList;
+  @Bind(R.id.internal_actionsheet_title) TextView mTvActionsheetTitle;
+  @Bind(R.id.internal_actionsheet_list) ListView mRvActionsheetList;
   String title;
   String[] items;
 
@@ -46,7 +46,6 @@ public class ActionSheet extends LinearLayout {
       ((TextView) view.findViewById(R.id.internal_actionsheet_title)).setText(title);
       ((ListView) view.findViewById(R.id.internal_actionsheet_list)).setAdapter(
           new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,items));
-
       deco.addView(view);
     }
   }

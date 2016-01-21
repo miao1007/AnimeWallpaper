@@ -34,6 +34,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
     this.onItemClickListener = onItemClickListener;
   }
 
+
   public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
     this.loadMoreListener = loadMoreListener;
   }

@@ -3,14 +3,41 @@ package com.github.miao1007.myapplication.utils.picasso;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
+import android.view.View;
 
 public class Blur {
+
+
+    public static Bitmap drawViewToBitmap(Bitmap dest, View view, int width, int height, int downSampling, Drawable drawable) {
+        float scale = 1f / downSampling;
+        int heightCopy = view.getHeight();
+        view.layout(0, 0, width, height);
+        int bmpWidth = (int)(width * scale);
+        int bmpHeight = (int)(height * scale);
+        if (dest == null || dest.getWidth() != bmpWidth || dest.getHeight() != bmpHeight) {
+            dest = Bitmap.createBitmap(bmpWidth, bmpHeight, Bitmap.Config.ARGB_8888);
+        }
+        Canvas c = new Canvas(dest);
+        drawable.setBounds(new Rect(0, 0, width, height));
+        drawable.draw(c);
+        if (downSampling > 1) {
+            c.scale(scale, scale);
+        }
+        view.draw(c);
+        view.layout(0, 0, width, heightCopy);
+        // saveToSdCard(original, "original.png");
+        return dest;
+    }
+
 
     private static final String TAG = "Blur";
 

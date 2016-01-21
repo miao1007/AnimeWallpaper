@@ -7,11 +7,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import com.github.miao1007.myapplication.R;
-import com.github.miao1007.myapplication.utils.FlyMeUtils;
-import com.github.miao1007.myapplication.utils.StatusbarUtils;
+import com.github.miao1007.myapplication.R;;
 
 /**
  * Created by leon on 1/28/15.
@@ -20,14 +18,14 @@ import com.github.miao1007.myapplication.utils.StatusbarUtils;
  */
 public abstract class BaseFragmentActivity extends AppCompatActivity {
 
-  @InjectView(R.id.toolbar_holder) RelativeLayout mToolbarHolder;
+  @Bind(R.id.toolbar_holder) RelativeLayout mToolbarHolder;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     // Init the swipe back
     setTheme(android.R.style.Theme_DeviceDefault_Light_NoActionBar);
     setContentView(R.layout.activity_base_fragment);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
     getSupportFragmentManager().beginTransaction()
         .replace(R.id.base_fragment_container, getSupportFragment())
         .commit();

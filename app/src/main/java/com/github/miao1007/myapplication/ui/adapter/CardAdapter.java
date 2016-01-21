@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.github.miao1007.myapplication.R;
 import com.github.miao1007.myapplication.support.service.konachan.ImageRepo;
 import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
@@ -50,7 +50,6 @@ public class CardAdapter extends BaseAdapter<ImageResult> {
 
   public RecyclerView.ViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
     RecyclerView.ViewHolder vh;
-    Log.d(TAG, "onCreateItemViewHolder");
     View v =
         LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_sample, parent, false);
     vh = new MyViewHolder(v);
@@ -70,11 +69,11 @@ public class CardAdapter extends BaseAdapter<ImageResult> {
 
   public static class MyViewHolder extends BaseViewHolder {
 
-    public @InjectView(R.id.iv_card_preview) ImageView imageView;
+    public @Bind(R.id.iv_card_preview) ImageView imageView;
 
     public MyViewHolder(View itemView) {
       super(itemView);
-      ButterKnife.inject(this, itemView);
+      ButterKnife.bind(this, itemView);
     }
   }
 }
