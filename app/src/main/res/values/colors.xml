@@ -12,6 +12,13 @@
 
   <color name="trans_black_bg">#22000000</color>
 
+
+  <color name="ios_internal_blue">#007aff</color>
+  <color name="ios_internal_red">#ff3b30</color>
+
+
+
+
   <!--<color name="primary">#2196F3</color>-->
   <!--<color name="primary_dark">#1976D2</color>-->
   <!--<color name="primary_light">#BBDEFB</color>-->

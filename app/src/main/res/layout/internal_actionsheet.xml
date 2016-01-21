@@ -1,39 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-
-    android:background="@color/trans_black_bg"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="342dp" xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/internal_actionsheet_bg"
     android:layout_width="match_parent">
 
-  <LinearLayout
 
-      xmlns:tools="http://schemas.android.com/tools"
+  <!--280 + 8-->
+
+  <RelativeLayout
+      android:layout_marginLeft="8dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginRight="8dp"
       android:orientation="vertical"
-      android:layout_gravity="bottom"
+      android:background="@drawable/internal_bg_r_8"
       android:clickable="true"
-      android:background="#f8f8f8"
       android:layout_width="match_parent"
-      android:layout_height="240dp">
-    <TextView android:layout_width="wrap_content" android:layout_height="48dp"
-        android:text="Searching for relevant tags"
-        android:layout_gravity="center_horizontal"
-        android:textColor="#000000"
-        android:id="@+id/internal_actionsheet_title"
-        android:textSize="20sp"
-        android:gravity="center_horizontal|center_vertical"
-    />
+      android:layout_height="280dp">
 
-    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="?attr/actionBarDivider"/>
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Searching for relevant tags"
+        android:id="@+id/internal_actionsheet_title"
+        android:maxLines="1"
+        android:textColor="#000000"
+        android:layout_alignParentTop="true"
+        android:textSize="18sp"
+        android:gravity="center_vertical"
+        android:layout_centerHorizontal="true"/>
 
 
     <ListView android:layout_width="match_parent"
         tools:listitem="@android:layout/simple_list_item_1"
         android:id="@+id/internal_actionsheet_list"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" android:layout_below="@+id/internal_actionsheet_title"
+        android:layout_centerHorizontal="true"/>
+
+  </RelativeLayout>
 
 
-    </ListView>
+  <!--48 + 8x2 = 54dp-->
+  <TextView
+      android:layout_margin="8dp"
+      android:id="@+id/internal_sheet_cancel"
+      android:visibility="visible"
+      android:text="@android:string/cancel"
+      android:layout_width="match_parent"
+      android:layout_height="48dp"
+      android:gravity="center"
+      android:clickable="true"
+      android:background="@drawable/internal_bg_r_8"
+      android:textColor="@color/ios_internal_blue"
+      android:textStyle="bold"
+      android:textSize="18sp"/>
 
-  </LinearLayout>
-
-</FrameLayout>
+</LinearLayout>

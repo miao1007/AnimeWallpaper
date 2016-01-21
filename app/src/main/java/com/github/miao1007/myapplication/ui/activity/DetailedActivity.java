@@ -6,24 +6,32 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import butterknife.ButterKnife;
+import android.widget.ListView;
+import android.widget.TextView;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.bigkoo.alertview.AlertView;
-import com.bigkoo.alertview.OnItemClickListener;
 import com.github.miao1007.myapplication.R;
 import com.github.miao1007.myapplication.support.service.konachan.ImageRepo;
 import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
@@ -36,6 +44,8 @@ import com.github.miao1007.myapplication.utils.picasso.Blur;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -74,23 +84,60 @@ public class DetailedActivity extends AppCompatActivity {
     return intent.getParcelableExtra(EXTRA_POSITION);
   }
 
+
+
   @OnClick(R.id.detailed_back) void back() {
     onBackPressed();
   }
 
   @OnClick(R.id.detailed_tags) void tags() {
     //先用这个，省时间
-    final String[] tags = imageResult.getTags().split(" ");
-    alertView =
-        new AlertView("relevant tags", null, getString(android.R.string.cancel), null, tags, this,
-        AlertView.Style.ActionSheet, new OnItemClickListener() {
-      @Override public void onItemClick(Object o, int position) {
-        if (position != -1) {
-          MainActivity.startActivity(DetailedActivity.this, tags[position]);
+    final List<String> tags = Arrays.asList(imageResult.getTags().split(" "));
+    System.out.println("tags = " + tags);
+    String tilte = "Relevant tags";
+
+    View actionsheet = LayoutInflater.from(this).inflate(R.layout.internal_actionsheet, null);
+    ListView listView = ((ListView) actionsheet.findViewById(R.id.internal_actionsheet_list));
+    listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tags));
+    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        MainActivity.startActivity(DetailedActivity.this, tags.get(position));
+      }
+    });
+    TextView textView = ((TextView) actionsheet.findViewById(R.id.internal_actionsheet_title));
+    textView.setText(tilte);
+    TextView cancel = ((TextView) actionsheet.findViewById(R.id.internal_sheet_cancel));
+    View view = actionsheet.findViewById(R.id.internal_actionsheet_bg);
+
+    final AlertDialog builder =
+        new AlertDialog.Builder(this, R.style.ActionSheet).setCancelable(true).setView(actionsheet).create();
+
+    view.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        if (builder != null) {
+          builder.dismiss();
         }
       }
-        }).setCancelable(true);
-    alertView.show();
+    });
+    cancel.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        if (builder != null) {
+          builder.dismiss();
+        }
+      }
+    });
+
+    //builder.getWindow().
+    builder.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+    //WindowManager.LayoutParams params = builder.getWindow().getAttributes();
+    //params.gravity = Gravity.BOTTOM;
+    //params.horizontalMargin = 0;
+    //params.verticalMargin = 0;
+    //params.width = WindowManager.LayoutParams.MATCH_PARENT;
+    //params.height = 1200;
+    builder.show();
   }
 
   @OnClick(R.id.iv_detailed_card) void download(final ImageView v) {

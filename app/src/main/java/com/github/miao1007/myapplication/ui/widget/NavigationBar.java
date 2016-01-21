@@ -69,10 +69,9 @@ public class NavigationBar extends RelativeLayout {
   }
 
   public void setTextColor(@ColorInt int color) {
-    for (int i = 0; i < getChildCount(); i++) {
-      if (getChildAt(i) instanceof TextView && getChildAt(i) != null) {
-        ((TextView) getChildAt(i)).setTextColor(color);
-      }
+    Log.d(TAG,"setTextColor");
+    if (mNaviTitle != null) {
+      mNaviTitle.setTextColor(color);
     }
   }
 
@@ -88,10 +87,6 @@ public class NavigationBar extends RelativeLayout {
     paint.setFilterBitmap(true);
   }
 
-  @Override public void draw(Canvas canvas) {
-    super.draw(canvas);
-    onUpdate();
-  }
 
   @Override protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
