@@ -220,7 +220,7 @@ public class DetailedActivity extends AppCompatActivity {
     //记住括号哦，我这里调试了一小时
     float delta = ((float) (position.width)) / ((float) (position.heigth));
     float fromDelta, toDelta, fromY, toY;
-    float delt_Y=position.top - view.getTop();
+    float delt_Y=position.top ;
     float delt_X = position.left - view.getLeft();
     if (isEnter) {
       fromDelta = 1f;
