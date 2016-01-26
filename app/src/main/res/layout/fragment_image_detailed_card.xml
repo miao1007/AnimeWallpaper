@@ -33,7 +33,7 @@
       <!--48x48dp - 16 =fixXY=>  32x32 dp icon-->
 
       <ImageView
-          android:src="@drawable/back"
+          android:src="@drawable/back_48"
           android:layout_alignParentLeft="true"
           android:id="@+id/detailed_back"
           android:background="?attr/selectableItemBackground"
@@ -51,7 +51,7 @@
           android:background="?attr/selectableItemBackground"
           android:padding="16dp"
           android:layout_alignParentBottom="true"
-          android:scaleType="center"
+          android:scaleType="fitXY"
           android:layout_width="?attr/actionBarSize"
           android:layout_height="?attr/actionBarSize"/>
 

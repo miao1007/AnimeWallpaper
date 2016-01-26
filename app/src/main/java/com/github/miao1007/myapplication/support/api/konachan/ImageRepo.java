@@ -1,4 +1,4 @@
-package com.github.miao1007.myapplication.support.service.konachan;
+package com.github.miao1007.myapplication.support.api.konachan;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +13,7 @@ public interface ImageRepo {
 
   //qiniu CDN
   String END_POINT_CDN = "http://7xq3s7.com1.z0.glb.clouddn.com";
-  //String END_POINT = "http://www.konachan.net";
+  String END_POINT_KONACHAN = "http://www.konachan.net";
   String END_POINT = END_POINT_CDN;
   String END_PONIT_YANDE = "https://yande.re/post.json/";
   String TAGS = "tags";

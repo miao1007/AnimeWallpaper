@@ -3,7 +3,7 @@ package com.github.miao1007.myapplication.utils;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
-import com.github.miao1007.myapplication.support.service.konachan.ImageRepo;
+import com.github.miao1007.myapplication.support.api.konachan.ImageRepo;
 import com.github.miao1007.myapplication.utils.network.HttpLoggingInterceptor;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -37,7 +37,7 @@ public class RetrofitUtils {
     okHttpClient = new OkHttpClient.Builder()
         .addNetworkInterceptor(interceptor)
         .build();
-    retrofit = new Retrofit.Builder().baseUrl(ImageRepo.END_POINT)
+    retrofit = new Retrofit.Builder().baseUrl(ImageRepo.END_POINT_CDN)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

@@ -1,4 +1,4 @@
-package com.github.miao1007.myapplication.support.service.konachan;
+package com.github.miao1007.myapplication.support.api.konachan;
 
 import android.os.Parcel;
 import android.os.Parcelable;

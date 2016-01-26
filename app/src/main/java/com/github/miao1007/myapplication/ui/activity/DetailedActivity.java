@@ -16,6 +16,7 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -31,14 +32,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.bigkoo.alertview.AlertView;
 import com.github.miao1007.myapplication.R;
-import com.github.miao1007.myapplication.support.service.konachan.ImageRepo;
-import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
+import com.github.miao1007.myapplication.support.api.konachan.ImageRepo;
+import com.github.miao1007.myapplication.support.api.konachan.ImageResult;
 import com.github.miao1007.myapplication.ui.widget.NavigationBar;
 import com.github.miao1007.myapplication.ui.widget.Position;
 import com.github.miao1007.myapplication.utils.LogUtils;
 import com.github.miao1007.myapplication.utils.StatusbarUtils;
 import com.github.miao1007.myapplication.utils.animation.AnimateUtils;
 import com.github.miao1007.myapplication.utils.picasso.Blur;
+import com.github.miao1007.myapplication.utils.picasso.SquareUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import java.util.Arrays;
@@ -136,6 +138,28 @@ public class DetailedActivity extends AppCompatActivity {
     //Log.d(TAG, file.toString());
     //PhotoViewActivity.startScaleActivity(v.getContext(), Position.from(v));
     Toast.makeText(DetailedActivity.this, "iv_detailed_card", Toast.LENGTH_SHORT).show();
+    //DownloadService.startService(v.getContext(), imageResult.getSampleUrl());
+    final String str =
+        imageResult.getSampleUrl().replaceAll("konachan.net", "7xq3s7.com1.z0.glb.clouddn.com");
+    Log.d(TAG, str);
+    SquareUtils.getProgressPicasso(this, new SquareUtils.ProgressListener() {
+      @Override public void update(long bytesRead, long contentLength, boolean done) {
+        System.out.format("%d%% done\n", (100 * bytesRead) / contentLength);
+        DetailedActivity.this.runOnUiThread(new Runnable() {
+          @Override public void run() {
+
+          }
+        });
+      }
+    }).load(str).placeholder(v.getDrawable()).into(v, new Callback() {
+      @Override public void onSuccess() {
+        PhotoViewActivity.startScaleActivity(v.getContext(), Position.from(v), str);
+      }
+
+      @Override public void onError() {
+
+      }
+    });
   }
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -152,10 +176,10 @@ public class DetailedActivity extends AppCompatActivity {
     //});
     //mNavigationBar.setRightClickListener(new O);
     imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);
-
     Picasso.with(this)
         //we use qiniu CDN
-        .load(imageResult.getPreviewUrl().replace(ImageRepo.END_POINT, ImageRepo.END_POINT_CDN))
+        .load(imageResult.getPreviewUrl()
+            .replace(ImageRepo.END_POINT_KONACHAN, ImageRepo.END_POINT_CDN))
         .config(Bitmap.Config.ARGB_8888)
         .into(ivDetailedCard, new Callback.EmptyCallback() {
           @Override public void onSuccess() {
@@ -222,7 +246,7 @@ public class DetailedActivity extends AppCompatActivity {
     if (isEnter) {
       fromDelta[0] = 1f;
       toDelta[0] = delta;
-      fromDelta[1] = 2f;
+      fromDelta[1] = 4f;
       toDelta[1] = 1f;
       fromY = delt_Y;
       toY = 0;
@@ -230,7 +254,7 @@ public class DetailedActivity extends AppCompatActivity {
       fromDelta[0] = delta;
       toDelta[0] = 1f;
       fromDelta[1] = 1f;
-      toDelta[1] = 2f;
+      toDelta[1] = 4f;
       fromY = 0;
       toY = delt_Y;
     }

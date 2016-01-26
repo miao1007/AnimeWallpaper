@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.miao1007.myapplication" >
+    package="com.github.miao1007.myapplication">
 
-    <!-- TODO : delete unnecessary permissions -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-    <application
-        android:name=".support.GlobalContext"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name=".ui.activity.MainActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:theme="@style/DetailedTheme"
-            android:name=".ui.activity.DetailedActivity"
-            android:label="@string/title_activity_detailed" >
-        </activity>
-        <activity
-            android:name=".ui.activity.SettingsActivity"
-            android:label="@string/title_activity_settings" >
-        </activity>
-        <activity android:name=".ui.activity.PhotoViewActivity"
-            android:theme="@style/DetailedTheme"/>
-    </application>
+  <application
+      android:name=".support.GlobalContext"
+      android:icon="@mipmap/ic_launcher"
+      android:label="@string/app_name"
+      android:theme="@style/AppTheme">
+    <activity
+        android:name=".ui.activity.MainActivity"
+        android:label="@string/app_name">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <activity
+        android:name=".ui.activity.DetailedActivity"
+        android:label="@string/title_activity_detailed"
+        android:theme="@style/DetailedTheme">
+    </activity>
+    <activity
+        android:name=".ui.activity.SettingsActivity"
+        android:label="@string/title_activity_settings">
+    </activity>
+    <activity
+        android:name=".ui.activity.PhotoViewActivity"
+        android:theme="@style/DetailedTheme"/>
+
+    <service
+        android:name=".support.service.DownloadService"
+        android:enabled="true"
+        android:exported="false">
+    </service>
+  </application>
 
 </manifest>

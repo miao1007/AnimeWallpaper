@@ -1,33 +1,19 @@
 package com.github.miao1007.myapplication.ui.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.github.miao1007.myapplication.R;
-import com.github.miao1007.myapplication.support.service.konachan.ImageRepo;
-import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
-import com.github.miao1007.myapplication.utils.animation.AnimateUtils;
-import com.squareup.picasso.Callback;
+import com.github.miao1007.myapplication.support.api.konachan.ImageRepo;
+import com.github.miao1007.myapplication.support.api.konachan.ImageResult;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by leon on 6/30/15.
@@ -61,7 +47,7 @@ public class CardAdapter extends BaseAdapter<ImageResult> {
     final Context context = holder.itemView.getContext();
     ImageResult result = getData().get(position);
     Picasso.with(context)
-        .load(result.getPreviewUrl().replace(ImageRepo.END_POINT, ImageRepo.END_POINT_CDN))
+        .load(result.getPreviewUrl().replace(ImageRepo.END_POINT_KONACHAN, ImageRepo.END_POINT_CDN))
         .placeholder(R.drawable.place_holder)
         //.transform(new BlurTransformation(getContext()))
         .into(holder.imageView);

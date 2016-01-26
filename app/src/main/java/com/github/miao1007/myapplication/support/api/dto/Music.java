@@ -1,4 +1,4 @@
-package com.github.miao1007.myapplication.support.service.dto;
+package com.github.miao1007.myapplication.support.api.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
