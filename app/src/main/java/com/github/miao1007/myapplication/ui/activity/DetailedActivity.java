@@ -1,5 +1,8 @@
 package com.github.miao1007.myapplication.ui.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -13,21 +16,16 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -43,7 +41,6 @@ import com.github.miao1007.myapplication.utils.animation.AnimateUtils;
 import com.github.miao1007.myapplication.utils.picasso.Blur;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import rx.Observable;
@@ -71,6 +68,7 @@ public class DetailedActivity extends AppCompatActivity {
   @Bind(R.id.ll_detailed_downloads) LinearLayout mLlDetailedDownloads;
 
   AlertView alertView;
+  boolean isPlaying = false;
 
   public static void startActivity(Context context, Position position, Parcelable parcelable) {
     Intent intent = new Intent(context, DetailedActivity.class);
@@ -130,20 +128,14 @@ public class DetailedActivity extends AppCompatActivity {
     //builder.getWindow().
     builder.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-
-    //WindowManager.LayoutParams params = builder.getWindow().getAttributes();
-    //params.gravity = Gravity.BOTTOM;
-    //params.horizontalMargin = 0;
-    //params.verticalMargin = 0;
-    //params.width = WindowManager.LayoutParams.MATCH_PARENT;
-    //params.height = 1200;
     builder.show();
   }
 
   @OnClick(R.id.iv_detailed_card) void download(final ImageView v) {
-    final File file = getFilesDir();
-    Log.d(TAG, file.toString());
-    PhotoViewActivity.startScaleActivity(v.getContext(), Position.from(v));
+    //final File file = getFilesDir();
+    //Log.d(TAG, file.toString());
+    //PhotoViewActivity.startScaleActivity(v.getContext(), Position.from(v));
+    Toast.makeText(DetailedActivity.this, "iv_detailed_card", Toast.LENGTH_SHORT).show();
   }
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -184,28 +176,25 @@ public class DetailedActivity extends AppCompatActivity {
                   @TargetApi(Build.VERSION_CODES.JELLY_BEAN) @Override
                   public void call(final Bitmap bitmap) {
 
-                    anim(ivDetailedCard, getPosition(getIntent()), true,
-                        new Animation.AnimationListener() {
-                          @Override public void onAnimationStart(Animation animation) {
-                            Animation trans =
-                                new TranslateAnimation(0, 0, mLlDetailedDownloads.getHeight(), 0);
-                            Animation scale = new ScaleAnimation(1.5f,1f,1.5f,1f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0f);
+                    AnimateUtils.animateViewBitmap(ivDetailedCardBlur, bitmap);
 
-                            AnimationSet set = new AnimationSet(true);
-                            set.addAnimation(scale);
-                            set.addAnimation(trans);
-                            set.setDuration(animation.getDuration() *  2);
-                            mLlDetailedDownloads.startAnimation(set);
-                          }
+                    anim(getPosition(getIntent()), true, new Animator.AnimatorListener() {
+                      @Override public void onAnimationStart(Animator animation) {
 
-                          @Override public void onAnimationEnd(Animation animation) {
+                      }
+
+                      @Override public void onAnimationEnd(Animator animation) {
                             AnimateUtils.animateViewBitmap(ivDetailedCardBlur, bitmap);
                           }
 
-                          @Override public void onAnimationRepeat(Animation animation) {
+                      @Override public void onAnimationCancel(Animator animation) {
 
                           }
-                        });
+
+                      @Override public void onAnimationRepeat(Animator animation) {
+
+                      }
+                    }, ivDetailedCard, mLlDetailedDownloads);
                   }
                 });
           }
@@ -215,41 +204,75 @@ public class DetailedActivity extends AppCompatActivity {
   /**
    * 动画封装，千万不要剁手改正负
    */
-  void anim(View view, Position position, boolean isEnter,
-      Animation.AnimationListener listener) {
+  void anim(final Position position, final boolean isEnter, final Animator.AnimatorListener listener,
+      View... views) {
+    if (isPlaying){
+      listener.onAnimationEnd(null);
+      return;
+    }
     //记住括号哦，我这里调试了一小时
-    float delta = ((float) (position.width)) / ((float) (position.heigth));
-    float fromDelta, toDelta, fromY, toY;
+    float delta = ((float) (position.width)) / ((float) (position.height));
+    final float fromY, toY;
+    float[] toDelta = new float[2];
+    float[] fromDelta = new float[2];
+
+    View view = views[0];
     float delt_Y=position.top ;
     float delt_X = position.left - view.getLeft();
     if (isEnter) {
-      fromDelta = 1f;
-      toDelta = delta;
+      fromDelta[0] = 1f;
+      toDelta[0] = delta;
+      fromDelta[1] = 2f;
+      toDelta[1] = 1f;
       fromY = delt_Y;
       toY = 0;
     } else {
-      fromDelta = delta;
-      toDelta = 1f;
+      fromDelta[0] = delta;
+      toDelta[0] = 1f;
+      fromDelta[1] = 1f;
+      toDelta[1] = 2f;
       fromY = 0;
       toY = delt_Y;
     }
-    Animation anim = new ScaleAnimation(fromDelta, toDelta,
-        // Start and end values for the X axis scaling
-        fromDelta, toDelta, // Start and end values for the Y axis scaling
-        Animation.RELATIVE_TO_SELF, 0.5f, // scale from mid of x
-        Animation.RELATIVE_TO_SELF, 0f); // scale from start of y
-    Animation trans = new TranslateAnimation(0, 0f, fromY, toY);
-    AnimationSet set = new AnimationSet(true);
-    //添加并行动画
-    set.addAnimation(anim);
-    set.addAnimation(trans);
-    //动画结束后保持原样
-    set.setFillEnabled(true);
-    set.setFillAfter(true);
-    //监听器
-    set.setAnimationListener(listener);
-    set.setDuration(AnimateUtils.ANIM_DORITION);
-    view.startAnimation(set);
+    view.setPivotX(view.getWidth() / 2);
+    ObjectAnimator trans_Y = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, fromY, toY);
+    ObjectAnimator scale_X = ObjectAnimator.ofFloat(view, View.SCALE_X, fromDelta[0], toDelta[0]);
+    ObjectAnimator scale_Y = ObjectAnimator.ofFloat(view, View.SCALE_Y, fromDelta[0], toDelta[0]);
+    ObjectAnimator scale_icn_X =
+        ObjectAnimator.ofFloat(views[1], View.SCALE_X, fromDelta[1], toDelta[1]);
+    ObjectAnimator scale_icn_Y =
+        ObjectAnimator.ofFloat(views[1], View.SCALE_Y, fromDelta[1], toDelta[1]);
+
+
+    AnimatorSet set = new AnimatorSet();
+
+    set.playTogether(trans_Y, scale_X, scale_Y);
+    set.playTogether( scale_icn_X, scale_icn_Y);
+    set.setDuration(400);
+    set.addListener(new Animator.AnimatorListener() {
+      @Override public void onAnimationStart(Animator animation) {
+        listener.onAnimationStart(animation);
+        isPlaying = true;
+      }
+
+      @Override public void onAnimationEnd(Animator animation) {
+        listener.onAnimationEnd(animation);
+        isPlaying = false;
+      }
+
+      @Override public void onAnimationCancel(Animator animation) {
+        listener.onAnimationCancel(animation);
+        isPlaying = false;
+
+      }
+
+      @Override public void onAnimationRepeat(Animator animation) {
+        listener.onAnimationRepeat(animation);
+
+      }
+    });
+    set.setInterpolator(new AccelerateInterpolator());
+    set.start();
   }
 
   @Override public void onBackPressed() {
@@ -257,21 +280,24 @@ public class DetailedActivity extends AppCompatActivity {
       alertView.dismiss();
       return;
     }
-
-    anim(ivDetailedCard, getPosition(getIntent()), false, new Animation.AnimationListener() {
-      @Override public void onAnimationStart(Animation animation) {
-        mLlDetailedDownloads.animate().alpha(0f).setDuration(AnimateUtils.ANIM_DORITION).start();
+    anim(getPosition(getIntent()), false, new Animator.AnimatorListener() {
+      @Override public void onAnimationStart(Animator animation) {
+        //mLlDetailedDownloads.animate().alpha(0f).setDuration(AnimateUtils.ANIM_DORITION).start();
         AnimateUtils.animateViewBitmap(ivDetailedCardBlur, null);
       }
 
-      @Override public void onAnimationEnd(Animation animation) {
+      @Override public void onAnimationEnd(Animator animation) {
         DetailedActivity.super.onBackPressed();
         overridePendingTransition(0, 0);
       }
 
-      @Override public void onAnimationRepeat(Animation animation) {
+      @Override public void onAnimationCancel(Animator animation) {
 
       }
-    });
+
+      @Override public void onAnimationRepeat(Animator animation) {
+
+      }
+    }, ivDetailedCard, mLlDetailedDownloads);
   }
 }

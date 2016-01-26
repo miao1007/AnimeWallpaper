@@ -13,7 +13,8 @@ public interface ImageRepo {
 
   //qiniu CDN
   String END_POINT_CDN = "http://7xq3s7.com1.z0.glb.clouddn.com";
-  String END_POINT = "http://www.konachan.net";
+  //String END_POINT = "http://www.konachan.net";
+  String END_POINT = END_POINT_CDN;
   String END_PONIT_YANDE = "https://yande.re/post.json/";
   String TAGS = "tags";
   String LIMIT = "limit";

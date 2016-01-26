@@ -56,7 +56,7 @@ public class PhotoViewActivity extends AppCompatActivity {
 
             ((ViewGroup) mIvPhoto.getParent()).setClipChildren(false);
             float del_scale =
-                ((float) getWindowManager().getDefaultDisplay().getHeight()) / ((float) position.heigth);
+                ((float) getWindowManager().getDefaultDisplay().getHeight()) / ((float) position.height);
             //float del_y = ((float) mIvPhoto.getTop()) / ((float) v.getBottom());
             Log.d(TAG, del_scale + "");
             Animation anim =
@@ -64,7 +64,7 @@ public class PhotoViewActivity extends AppCompatActivity {
                     1f, del_scale, // Start and end values for the Y axis scaling
                     Animation.RELATIVE_TO_SELF, 0.5f, // scale from mid of x
                     Animation.RELATIVE_TO_SELF,
-                    ((float) position.heigth) / (1f / ((float) position.top)
+                    ((float) position.height) / (1f / ((float) position.top)
                         + 1f / ((float) position.bottom))); // scale from mid of y
 
             //y/top = 1-y/bottom

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.github.miao1007.myapplication.R;
@@ -18,7 +19,6 @@ import com.github.miao1007.myapplication.support.service.konachan.ImageRepo;
 import com.github.miao1007.myapplication.support.service.konachan.ImageResult;
 import com.github.miao1007.myapplication.ui.adapter.BaseAdapter;
 import com.github.miao1007.myapplication.ui.adapter.CardAdapter;
-import com.github.miao1007.myapplication.ui.widget.BlurDrawable;
 import com.github.miao1007.myapplication.ui.widget.NavigationBar;
 import com.github.miao1007.myapplication.ui.widget.Position;
 import com.github.miao1007.myapplication.utils.LogUtils;
@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity
               mNavigationBar.setProgress(false);
             }
             isLoadingMore = false;
+            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
           }
 
           @Override public void onNext(ImageResult imageResult) {

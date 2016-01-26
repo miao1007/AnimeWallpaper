@@ -22,18 +22,18 @@ public class Position implements Parcelable {
   public int top;
   public int bottom;
   public int width;
-  public int heigth;
+  public int height;
 
   public Position() {
   }
 
-  public Position(int left, int right, int top, int bottom, int width, int heigth) {
+  public Position(int left, int right, int top, int bottom, int width, int height) {
     this.left = left;
     this.right = right;
     this.top = top;
     this.bottom = bottom;
     this.width = width;
-    this.heigth = heigth;
+    this.height = height;
   }
 
   protected Position(Parcel in) {
@@ -42,7 +42,7 @@ public class Position implements Parcelable {
     this.top = in.readInt();
     this.bottom = in.readInt();
     this.width = in.readInt();
-    this.heigth = in.readInt();
+    this.height = in.readInt();
   }
 
   public static Position from(View view) {
@@ -60,7 +60,7 @@ public class Position implements Parcelable {
     dest.writeInt(this.top);
     dest.writeInt(this.bottom);
     dest.writeInt(this.width);
-    dest.writeInt(this.heigth);
+    dest.writeInt(this.height);
   }
 
   @Override public String toString() {
@@ -70,7 +70,7 @@ public class Position implements Parcelable {
         ", top=" + top +
         ", bottom=" + bottom +
         ", width=" + width +
-        ", heigth=" + heigth +
+        ", height=" + height +
         '}';
   }
 }
