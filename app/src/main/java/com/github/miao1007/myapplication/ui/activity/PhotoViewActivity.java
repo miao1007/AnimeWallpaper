@@ -79,8 +79,8 @@ public class PhotoViewActivity extends AppCompatActivity {
               //Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
               //String mime = "image/*";
               //intent.setDataAndType(uri, mime);
-              //startActivity(intent);
-              //PhotoViewActivity.this.startActivity(intent);
+              //startRefreshActivity(intent);
+              //PhotoViewActivity.this.startRefreshActivity(intent);
               WallpaperManager wm = WallpaperManager.getInstance(PhotoViewActivity.this);
               try {
                 wm.setBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));

@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity
   @Bind(R.id.iv_card_search) ImageView mIvCardSearch;
   private Map<String, Object> query = new HashMap<>(4);
 
-  static void startActivity(Context context, String query) {
+  public static void startRefreshActivity(Context context, String query) {
     Intent intent = new Intent(context, MainActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
     intent.putExtra(EXTRA_MAP, query);

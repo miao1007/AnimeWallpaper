@@ -19,7 +19,7 @@ public final class StatusbarUtils {
 
   static final String TAG = "StatusbarUtils";
   boolean lightStatusBar;
-  //透明且背景不占用控件的statusbar，这里姑且叫做沉浸
+  //透明且背景不占用控件的statusbar，这里估且叫做沉浸
   boolean transparentStatusbar;
   Activity activity;
 
@@ -53,7 +53,7 @@ public final class StatusbarUtils {
    *
    * @return px
    */
-  public static int getStatusBarHeight(Context context) {
+  public static int getStatusBarHeightPx(Context context) {
     Context appContext = context.getApplicationContext();
     int result = 0;
     int resourceId =
@@ -61,7 +61,6 @@ public final class StatusbarUtils {
     if (resourceId > 0) {
       result = appContext.getResources().getDimensionPixelSize(resourceId);
     }
-    Log.d("ScreenUtils", result + "");
     return result;
   }
 

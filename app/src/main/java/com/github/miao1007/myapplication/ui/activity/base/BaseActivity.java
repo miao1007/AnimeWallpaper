@@ -9,7 +9,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Window;
 import android.view.WindowManager;
-import com.github.miao1007.myapplication.utils.ScreenUtils;
+import com.github.miao1007.myapplication.utils.StatusbarUtils;
 import com.github.miao1007.myapplication.utils.animation.AnimateUtils;
 
 /**
@@ -43,7 +43,7 @@ public class BaseActivity extends ActionBarActivity {
 
     //compat for lower API 20
     if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-      int statusBarHeight = ScreenUtils.getStatusBarHeight(this);
+      int statusBarHeight = StatusbarUtils.getStatusBarHeightPx(this);
       mToolbar.setPadding(0, statusBarHeight, 0, 0);
       w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
           WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

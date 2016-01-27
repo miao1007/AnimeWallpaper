@@ -18,4 +18,28 @@
     <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
   </style>
 
+
+
+  <style name="BottomDialog" parent="Theme.AppCompat.Light.Dialog">
+    <item name="android:windowTitleStyle">@null</item>
+    <item name="android:windowBackground">@null</item>
+    <item name="android:backgroundDimAmount">0</item>
+    <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+  </style>
+
+  <style name="LinkPreviewDialog" parent="BottomDialog">
+    <item name="android:backgroundDimAmount">0.5</item>
+    <item name="android:colorControlNormal">@android:color/white</item>
+    <item name="colorControlNormal">@android:color/white</item>
+    <item name="colorControlActivated">@color/trans_black_bg</item>
+    <item name="colorControlHighlight">@color/trans_black_bg</item>
+  </style>
+
+
+  <!-- For dialog Animation -->
+  <style name="DialogAnimation">
+    <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+    <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+  </style>
+
 </resources>

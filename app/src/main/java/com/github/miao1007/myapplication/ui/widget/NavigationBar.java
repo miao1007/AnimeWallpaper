@@ -124,7 +124,7 @@ public class NavigationBar extends RelativeLayout {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
       return;
     }
-    int height = StatusbarUtils.getStatusBarHeight(this.getContext());
+    int height = StatusbarUtils.getStatusBarHeightPx(this.getContext());
     //en.. it's a hard code
     //getChildAt(0) is define as title, so always paddingTop = 0
     if (getChildAt(0) != null
@@ -148,7 +148,7 @@ public class NavigationBar extends RelativeLayout {
   //  if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
   //    return;
   //  }
-  //  int height = StatusbarUtils.getStatusBarHeight(this.getContext());
+  //  int height = StatusbarUtils.getStatusBarHeightPx(this.getContext());
   //  //en.. it's a hard code
   //  //getChildAt(0) is define as title, so always paddingTop = 0
   //  if (getChildAt(0) != null && getChildAt(0).getPaddingTop() < height) {
