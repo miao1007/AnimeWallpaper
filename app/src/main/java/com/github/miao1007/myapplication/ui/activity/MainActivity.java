@@ -22,8 +22,8 @@ import com.github.miao1007.myapplication.ui.adapter.CardAdapter;
 import com.github.miao1007.myapplication.ui.widget.NavigationBar;
 import com.github.miao1007.myapplication.ui.widget.Position;
 import com.github.miao1007.myapplication.utils.LogUtils;
-import com.github.miao1007.myapplication.utils.RetrofitUtils;
 import com.github.miao1007.myapplication.utils.StatusbarUtils;
+import com.github.miao1007.myapplication.utils.picasso.SquareUtils;
 import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.List;
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity
       query.put(ImageRepo.TAGS, ImageRepo.TAG_SAFE);
       query.put(ImageRepo.LIMIT, 10);
     }
-    RetrofitUtils.getCachedAdapter()
+    SquareUtils.getRetrofit()
         .create(ImageRepo.class)
         .getImageList(query)
         .subscribeOn(Schedulers.io())

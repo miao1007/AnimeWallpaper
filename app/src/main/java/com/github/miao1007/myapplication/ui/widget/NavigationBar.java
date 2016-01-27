@@ -26,15 +26,13 @@ import com.github.miao1007.myapplication.utils.picasso.Blur;
  */
 public class NavigationBar extends RelativeLayout {
 
+  static final String TAG = LogUtils.makeLogTag(NavigationBar.class);
   @Bind(R.id.internal_navi_title) TextView mNaviTitle;
   @Bind(R.id.internal_navi_progress) ProgressBar mProgress;
-
   View viewToBlur;
   Bitmap blurred;
   Bitmap scaleBitmap;
   Paint paint;
-
-  static final String TAG = LogUtils.makeLogTag(NavigationBar.class);
   @Bind(R.id.internal_navi_bg) ImageView mInternalNaviBg;
   private boolean isLoading = false;
 
@@ -49,6 +47,14 @@ public class NavigationBar extends RelativeLayout {
   public NavigationBar(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     initView(context);
+  }
+
+  public static Bitmap loadBitmapFromView(View v) {
+    Bitmap b = Bitmap.createBitmap(360, 640, Bitmap.Config.ARGB_8888);
+    Canvas c = new Canvas(b);
+    v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
+    v.draw(c);
+    return b;
   }
 
   public void setProgress(boolean isLoading) {
@@ -69,7 +75,7 @@ public class NavigationBar extends RelativeLayout {
   }
 
   public void setTextColor(@ColorInt int color) {
-    Log.d(TAG,"setTextColor");
+    Log.d(TAG, "setTextColor");
     if (mNaviTitle != null) {
       mNaviTitle.setTextColor(color);
     }
@@ -87,7 +93,6 @@ public class NavigationBar extends RelativeLayout {
     paint.setFilterBitmap(true);
   }
 
-
   @Override protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
     viewToBlur = null;
@@ -95,15 +100,6 @@ public class NavigationBar extends RelativeLayout {
       blurred.recycle();
       blurred = null;
     }
-  }
-
-
-  public static Bitmap loadBitmapFromView(View v) {
-    Bitmap b = Bitmap.createBitmap( 360, 640, Bitmap.Config.ARGB_8888);
-    Canvas c = new Canvas(b);
-    v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
-    v.draw(c);
-    return b;
   }
 
   public void onUpdate() {

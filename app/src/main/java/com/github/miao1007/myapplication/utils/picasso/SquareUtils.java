@@ -3,6 +3,7 @@ package com.github.miao1007.myapplication.utils.picasso;
 import android.content.Context;
 import android.support.annotation.WorkerThread;
 import com.github.miao1007.myapplication.support.GlobalContext;
+import com.github.miao1007.myapplication.support.api.konachan.ImageRepo;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import java.io.File;
@@ -18,9 +19,13 @@ import okio.BufferedSource;
 import okio.ForwardingSource;
 import okio.Okio;
 import okio.Source;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Retrofit;
+import retrofit2.RxJavaCallAdapterFactory;
 
 /**
  * Created by leon on 1/26/16.
+ * Singleton Utils
  */
 public class SquareUtils {
 
@@ -28,7 +33,12 @@ public class SquareUtils {
 
   static private OkHttpClient client;
 
-  static public synchronized OkHttpClient getClient(final ProgressListener listener) {
+  static private Retrofit retrofit;
+
+  /**
+   * Not singleton
+   */
+  static public OkHttpClient getProgressBarClient(final ProgressListener listener) {
 
     return getClient().newBuilder().addNetworkInterceptor(new Interceptor() {
       @Override public Response intercept(Chain chain) throws IOException {
@@ -64,20 +74,15 @@ public class SquareUtils {
   }
 
   /**
-   * Download Big Image only
+   * Download Big Image only, Not singleton but shared cache
    */
   static public Picasso getProgressPicasso(Context context, ProgressListener listener) {
 
-    if (picasso == null) {
-      synchronized (SquareUtils.class) {
-        picasso =
-            new Picasso.Builder(context).downloader(new OkHttp3Downloader(getClient(listener)))
-                .loggingEnabled(true)
-                .memoryCache(com.squareup.picasso.Cache.NONE)
-                .build();
-      }
-    }
-    return picasso;
+    return new Picasso.Builder(context).downloader(
+        new OkHttp3Downloader(getProgressBarClient(listener)))
+        .loggingEnabled(true)
+        .memoryCache(com.squareup.picasso.Cache.NONE)
+        .build();
   }
 
   public interface ProgressListener {
@@ -124,5 +129,18 @@ public class SquareUtils {
         }
       };
     }
+  }
+
+  public static Retrofit getRetrofit() {
+    if (retrofit == null) {
+      synchronized (SquareUtils.class) {
+        retrofit = new Retrofit.Builder().baseUrl(ImageRepo.END_POINT_CDN)
+            .client(getClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+            .build();
+      }
+    }
+    return retrofit;
   }
 }

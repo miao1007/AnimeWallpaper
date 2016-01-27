@@ -85,7 +85,7 @@
           android:layout_height="wrap_content">
 
         <ImageView
-            android:src="@drawable/download"
+            android:src="@drawable/download_128"
             android:layout_weight="1"
             android:layout_gravity="center_horizontal"
             android:layout_width="64dp"
@@ -108,7 +108,7 @@
           android:layout_height="wrap_content">
 
         <ImageView
-            android:src="@drawable/download"
+            android:src="@drawable/download_128"
             android:layout_weight="1"
             android:layout_gravity="center_horizontal"
             android:layout_width="64dp"
@@ -131,7 +131,7 @@
           android:layout_height="wrap_content">
 
         <ImageView
-            android:src="@drawable/download"
+            android:src="@drawable/download_128"
             android:layout_weight="1"
             android:layout_gravity="center_horizontal"
             android:layout_width="64dp"
