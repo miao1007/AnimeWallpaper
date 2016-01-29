@@ -52,12 +52,10 @@ public class DetailedActivity extends AppCompatActivity {
   private static final String EXTRA_POSITION = "EXTRA_POSITION";
   private static final String FRAGMENT_TAG = "FRAGMENT_TAG";
 
-
   public static final String TAG = LogUtils.makeLogTag(DetailedActivity.class);
 
   @Bind(R.id.iv_detailed_card) ImageView ivDetailedCard;
   @Bind(R.id.blur_bg) ImageView ivDetailedCardBlur;
-  @Bind(R.id.image_holder) LinearLayout mImageHolder;
 
   ImageResult imageResult;
   @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
@@ -78,8 +76,6 @@ public class DetailedActivity extends AppCompatActivity {
     return intent.getParcelableExtra(EXTRA_POSITION);
   }
 
-
-
   @OnClick(R.id.detailed_back) void back() {
     onBackPressed();
   }
@@ -90,7 +86,6 @@ public class DetailedActivity extends AppCompatActivity {
       ActionSheet actionSheet = ActionSheet.newInstance(tilte, imageResult.getTags().split(" "));
       actionSheet.show(getSupportFragmentManager(), FRAGMENT_TAG);
     }
-
   }
 
   @OnClick(R.id.iv_detailed_card) void download(final ImageView v) {
@@ -168,12 +163,12 @@ public class DetailedActivity extends AppCompatActivity {
                       }
 
                       @Override public void onAnimationEnd(Animator animation) {
-                            AnimateUtils.animateViewBitmap(ivDetailedCardBlur, bitmap);
-                          }
+                        AnimateUtils.animateViewBitmap(ivDetailedCardBlur, bitmap);
+                      }
 
                       @Override public void onAnimationCancel(Animator animation) {
 
-                          }
+                      }
 
                       @Override public void onAnimationRepeat(Animator animation) {
 
@@ -188,10 +183,9 @@ public class DetailedActivity extends AppCompatActivity {
   /**
    * 动画封装，千万不要剁手改正负
    */
-  void anim(final Position position, final boolean isEnter, final Animator.AnimatorListener listener,
-      View... views) {
-    if (isPlaying){
-      listener.onAnimationEnd(null);
+  void anim(final Position position, final boolean isEnter,
+      final Animator.AnimatorListener listener, View... views) {
+    if (isPlaying) {
       return;
     }
     //记住括号哦，我这里调试了一小时
@@ -201,7 +195,7 @@ public class DetailedActivity extends AppCompatActivity {
     float[] fromDelta = new float[2];
 
     View view = views[0];
-    float delt_Y=position.top ;
+    float delt_Y = position.top;
     float delt_X = position.left - view.getLeft();
     if (isEnter) {
       fromDelta[0] = 1f;
@@ -227,11 +221,10 @@ public class DetailedActivity extends AppCompatActivity {
     ObjectAnimator scale_icn_Y =
         ObjectAnimator.ofFloat(views[1], View.SCALE_Y, fromDelta[1], toDelta[1]);
 
-
     AnimatorSet set = new AnimatorSet();
 
     set.playTogether(trans_Y, scale_X, scale_Y);
-    set.playTogether( scale_icn_X, scale_icn_Y);
+    set.playTogether(scale_icn_X, scale_icn_Y);
     set.setDuration(400);
     set.addListener(new Animator.AnimatorListener() {
       @Override public void onAnimationStart(Animator animation) {
@@ -247,12 +240,10 @@ public class DetailedActivity extends AppCompatActivity {
       @Override public void onAnimationCancel(Animator animation) {
         listener.onAnimationCancel(animation);
         isPlaying = false;
-
       }
 
       @Override public void onAnimationRepeat(Animator animation) {
         listener.onAnimationRepeat(animation);
-
       }
     });
     set.setInterpolator(new AccelerateInterpolator());

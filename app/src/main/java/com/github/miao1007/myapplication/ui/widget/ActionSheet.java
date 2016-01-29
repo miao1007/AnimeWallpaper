@@ -1,8 +1,10 @@
 package com.github.miao1007.myapplication.ui.widget;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -53,8 +55,7 @@ public class ActionSheet extends SwipeableBottomDialog {
     Log.d(TAG, title + "/" + tags.toString());
     View actionsheet = inflater.inflate(R.layout.internal_actionsheet, container, false);
     ListView listView = ((ListView) actionsheet.findViewById(R.id.internal_actionsheet_list));
-    listView.setAdapter(
-        new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, tags));
+    listView.setAdapter(new BlueAdapter(getContext(), android.R.layout.simple_list_item_1, tags));
     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MainActivity.startRefreshActivity(getContext(), tags.get(position));
@@ -64,7 +65,26 @@ public class ActionSheet extends SwipeableBottomDialog {
     textView.setText(title);
     TextView cancel = ((TextView) actionsheet.findViewById(R.id.internal_sheet_cancel));
     View view = actionsheet.findViewById(R.id.internal_actionsheet_bg);
+    listView.setOnTouchListener(new ListView.OnTouchListener() {
+      @Override public boolean onTouch(View v, MotionEvent event) {
+        int action = event.getAction();
+        switch (action) {
+          case MotionEvent.ACTION_DOWN:
+            // Disallow ScrollView to intercept touch events.
+            v.getParent().requestDisallowInterceptTouchEvent(true);
+            break;
 
+          case MotionEvent.ACTION_UP:
+            // Allow ScrollView to intercept touch events.
+            v.getParent().requestDisallowInterceptTouchEvent(false);
+            break;
+        }
+
+        // Handle ListView touch events.
+        v.onTouchEvent(event);
+        return true;
+      }
+    });
     view.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         ActionSheet.this.dismiss();
@@ -76,5 +96,29 @@ public class ActionSheet extends SwipeableBottomDialog {
       }
     });
     return actionsheet;
+  }
+
+  static class BlueAdapter extends ArrayAdapter {
+
+    public BlueAdapter(Context context, int resource) {
+      super(context, resource);
+    }
+
+    public BlueAdapter(Context context, int resource, List objects) {
+      super(context, resource, objects);
+    }
+
+    public BlueAdapter(Context context, int resource, Object[] objects) {
+      super(context, resource, objects);
+    }
+
+    @Override public View getView(int position, View convertView, ViewGroup parent) {
+      View view = super.getView(position, convertView, parent);
+      if (view instanceof TextView) {
+        ((TextView) view).setTextColor(
+            getContext().getResources().getColor(R.color.ios_internal_blue));
+      }
+      return view;
+    }
   }
 }

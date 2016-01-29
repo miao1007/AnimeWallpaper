@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <color name="internal_search_blue">#007aff</color>
+  <color name="internal_search_red">#ff3b30</color>
+  <color name="internal_search_grey">#8e8e93</color>
+  <color name="internal_search_inactive">#e4e4e4</color>
+
+</resources>

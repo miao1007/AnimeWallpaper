@@ -1,0 +1,5 @@
+<resources>
+  <dimen name="internal_searchbar_textsize">14sp</dimen>
+  <dimen name="internal_searchbar_radius">8dp</dimen>
+
+</resources>

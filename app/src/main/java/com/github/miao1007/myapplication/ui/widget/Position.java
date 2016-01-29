@@ -46,6 +46,7 @@ public class Position implements Parcelable {
   }
 
   public static Position from(View view) {
+
     return new Position(view.getLeft(), view.getRight(), view.getTop(), view.getBottom(),
         view.getWidth(), view.getHeight());
   }

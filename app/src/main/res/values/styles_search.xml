@@ -1,0 +1,10 @@
+<resources>
+
+
+  <style name="InternalSearchEditTextTheme">
+    <item name="colorControlNormal">@color/internal_search_grey</item>
+    <item name="colorControlActivated">@color/internal_search_grey</item>
+    <item name="colorControlHighlight">@color/internal_search_grey</item>
+  </style>
+
+</resources>

@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize">
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:layout_height="wrap_content">
 
 
   <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
       android:layout_width="match_parent"
-      android:layout_margin="8dp"
-      android:layout_height="match_parent"
-      android:background="@drawable/internal_bg_r_8">
-
-    <TextView android:layout_centerVertical="true" android:layout_width="wrap_content"
-        android:layout_centerInParent="true"
-        android:id="@+id/internal_tv_search"
-        android:text="@android:string/search_go"
-        android:textColor="#8e8e93"
-        android:layout_height="wrap_content" android:drawableLeft="@drawable/search_icon"/>
-
+      android:layout_height="40dp"
+      android:id="@+id/internal_rv_holder"
+      android:background="@drawable/internal_search_shape_bg_left_8"
+      android:layout_toLeftOf="@+id/internal_vs_cancel"
+      android:layout_toStartOf="@+id/internal_vs_cancel">
 
     <ImageView android:layout_alignParentRight="true"
         android:visibility="gone"
@@ -27,4 +24,30 @@
         android:src="@drawable/clear"/>
 
   </RelativeLayout>
-</FrameLayout>
+
+
+  <include layout="@layout/internal_search_icon" android:layout_height="20dp"
+      android:gravity="center_horizontal"
+      android:layout_centerInParent="true"
+      android:layout_width="wrap_content"/>
+
+  <com.github.miao1007.myapplication.ui.widget.ViewSwitcher
+      android:layout_width="80dp"
+      app:vsReserve="@dimen/internal_searchbar_radius"
+      android:layout_alignParentRight="true"
+      android:layout_height="40dp"
+      android:id="@+id/internal_vs_cancel" android:layout_alignParentTop="true">
+
+
+    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+        android:gravity="center"
+        android:textColor="@color/internal_search_blue"
+        android:textSize="@dimen/internal_searchbar_textsize"
+        android:text="@android:string/cancel"/>
+
+
+    <View android:layout_width="match_parent" android:layout_height="match_parent"
+        android:background="@drawable/internal_search_shape_bg_right_8"/>
+
+  </com.github.miao1007.myapplication.ui.widget.ViewSwitcher>
+</RelativeLayout>

@@ -1,20 +1,16 @@
 package com.github.miao1007.myapplication.ui.activity;
 
-import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresPermission;
 import android.support.annotation.WorkerThread;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
-import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -22,6 +18,7 @@ import com.github.miao1007.myapplication.R;
 import com.github.miao1007.myapplication.ui.widget.Position;
 import com.github.miao1007.myapplication.utils.LogUtils;
 import com.github.miao1007.myapplication.utils.StatusbarUtils;
+import com.github.miao1007.myapplication.utils.WallpaperUtils;
 import com.github.miao1007.myapplication.utils.picasso.SquareUtils;
 import com.squareup.picasso.Callback;
 import java.io.File;
@@ -53,8 +50,6 @@ public class PhotoViewActivity extends AppCompatActivity {
     return intent.getStringExtra(EXTRA_URL);
   }
 
-
-  @RequiresPermission(android.Manifest.permission.SET_WALLPAPER)
   @OnClick(R.id.photoview_iv_setwallpaper) void photoview_iv_setwallpaper() {
     Request request = new Request.Builder().cacheControl(CacheControl.FORCE_CACHE)
         .url(getUrl(getIntent()))
@@ -75,19 +70,7 @@ public class PhotoViewActivity extends AppCompatActivity {
           sink.close();
           new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override public void run() {
-              //Uri uri = Uri.fromFile(file);
-              //Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
-              //String mime = "image/*";
-              //intent.setDataAndType(uri, mime);
-              //startRefreshActivity(intent);
-              //PhotoViewActivity.this.startRefreshActivity(intent);
-              WallpaperManager wm = WallpaperManager.getInstance(PhotoViewActivity.this);
-              try {
-                wm.setBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));
-              } catch (IOException e) {
-                Toast.makeText(PhotoViewActivity.this, "Cannot set image as wallpaper",
-                    Toast.LENGTH_SHORT).show();
-              }
+              WallpaperUtils.setWallpaper(PhotoViewActivity.this, file);
             }
           });
         } catch (IOException e) {

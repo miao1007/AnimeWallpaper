@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity
   boolean isLoadingMore;
   @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
   @Bind(R.id.rv_frag_card) RecyclerView mRvFragCard;
-  @Bind(R.id.iv_card_search) ImageView mIvCardSearch;
+  @Bind(R.id.iv_settings) ImageView mIvCardSearch;
   private Map<String, Object> query = new HashMap<>(4);
 
   public static void startRefreshActivity(Context context, String query) {

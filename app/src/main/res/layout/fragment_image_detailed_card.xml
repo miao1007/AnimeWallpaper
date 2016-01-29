@@ -21,7 +21,7 @@
   <LinearLayout android:layout_width="match_parent"
       android:orientation="vertical"
       android:id="@+id/image_holder"
-      android:background="#7f5a595b"
+      android:background="#a7aeaeae"
       android:layout_height="match_parent">
     <!--navigationbar 4x13 = 52-->
 
@@ -67,84 +67,35 @@
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"/>
 
+
     <LinearLayout
         android:orientation="horizontal"
-        android:weightSum="3"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="24dp"
         android:id="@+id/ll_detailed_downloads"
-        android:gravity="bottom"
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-      <LinearLayout android:layout_width="wrap_content"
-          android:orientation="vertical"
-          android:id="@+id/ll_detailed_download_lq"
 
-          android:layout_weight="1"
-          android:background="?attr/selectableItemBackground"
-          android:layout_height="wrap_content">
 
-        <ImageView
-            android:src="@drawable/download_128"
-            android:layout_weight="1"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-        />
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center_horizontal"
-            android:text="LQ"/>
+      <ImageView
+          android:src="@drawable/wallpaper_96"
+          android:layout_gravity="center_horizontal"
+          android:layout_width="@dimen/detailed_iv_size"
+          android:layout_height="@dimen/detailed_iv_size"
+      />
 
-      </LinearLayout>
-      <LinearLayout android:layout_width="wrap_content"
-          android:orientation="vertical"
-          android:layout_weight="1"
-          android:id="@+id/ll_detailed_download_hq"
+      <ImageView
+          android:src="@drawable/download_96"
+          android:layout_gravity="center_horizontal"
+          android:layout_width="@dimen/detailed_iv_size"
+          android:layout_height="@dimen/detailed_iv_size"
+      />
 
-          android:background="?attr/selectableItemBackground"
-
-          android:layout_height="wrap_content">
-
-        <ImageView
-            android:src="@drawable/download_128"
-            android:layout_weight="1"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-        />
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center_horizontal"
-            android:text="HQ"/>
-
-      </LinearLayout>
-      <LinearLayout android:layout_width="wrap_content"
-          android:orientation="vertical"
-          android:layout_weight="1"
-          android:id="@+id/ll_detailed_download_uhq"
-
-          android:background="?attr/selectableItemBackground"
-
-          android:layout_height="wrap_content">
-
-        <ImageView
-            android:src="@drawable/download_128"
-            android:layout_weight="1"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-        />
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center_horizontal"
-            android:text="UHQ"/>
-
-      </LinearLayout>
-
+      <ImageView
+          android:src="@drawable/share_96"
+          android:layout_gravity="center_horizontal"
+          android:layout_width="@dimen/detailed_iv_size"
+          android:layout_height="@dimen/detailed_iv_size"
+      />
 
     </LinearLayout>
 
