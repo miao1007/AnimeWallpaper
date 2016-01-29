@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.miao1007.myapplication">
+    package="com.github.miao1007.animewallpaper">
 
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -31,10 +31,7 @@
         android:label="@string/title_activity_detailed"
         android:theme="@style/DetailedTheme">
     </activity>
-    <activity
-        android:name=".ui.activity.SettingsActivity"
-        android:label="@string/title_activity_settings">
-    </activity>
+
     <activity
         android:name=".ui.activity.PhotoViewActivity"
         android:theme="@style/DetailedTheme"/>

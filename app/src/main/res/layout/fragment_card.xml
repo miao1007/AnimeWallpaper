@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
 
-  <com.github.miao1007.myapplication.ui.widget.NavigationBar android:layout_width="match_parent"
+  <com.github.miao1007.animewallpaper.ui.widget.NavigationBar android:layout_width="match_parent"
       android:id="@+id/navigation_bar"
       android:elevation="4dp"
       android:background="?attr/colorPrimary"
@@ -20,7 +20,7 @@
         android:scaleType="fitXY"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"/>
-  </com.github.miao1007.myapplication.ui.widget.NavigationBar>
+  </com.github.miao1007.animewallpaper.ui.widget.NavigationBar>
 
 
   <!--framelayout-->
@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
       <!--you MUST set background before adding elevation-->
-      <com.github.miao1007.myapplication.ui.widget.SearchBar android:layout_width="match_parent"
+      <com.github.miao1007.animewallpaper.ui.widget.SearchBar android:layout_width="match_parent"
           app:layout_scrollFlags="scroll|snap"
 
           android:layout_height="54dp"/>

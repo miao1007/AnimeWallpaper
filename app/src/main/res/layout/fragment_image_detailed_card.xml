@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.github.miao1007.myapplication.ui.activity.DetailedActivity"
+    tools:context="com.github.miao1007.animewallpaper.ui.activity.DetailedActivity"
 >
 
 
@@ -25,7 +25,7 @@
       android:layout_height="match_parent">
     <!--navigationbar 4x13 = 52-->
 
-    <com.github.miao1007.myapplication.ui.widget.NavigationBar android:layout_width="match_parent"
+    <com.github.miao1007.animewallpaper.ui.widget.NavigationBar android:layout_width="match_parent"
         android:id="@+id/navigation_bar"
         android:background="?attr/selectableItemBackground"
         android:layout_height="?attr/actionBarSize">
@@ -56,7 +56,7 @@
           android:layout_height="?attr/actionBarSize"/>
 
 
-    </com.github.miao1007.myapplication.ui.widget.NavigationBar>
+    </com.github.miao1007.animewallpaper.ui.widget.NavigationBar>
 
     <ImageView
         xmlns:android="http://schemas.android.com/apk/res/android"

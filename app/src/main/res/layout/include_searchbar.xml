@@ -31,7 +31,7 @@
       android:layout_centerInParent="true"
       android:layout_width="wrap_content"/>
 
-  <com.github.miao1007.myapplication.ui.widget.ViewSwitcher
+  <com.github.miao1007.animewallpaper.ui.widget.ViewSwitcher
       android:layout_width="80dp"
       app:vsReserve="@dimen/internal_searchbar_radius"
       android:layout_alignParentRight="true"
@@ -49,5 +49,5 @@
     <View android:layout_width="match_parent" android:layout_height="match_parent"
         android:background="@drawable/internal_search_shape_bg_right_8"/>
 
-  </com.github.miao1007.myapplication.ui.widget.ViewSwitcher>
+  </com.github.miao1007.animewallpaper.ui.widget.ViewSwitcher>
 </RelativeLayout>
