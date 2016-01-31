@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="horizontal"
     android:padding="8dp"
+    android:id="@+id/internal_search"
     android:layout_height="wrap_content">
 
 
@@ -28,6 +29,8 @@
 
   <include layout="@layout/internal_search_icon" android:layout_height="20dp"
       android:gravity="center_horizontal"
+      android:clipChildren="false"
+      android:clipToPadding="false"
       android:layout_centerInParent="true"
       android:layout_width="wrap_content"/>
 

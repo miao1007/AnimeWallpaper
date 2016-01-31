@@ -46,7 +46,7 @@ public class NavigationBar extends RelativeLayout {
 
   public NavigationBar(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    initView(context);
+    initView();
   }
 
   public static Bitmap loadBitmapFromView(View v) {
@@ -85,12 +85,19 @@ public class NavigationBar extends RelativeLayout {
    * Create a new relativelayout and inflate xml in it,
    * remember use merge instead of RelativeLayout
    */
-  private void initView(Context context) {
-    View.inflate(context, R.layout.internal_navigationbar, this);  //correct way to inflate..
+  private void initView() {
+    View.inflate(getContext(), R.layout.internal_navigationbar, this);  //correct way to inflate..
     ButterKnife.bind(this);
-    paint = new Paint();
-    paint.setAntiAlias(true);
-    paint.setFilterBitmap(true);
+    post(new Runnable() {
+      @Override public void run() {
+        if (StatusbarUtils.isLessKitkat()) {
+          return;
+        }
+        int height = StatusbarUtils.getStatusBarHeightPx(getContext());
+        setPadding(getPaddingLeft(), height, getPaddingRight(), getPaddingBottom());
+        getLayoutParams().height += height;
+      }
+    });
   }
 
   @Override protected void onDetachedFromWindow() {
@@ -125,22 +132,23 @@ public class NavigationBar extends RelativeLayout {
       return;
     }
     int height = StatusbarUtils.getStatusBarHeightPx(this.getContext());
-    //en.. it's a hard code
-    //getChildAt(0) is define as title, so always paddingTop = 0
-    if (getChildAt(0) != null
-        && ((MarginLayoutParams) getChildAt(0).getLayoutParams()).topMargin < height) {
-      getLayoutParams().height += height;
-    } else {
-      //have set padding
-      return;
-    }
-    for (int i = 0; i < getChildCount(); i++) {
-      //Log.d(TAG, "before=" + getChildAt(i).toString());
-      if (getChildAt(i) != null) {
-        ((MarginLayoutParams) getChildAt(i).getLayoutParams()).setMargins(0, height, 0, 0);
-      }
-      //Log.d(TAG, "after=" + getChildAt(i).toString());
-    }
+    ////en.. it's a hard code
+    ////getChildAt(0) is define as title, so always paddingTop = 0
+    //if (getChildAt(0) != null
+    //    && ((MarginLayoutParams) getChildAt(0).getLayoutParams()).topMargin < height) {
+    //  getLayoutParams().height += height;
+    //} else {
+    //  //have set padding
+    //  return;
+    //}
+    //for (int i = 0; i < getChildCount(); i++) {
+    //  //Log.d(TAG, "before=" + getChildAt(i).toString());
+    //  if (getChildAt(i) != null) {
+    //    ((MarginLayoutParams) getChildAt(i).getLayoutParams()).setMargins(0, height, 0, 0);
+    //  }
+    //  //Log.d(TAG, "after=" + getChildAt(i).toString());
+    //}
+
   }
 
   //@Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

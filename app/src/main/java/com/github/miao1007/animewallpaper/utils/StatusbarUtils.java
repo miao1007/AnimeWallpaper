@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,15 +23,22 @@ public final class StatusbarUtils {
   //透明且背景不占用控件的statusbar，这里估且叫做沉浸
   boolean transparentStatusbar;
   Activity activity;
+  View actionBarView;
 
-  private  StatusbarUtils(Activity activity, boolean lightStatusBar, boolean transparentStatusbar) {
+  private StatusbarUtils(Activity activity, boolean lightStatusBar, boolean transparentStatusbar,
+      View actionBarView) {
     this.lightStatusBar = lightStatusBar;
     this.transparentStatusbar = transparentStatusbar;
     this.activity = activity;
+    this.actionBarView = actionBarView;
   }
 
   public static boolean isKitkat() {
     return Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT;
+  }
+
+  public static boolean isLessKitkat() {
+    return Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT;
   }
 
   public static boolean isMoreLollipop() {
@@ -63,6 +72,20 @@ public final class StatusbarUtils {
     return result;
   }
 
+  public void processActionBar(final View v) {
+    if (v == null) {
+      return;
+    }
+    v.post(new Runnable() {
+      @Override public void run() {
+        if (!transparentStatusbar) return;
+        v.setPadding(v.getPaddingLeft(), getStatusBarHeightPx(v.getContext()), v.getPaddingRight(),
+            v.getPaddingBottom());
+        v.getLayoutParams().height += getStatusBarHeightPx(v.getContext());
+      }
+    });
+  }
+
   /**
    * 调用私有API处理颜色
    */
@@ -83,6 +106,7 @@ public final class StatusbarUtils {
     }
     //调用私有API处理颜色
     processPrivateAPI();
+    processActionBar(actionBarView);
   }
 
   /**
@@ -167,8 +191,14 @@ public final class StatusbarUtils {
     private Activity activity;
     private boolean lightStatusBar = false;
     private boolean transparentStatusbar = false;
+    private View actionBarView;
 
-    Builder setActivity(Activity activity) {
+    public Builder setActionbarView(@Nullable View actionbarView) {
+      this.actionBarView = actionbarView;
+      return this;
+    }
+
+    Builder setActivity(@NonNull Activity activity) {
       this.activity = activity;
       return this;
     }
@@ -184,7 +214,7 @@ public final class StatusbarUtils {
     }
 
     public void process() {
-      new StatusbarUtils(activity, lightStatusBar, transparentStatusbar).process();
+      new StatusbarUtils(activity, lightStatusBar, transparentStatusbar, actionBarView).process();
     }
   }
 }

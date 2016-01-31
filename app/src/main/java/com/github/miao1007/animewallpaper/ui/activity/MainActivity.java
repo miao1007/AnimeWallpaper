@@ -15,15 +15,16 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.github.miao1007.animewallpaper.R;
+import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
+import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
 import com.github.miao1007.animewallpaper.ui.adapter.BaseAdapter;
 import com.github.miao1007.animewallpaper.ui.adapter.CardAdapter;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
-import com.github.miao1007.animewallpaper.utils.LogUtils;
-import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
-import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
-import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
+import com.github.miao1007.animewallpaper.ui.widget.SearchBar;
+import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.StatusbarUtils;
+import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
 import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity
   @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
   @Bind(R.id.rv_frag_card) RecyclerView mRvFragCard;
   @Bind(R.id.iv_settings) ImageView mIvCardSearch;
+  @Bind(R.id.search_bar) SearchBar mSearchBar;
   private Map<String, Object> query = new HashMap<>(4);
 
   public static void startRefreshActivity(Context context, String query) {
@@ -60,9 +62,9 @@ public class MainActivity extends AppCompatActivity
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    StatusbarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(true).process();
     setContentView(R.layout.fragment_card);
     ButterKnife.bind(this);
+    StatusbarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(true).process();
     setUpList();
     String tag = parseIntent(getIntent());
     if (tag != null) {
@@ -168,6 +170,14 @@ public class MainActivity extends AppCompatActivity
     Log.d(TAG, "loadMore:" + query);
     query.put(ImageRepo.PAGE, page);
     loadPage(query);//这里多线程也要手动控制isLoadingMore
+  }
+
+  @Override public void onBackPressed() {
+    if (mSearchBar.isClosed()) {
+      super.onBackPressed();
+    } else {
+      mSearchBar.toggle();
+    }
   }
 }
 

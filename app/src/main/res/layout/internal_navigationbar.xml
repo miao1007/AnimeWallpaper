@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--navigationbar 4x13 = 52 it w/h will be override-->
-<RelativeLayout
+<merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize">
@@ -35,4 +35,4 @@
       android:indeterminateDrawable="@drawable/progress_indicator"/>
 
 
-</RelativeLayout>
+</merge>
