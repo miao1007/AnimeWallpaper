@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:orientation="horizontal"
-    android:padding="8dp"
     android:id="@+id/internal_search"
+    android:layout_margin="8dp"
     android:layout_height="wrap_content">
 
 
@@ -18,21 +18,23 @@
       android:layout_toStartOf="@+id/internal_vs_cancel">
 
     <ImageView android:layout_alignParentRight="true"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:id="@+id/internal_iv_clear"
         android:layout_width="14dp" android:layout_height="14dp"
         android:layout_centerVertical="true"
         android:src="@drawable/clear"/>
 
+    <include layout="@layout/internal_search_icon" android:layout_height="20dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_gravity="center"
+        android:layout_marginRight="@dimen/internal_searchbar_radius"
+        android:layout_marginLeft="@dimen/internal_searchbar_radius"
+        android:layout_centerVertical="true"
+
+        android:layout_width="wrap_content" android:layout_toLeftOf="@+id/internal_iv_clear"
+        android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
   </RelativeLayout>
 
-
-  <include layout="@layout/internal_search_icon" android:layout_height="20dp"
-      android:gravity="center_horizontal"
-      android:clipChildren="false"
-      android:clipToPadding="false"
-      android:layout_centerInParent="true"
-      android:layout_width="wrap_content"/>
 
   <com.github.miao1007.animewallpaper.ui.widget.ViewSwitcher
       android:layout_width="80dp"
@@ -53,4 +55,5 @@
         android:background="@drawable/internal_search_shape_bg_right_8"/>
 
   </com.github.miao1007.animewallpaper.ui.widget.ViewSwitcher>
+
 </RelativeLayout>

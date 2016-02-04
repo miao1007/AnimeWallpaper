@@ -6,4 +6,8 @@
   <declare-styleable name="ViewSwitcher">
     <attr name="vsReserve" format="reference|dimension"/>
   </declare-styleable>
+
+  <declare-styleable name="SearchBar">
+    <attr name="sb_float_height" format="reference|dimension"/>
+  </declare-styleable>
 </resources>

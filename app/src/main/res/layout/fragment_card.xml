@@ -25,10 +25,10 @@
 
   <com.github.miao1007.animewallpaper.ui.widget.SearchBar android:layout_width="match_parent"
       app:layout_scrollFlags="scroll|snap"
-      android:clipChildren="false"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
       android:id="@+id/search_bar"
-      android:clipToPadding="false"
-      android:layout_height="54dp">
+      app:sb_float_height="?attr/actionBarSize"
+      android:layout_height="?attr/actionBarSize">
 
   </com.github.miao1007.animewallpaper.ui.widget.SearchBar>
 

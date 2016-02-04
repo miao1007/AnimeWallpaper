@@ -23,18 +23,17 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.bigkoo.alertview.AlertView;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
-import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
 import com.github.miao1007.animewallpaper.ui.widget.ActionSheet;
+import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.StatusbarUtils;
 import com.github.miao1007.animewallpaper.utils.animation.AnimateUtils;
 import com.github.miao1007.animewallpaper.utils.picasso.Blur;
+import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import rx.Observable;
@@ -61,7 +60,6 @@ public class DetailedActivity extends AppCompatActivity {
   @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
   @Bind(R.id.ll_detailed_downloads) LinearLayout mLlDetailedDownloads;
 
-  AlertView alertView;
   boolean isPlaying = false;
 
   public static void startActivity(Context context, Position position, Parcelable parcelable) {
@@ -251,10 +249,7 @@ public class DetailedActivity extends AppCompatActivity {
   }
 
   @Override public void onBackPressed() {
-    if (alertView != null && alertView.isShowing()) {
-      alertView.dismiss();
-      return;
-    }
+
     anim(getPosition(getIntent()), false, new Animator.AnimatorListener() {
       @Override public void onAnimationStart(Animator animation) {
         //mLlDetailedDownloads.animate().alpha(0f).setDuration(AnimateUtils.ANIM_DORITION).start();

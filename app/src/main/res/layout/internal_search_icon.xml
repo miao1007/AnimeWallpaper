@@ -3,6 +3,7 @@
     android:orientation="horizontal"
     android:id="@+id/internal_iv_search_icon"
     android:layout_width="match_parent"
+    android:background="@color/internal_search_red"
     android:layout_height="20dp">
 
   <ImageView android:layout_width="20dp" android:layout_height="20dp"
@@ -10,39 +11,19 @@
       android:src="@drawable/search_96" android:scaleType="fitXY"/>
 
 
-  <ViewSwitcher android:layout_width="wrap_content" android:layout_height="20dp"
-      android:id="@+id/internal_vs_text">
-
-    <!--default visible / next-->
-
-    <TextView android:layout_width="match_parent"
-        android:textSize="14sp"
-        android:visibility="invisible"
-        android:id="@+id/internal_tv_search"
-        android:maxLines="1"
-        android:gravity="center_vertical"
-        android:text="@android:string/search_go"
-        android:textColor="@color/internal_search_grey"
-        android:layout_height="20dp"/>
-
-
-    <!--default invisible / previous-->
-
-    <EditText
-        android:textSize="14sp"
-        android:textColorHint="@color/internal_search_grey"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:layout_width="match_parent"
-        android:singleLine="true"
-        android:theme="@style/InternalSearchEditTextTheme"
-        android:background="@android:color/transparent"
-        android:hint="@android:string/search_go"
-        android:id="@+id/internal_et_search"
-        android:textColor="@color/internal_search_grey"
-        android:layout_height="20dp"/>
-
-  </ViewSwitcher>
+  <EditText
+      android:textSize="14sp"
+      android:textColorHint="@color/internal_search_grey"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:layout_width="match_parent"
+      android:singleLine="true"
+      android:theme="@style/InternalSearchEditTextTheme"
+      android:background="@android:color/transparent"
+      android:hint="@android:string/search_go"
+      android:id="@+id/internal_et_search"
+      android:textColor="@color/internal_search_grey"
+      android:layout_height="20dp"/>
 
 
 </LinearLayout>

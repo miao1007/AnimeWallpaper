@@ -2,7 +2,12 @@
 
   <solid android:color="@color/internal_search_inactive"/>
 
+  <!--<padding android:left="@dimen/internal_searchbar_radius"-->
+      <!--android:top="@dimen/internal_searchbar_radius"-->
+      <!--android:bottom="@dimen/internal_searchbar_radius"-->
+      <!--android:right="@dimen/internal_searchbar_radius"/>-->
+
   <corners
-      android:bottomLeftRadius="8dp"
-      android:topLeftRadius="8dp"/>
+      android:bottomLeftRadius="@dimen/internal_searchbar_radius"
+      android:topLeftRadius="@dimen/internal_searchbar_radius"/>
 </shape>

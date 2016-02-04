@@ -6,9 +6,6 @@
     android:layout_height="?attr/actionBarSize">
                
 
-  <ImageView android:layout_width="match_parent" android:layout_height="match_parent"
-      android:id="@+id/internal_navi_bg"
-  />
 
   <!--Do not set padding on it, see {@code NavigationBar}-->
   <com.github.miao1007.animewallpaper.ui.widget.LobsterTextView android:layout_width="wrap_content"

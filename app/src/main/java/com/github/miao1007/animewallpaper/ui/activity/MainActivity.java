@@ -2,6 +2,7 @@ package com.github.miao1007.animewallpaper.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity
   boolean isLoadingMore;
   @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
   @Bind(R.id.rv_frag_card) RecyclerView mRvFragCard;
-  @Bind(R.id.iv_settings) ImageView mIvCardSearch;
+  @Bind(R.id.iv_settings) ImageView mIvCardSettings;
   @Bind(R.id.search_bar) SearchBar mSearchBar;
   private Map<String, Object> query = new HashMap<>(4);
 
@@ -82,7 +83,6 @@ public class MainActivity extends AppCompatActivity
     final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
     mRvFragCard.setLayoutManager(mLayoutManager);
     mRvFragCard.setAdapter(mAdapter);
-    mNavigationBar.setViewToBlur(mRvFragCard);
     mRvFragCard.addOnScrollListener(new RecyclerView.OnScrollListener() {
       @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
