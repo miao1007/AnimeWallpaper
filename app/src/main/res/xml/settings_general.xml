@@ -43,6 +43,7 @@
 
     </PreferenceScreen>
     <PreferenceScreen android:title="Feedback"
+        android:icon="@android:drawable/ic_menu_add"
         android:summary="miao1007@gmail.com">
       <intent
           android:action="android.intent.action.VIEW"

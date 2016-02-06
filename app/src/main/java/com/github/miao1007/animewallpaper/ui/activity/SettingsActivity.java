@@ -36,6 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
     PreferenceCompatFragment fragment = new PreferenceCompatFragment() {
       @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
           Bundle savedInstanceState) {
+        setTheme(android.R.style.Theme_DeviceDefault_Light_NoActionBar);
         View view = super.onCreateView(inflater, container, savedInstanceState);
         //Set night-mode or other UI changes
         view.setBackgroundDrawable(
