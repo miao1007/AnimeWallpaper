@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity
 
   public static void startRefreshActivity(Context context, String query) {
     Intent intent = new Intent(context, MainActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     intent.putExtra(EXTRA_MAP, query);
     context.startActivity(intent);
   }

@@ -83,6 +83,8 @@
           android:src="@drawable/wallpaper_96"
           android:layout_gravity="center_horizontal"
           android:layout_width="@dimen/detailed_iv_size"
+          android:id="@+id/image_setwallpaper"
+
           android:layout_height="@dimen/detailed_iv_size"
           android:layout_weight="1"/>
 
@@ -90,11 +92,13 @@
           android:src="@drawable/download_96"
           android:layout_gravity="center_horizontal"
           android:layout_width="@dimen/detailed_iv_size"
+          android:id="@+id/image_download"
           android:layout_height="@dimen/detailed_iv_size"
           android:layout_weight="1"/>
 
       <ImageView
           android:src="@drawable/share_96"
+          android:id="@+id/image_share"
           android:layout_gravity="center_horizontal"
           android:layout_width="@dimen/detailed_iv_size"
           android:layout_height="@dimen/detailed_iv_size"

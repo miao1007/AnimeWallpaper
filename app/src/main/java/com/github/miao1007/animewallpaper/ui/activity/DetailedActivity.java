@@ -12,11 +12,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.annotation.WorkerThread;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -41,10 +38,10 @@ import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
 import com.squareup.picasso.Callback;
 import java.io.File;
 import java.io.IOException;
-import okhttp3.CacheControl;
 import okhttp3.Request;
 import okhttp3.Response;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -94,35 +91,95 @@ public class DetailedActivity extends AppCompatActivity {
     }
   }
 
-  //@OnClick(R.id.ll_detailed_downloads)
-  void photoview_iv_setwallpaper() {
-    Request request = new Request.Builder().cacheControl(CacheControl.FORCE_CACHE)
-        .url(imageResult.getSampleUrl())
-        .get()
-        .build();
-    SquareUtils.getClient().newCall(request).enqueue(new okhttp3.Callback() {
-      @Override @WorkerThread public void onFailure(Request request, IOException e) {
+  @OnClick(R.id.image_setwallpaper) void image_setwallpaper() {
+    mNavigationBar.setProgressBar(true);
 
+    fileDownload().subscribe(new Subscriber<File>() {
+      @Override public void onCompleted() {
+        mNavigationBar.setProgressBar(false);
       }
 
-      @WorkerThread @Override public void onResponse(Response response) throws IOException {
-        final File file = FileUtils.saveBodytoFile(response.body(),
-            Uri.parse(imageResult.getSampleUrl()).getLastPathSegment());
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-          @Override public void run() {
-            WallpaperUtils.from(DetailedActivity.this).setWallpaper(file);
-          }
-        });
+      @Override public void onError(Throwable e) {
+        mNavigationBar.setProgressBar(false);
+      }
+
+      @Override public void onNext(File file) {
+        mNavigationBar.setProgressBar(false);
+        WallpaperUtils.from(DetailedActivity.this).setWallpaper(file);
       }
     });
   }
 
+  @OnClick(R.id.image_download) void image_download() {
+    mNavigationBar.setProgressBar(true);
+
+    fileDownload().subscribe(new Subscriber<File>() {
+      @Override public void onCompleted() {
+        mNavigationBar.setProgressBar(false);
+      }
+
+      @Override public void onError(Throwable e) {
+        mNavigationBar.setProgressBar(false);
+      }
+
+      @Override public void onNext(File file) {
+        mNavigationBar.setProgressBar(false);
+
+        final Intent shareIntent = new Intent(Intent.ACTION_VIEW);
+        shareIntent.setDataAndType(Uri.fromFile(file), "image/*");
+        startActivity(Intent.createChooser(shareIntent, "View image using"));
+      }
+    });
+  }
+
+  @OnClick(R.id.image_share) void image_share() {
+    fileDownload().subscribe(new Subscriber<File>() {
+      @Override public void onCompleted() {
+        mNavigationBar.setProgressBar(false);
+      }
+
+      @Override public void onError(Throwable e) {
+        mNavigationBar.setProgressBar(false);
+      }
+
+      @Override public void onNext(File file) {
+        mNavigationBar.setProgressBar(false);
+
+        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("image/*");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        startActivity(Intent.createChooser(shareIntent, "Share image using"));
+      }
+    });
+    //WallpaperUtils.from(DetailedActivity.this).setWallpaper(file);
+
+  }
+
+  //@OnClick(R.id.ll_detailed_downloads)
+  Observable<File> fileDownload() {
+    final Request request = new Request.Builder()
+        .url(imageResult.getSampleUrl())
+        .get()
+        .build();
+    return Observable.create(new Observable.OnSubscribe<Response>() {
+      @Override public void call(Subscriber<? super Response> subscriber) {
+        try {
+          subscriber.onNext(SquareUtils.getClient().newCall(request).execute());
+        } catch (IOException e) {
+          subscriber.onError(e);
+        }
+      }
+    }).map(new Func1<Response, File>() {
+      @Override public File call(Response response) {
+        return FileUtils.saveBodytoFile(response.body(),
+            Uri.parse(imageResult.getSampleUrl()).getLastPathSegment());
+          }
+    }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+  }
+
   @OnClick(R.id.iv_detailed_card) void download(final ImageView v) {
-    //final File file = getFilesDir();
-    //Log.d(TAG, file.toString());
-    //WallpaperSetActivity.startScaleActivity(v.getContext(), Position.from(v));
-    Toast.makeText(DetailedActivity.this, "iv_detailed_card", Toast.LENGTH_SHORT).show();
-    //DownloadService.startService(v.getContext(), imageResult.getSampleUrl());
+    Toast.makeText(DetailedActivity.this, "Starting preview large image", Toast.LENGTH_SHORT)
+        .show();
     mNavigationBar.setProgressBar(true);
     SquareUtils.getPicasso(this)
         .load(imageResult.getSampleUrl())
@@ -130,7 +187,6 @@ public class DetailedActivity extends AppCompatActivity {
         .into(v, new Callback() {
       @Override public void onSuccess() {
         mNavigationBar.setProgressBar(false);
-        photoview_iv_setwallpaper();
       }
 
       @Override public void onError() {

@@ -41,7 +41,7 @@
     <activity
         android:name=".ui.activity.WallpaperSetActivity"
         android:label="CropWallpaperCompat"
-        android:theme="@style/DetailedTheme">
+        android:theme="@style/Settings">
       <intent-filter>
         <action android:name="android.service.wallpaper.CROP_AND_SET_WALLPAPER"/>
         <category android:name="android.intent.category.DEFAULT"/>
