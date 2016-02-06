@@ -29,6 +29,8 @@ import retrofit2.RxJavaCallAdapterFactory;
  */
 public class SquareUtils {
 
+  static final String TAG = "SquareUtils";
+
   static private Picasso picasso;
 
   static private OkHttpClient client;
@@ -52,21 +54,24 @@ public class SquareUtils {
 
   static public synchronized OkHttpClient getClient() {
     if (client == null) {
-      File cacheDir = GlobalContext.getInstance().getExternalCacheDir();
-
-      client = new OkHttpClient.Builder().cache(
+      final File cacheDir = GlobalContext.getInstance().getExternalCacheDir();
+      client = new OkHttpClient.Builder()
+          //.addInterceptor(ImageRepo.CDN)
+          .cache(
           new Cache(new File(cacheDir, "okhttp"), 20 * 1024 * 1024)).build();
     }
     return client;
   }
 
-  static public Picasso getProgressPicasso(Context context) {
+  /**
+   * Singleton Picasso shared cache with OkHttp/Retrofit
+   */
+  static public Picasso getPicasso(Context context) {
 
     if (picasso == null) {
       synchronized (SquareUtils.class) {
         picasso = new Picasso.Builder(context).downloader(new OkHttp3Downloader(getClient()))
             .loggingEnabled(true)
-            .memoryCache(com.squareup.picasso.Cache.NONE)
             .build();
       }
     }
@@ -76,7 +81,7 @@ public class SquareUtils {
   /**
    * Download Big Image only, Not singleton but shared cache
    */
-  static public Picasso getProgressPicasso(Context context, ProgressListener listener) {
+  static public Picasso getPicasso(Context context, ProgressListener listener) {
 
     return new Picasso.Builder(context).downloader(
         new OkHttp3Downloader(getProgressBarClient(listener)))
@@ -134,8 +139,7 @@ public class SquareUtils {
   public static Retrofit getRetrofit() {
     if (retrofit == null) {
       synchronized (SquareUtils.class) {
-        retrofit = new Retrofit.Builder().baseUrl(ImageRepo.END_POINT_CDN)
-            .client(getClient())
+        retrofit = new Retrofit.Builder().baseUrl(ImageRepo.END_POINT_KONACHAN).client(getClient())
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .build();

@@ -8,13 +8,14 @@
 
 
   <!--Do not set padding on it, see {@code NavigationBar}-->
-  <com.github.miao1007.animewallpaper.ui.widget.LobsterTextView android:layout_width="wrap_content"
+  <com.github.miao1007.animewallpaper.ui.widget.FontedTextView android:layout_width="wrap_content"
       android:layout_height="?attr/actionBarSize"
       android:text="@string/app_name"
       android:id="@+id/internal_navi_title"
       android:maxLines="1"
+      android:ellipsize="end"
       android:layout_alignParentBottom="true"
-      android:maxLength="10"
+      android:singleLine="true"
       android:textSize="24sp"
       android:gravity="center_vertical"
       android:layout_centerHorizontal="true"/>
@@ -25,7 +26,7 @@
       android:layout_width="20dp"
       android:gravity="center_vertical"
       android:layout_alignParentBottom="true"
-      android:visibility="visible"
+      android:visibility="invisible"
       android:layout_toLeftOf="@id/internal_navi_title"
       android:layout_height="?attr/actionBarSize"
       android:layout_marginRight="4dp"

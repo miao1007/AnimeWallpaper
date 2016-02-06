@@ -2,7 +2,6 @@ package com.github.miao1007.animewallpaper.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
@@ -22,7 +22,6 @@ import com.github.miao1007.animewallpaper.ui.adapter.BaseAdapter;
 import com.github.miao1007.animewallpaper.ui.adapter.CardAdapter;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
-import com.github.miao1007.animewallpaper.ui.widget.SearchBar;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.StatusbarUtils;
 import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
@@ -47,12 +46,12 @@ public class MainActivity extends AppCompatActivity
   @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
   @Bind(R.id.rv_frag_card) RecyclerView mRvFragCard;
   @Bind(R.id.iv_settings) ImageView mIvCardSettings;
-  @Bind(R.id.search_bar) SearchBar mSearchBar;
+  //@Bind(R.id.search_bar) SearchBar mSearchBar;
   private Map<String, Object> query = new HashMap<>(4);
 
   public static void startRefreshActivity(Context context, String query) {
     Intent intent = new Intent(context, MainActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
     intent.putExtra(EXTRA_MAP, query);
     context.startActivity(intent);
   }
@@ -61,11 +60,15 @@ public class MainActivity extends AppCompatActivity
     return intent.getStringExtra(EXTRA_MAP);
   }
 
+  @OnClick(R.id.iv_settings) void settings(View v) {
+    startActivity(new Intent(this, SettingsActivity.class));
+  }
+
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    StatusbarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(true).process();
     setContentView(R.layout.fragment_card);
     ButterKnife.bind(this);
-    StatusbarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(true).process();
     setUpList();
     String tag = parseIntent(getIntent());
     if (tag != null) {
@@ -83,6 +86,12 @@ public class MainActivity extends AppCompatActivity
     final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
     mRvFragCard.setLayoutManager(mLayoutManager);
     mRvFragCard.setAdapter(mAdapter);
+    mRvFragCard.post(new Runnable() {
+      @Override public void run() {
+        mRvFragCard.setPadding(0, mNavigationBar.getHeight() + StatusbarUtils.getStatusBarOffsetPx(
+            getApplicationContext()), 0, 0);
+      }
+    });
     mRvFragCard.addOnScrollListener(new RecyclerView.OnScrollListener() {
       @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
@@ -107,7 +116,7 @@ public class MainActivity extends AppCompatActivity
       return;
     }
     if (mNavigationBar != null) {
-      mNavigationBar.setProgress(true);
+      mNavigationBar.setProgressBar(true);
     }
     if (query == null) {
       query = new HashMap<>();
@@ -132,7 +141,7 @@ public class MainActivity extends AppCompatActivity
               mRvFragCard.getAdapter().notifyDataSetChanged();
             }
             if (mNavigationBar != null) {
-              mNavigationBar.setProgress(false);
+              mNavigationBar.setProgressBar(false);
             }
             isLoadingMore = false;
           }
@@ -140,7 +149,7 @@ public class MainActivity extends AppCompatActivity
           @Override public void onError(Throwable e) {
             e.printStackTrace();
             if (mNavigationBar != null) {
-              mNavigationBar.setProgress(false);
+              mNavigationBar.setProgressBar(false);
             }
             isLoadingMore = false;
             Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -172,12 +181,12 @@ public class MainActivity extends AppCompatActivity
     loadPage(query);//这里多线程也要手动控制isLoadingMore
   }
 
-  @Override public void onBackPressed() {
-    if (mSearchBar.isClosed()) {
-      super.onBackPressed();
-    } else {
-      mSearchBar.toggle();
-    }
-  }
+  //@Override public void onBackPressed() {
+  //  if (mSearchBar.isClosed()) {
+  //    super.onBackPressed();
+  //  } else {
+  //    mSearchBar.toggle();
+  //  }
+  //}
 }
 

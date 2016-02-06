@@ -7,5 +7,5 @@
     <dimen name="swipeableDialogMaxWidth">480dp</dimen>
 
 
-    <dimen name="detailed_iv_size">32dp</dimen>
+    <dimen name="detailed_iv_size">48dp</dimen>
 </resources>

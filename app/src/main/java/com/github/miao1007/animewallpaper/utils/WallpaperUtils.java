@@ -1,15 +1,16 @@
 package com.github.miao1007.animewallpaper.utils;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresPermission;
 import android.support.annotation.UiThread;
+import android.util.Log;
 import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
@@ -19,16 +20,26 @@ import java.io.IOException;
  */
 @UiThread final public class WallpaperUtils {
 
-  @RequiresPermission(android.Manifest.permission.SET_WALLPAPER)
-  public static void setWallpaper(Context context, File file) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-      setWallpaperKitkat(context, file);
-    } else {
-      setWallPaperCompat(context, file);
-    }
+  private static final String TAG = "WallpaperUtils";
+
+  Activity context;
+
+  private WallpaperUtils(Activity context) {
+    this.context = context;
   }
 
-  private static void setWallPaperCompat(Context context, File file) {
+  public static WallpaperUtils from(Activity activity) {
+    return new WallpaperUtils(activity);
+  }
+
+  //public static void onActivityResult(int requestCode, int resultCode, Intent data) {
+  //  if (requestCode != TAG) {
+  //    return;
+  //  }
+  //  setWallPaperCompat();
+  //}
+
+  private void setWallPaperCompat(File file) {
     WallpaperManager wm = WallpaperManager.getInstance(context);
     try {
       wm.setBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));
@@ -37,8 +48,7 @@ import java.io.IOException;
     }
   }
 
-  @TargetApi(Build.VERSION_CODES.KITKAT)
-  private static void setWallpaperKitkat(Context context, File file) {
+  @TargetApi(Build.VERSION_CODES.KITKAT) private void setWallpaperKitkat(File file) {
     Uri uri = Uri.fromFile(file);
     Intent intent = new Intent(WallpaperManager.ACTION_CROP_AND_SET_WALLPAPER);
     String mime = "image/*";
@@ -46,8 +56,21 @@ import java.io.IOException;
     try {
       context.startActivity(intent);
     } catch (ActivityNotFoundException e) {
-      setWallPaperCompat(context, file);
+      setWallPaperCompat(file);
       e.printStackTrace();
+    }
+  }
+
+  @RequiresPermission(android.Manifest.permission.SET_WALLPAPER)
+  public void setWallpaper(File file) {
+    if (file == null || !file.exists() || !file.canRead()) {
+      Log.e(TAG, "file can't read");
+      return;
+    }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      setWallpaperKitkat(file);
+    } else {
+      setWallPaperCompat(file);
     }
   }
 }

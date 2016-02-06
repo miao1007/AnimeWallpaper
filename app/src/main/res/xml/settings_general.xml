@@ -28,7 +28,11 @@
   <PreferenceCategory android:title="About">
 
     <PreferenceScreen android:title="Open Source"
+        android:summary="F♂♂k me on GitHub"
         android:key="about">
+      <intent
+          android:action="android.intent.action.VIEW"
+          android:data="https://github.com/miao1007/AnimeWallpaper"/>
     </PreferenceScreen>
     <PreferenceScreen
         android:title="Rate this app"

@@ -11,25 +11,15 @@
       android:src="@drawable/place_holder"
       android:id="@+id/iv_photo"/>
 
-  <LinearLayout android:layout_width="match_parent" android:layout_height="54dp"
+  <LinearLayout android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
       android:background="@drawable/gradient_bg"
-      android:gravity="right"
       android:paddingRight="24dp"
-
-      android:layout_gravity="bottom">
+      android:layout_gravity="top">
 
     <ImageView android:layout_width="48dp" android:layout_height="48dp" android:scaleType="fitXY"
         android:layout_gravity="center_vertical"
         android:padding="8dp" android:id="@+id/photoview_iv_setwallpaper"
-        android:src="@drawable/wallpaper_96"/>
-    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:scaleType="fitXY"
-        android:layout_gravity="center_vertical"
-        android:padding="8dp" android:id="@+id/photoview_iv_download"
-        android:src="@drawable/download_96"/>
-    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:scaleType="fitXY"
-        android:layout_gravity="center_vertical"
-        android:padding="8dp" android:id="@+id/photoview_iv_share"
-        android:src="@drawable/share_96"/>
+        android:src="@android:drawable/ic_menu_crop"/>
 
   </LinearLayout>
 

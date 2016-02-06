@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,8 +37,6 @@ public class SearchBar extends LinearLayout implements View.OnClickListener {
 
   Animator left_X;
   Animator up_Y;
-  RelativeLayout realSearchBar;
-  PopupWindow popupWindow;
   //let top
   int[] location = new int[2];
   @Bind(R.id.internal_iv_clear) ImageView mInternalIvClear;
@@ -194,22 +191,11 @@ public class SearchBar extends LinearLayout implements View.OnClickListener {
      * -root
      * --RelevantLayout(RealSearch) (view[0])
      */
-    popupWindow = new PopupWindow(inflate(getContext(), R.layout.internal_search_result_list, null),
-        LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, false);
-    popupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NOT_NEEDED);
-    //popupWindow.setSoftInputMode();
   }
 
   private void setAttr() {
     setOnClickListener(this);
     setOrientation(VERTICAL);
-  }
-
-  @Override protected void onDetachedFromWindow() {
-    super.onDetachedFromWindow();
-    if (popupWindow != null && popupWindow.isShowing()) {
-      popupWindow.dismiss();
-    }
   }
 
   public boolean isClosed() {

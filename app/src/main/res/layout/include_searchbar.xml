@@ -30,7 +30,6 @@
         android:layout_marginRight="@dimen/internal_searchbar_radius"
         android:layout_marginLeft="@dimen/internal_searchbar_radius"
         android:layout_centerVertical="true"
-
         android:layout_width="wrap_content" android:layout_toLeftOf="@+id/internal_iv_clear"
         android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
   </RelativeLayout>

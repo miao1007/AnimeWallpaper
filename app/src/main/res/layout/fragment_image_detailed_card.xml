@@ -18,7 +18,7 @@
       android:adjustViewBounds="true"/>
 
   <!--real layout-->
-  <LinearLayout android:layout_width="match_parent"
+  <RelativeLayout android:layout_width="match_parent"
       android:orientation="vertical"
       android:id="@+id/image_holder"
       android:background="#a7aeaeae"
@@ -61,19 +61,22 @@
     <ImageView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/iv_detailed_card"
-        android:background="@android:color/holo_red_dark"
+        android:src="@drawable/place_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        android:adjustViewBounds="true"/>
+        android:adjustViewBounds="true" android:layout_below="@+id/navigation_bar"
+        android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
 
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_marginTop="24dp"
         android:id="@+id/ll_detailed_downloads"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_marginBottom="@dimen/detailed_iv_size"
+        android:layout_height="wrap_content" android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true" android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
 
       <ImageView
@@ -81,26 +84,26 @@
           android:layout_gravity="center_horizontal"
           android:layout_width="@dimen/detailed_iv_size"
           android:layout_height="@dimen/detailed_iv_size"
-      />
+          android:layout_weight="1"/>
 
       <ImageView
           android:src="@drawable/download_96"
           android:layout_gravity="center_horizontal"
           android:layout_width="@dimen/detailed_iv_size"
           android:layout_height="@dimen/detailed_iv_size"
-      />
+          android:layout_weight="1"/>
 
       <ImageView
           android:src="@drawable/share_96"
           android:layout_gravity="center_horizontal"
           android:layout_width="@dimen/detailed_iv_size"
           android:layout_height="@dimen/detailed_iv_size"
-      />
+          android:layout_weight="1"/>
 
     </LinearLayout>
 
 
-  </LinearLayout>
+  </RelativeLayout>
 
 
 </FrameLayout>

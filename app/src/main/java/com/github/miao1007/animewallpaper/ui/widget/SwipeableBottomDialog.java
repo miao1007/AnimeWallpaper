@@ -181,7 +181,7 @@ public abstract class SwipeableBottomDialog extends DialogFragment {
   }
 
   private int dialogHeightPx() {
-    return getDisplayMetrics().heightPixels - StatusbarUtils.getStatusBarHeightPx(getActivity());
+    return getDisplayMetrics().heightPixels - StatusbarUtils.getStatusBarOffsetPx(getActivity());
   }
 
   protected DisplayMetrics getDisplayMetrics() {

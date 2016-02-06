@@ -1,0 +1,35 @@
+package com.github.miao1007.animewallpaper.utils;
+
+import android.os.Environment;
+import com.github.miao1007.animewallpaper.R;
+import com.github.miao1007.animewallpaper.support.GlobalContext;
+import java.io.File;
+import java.io.IOException;
+import okhttp3.ResponseBody;
+import okhttp3.internal.io.FileSystem;
+import okio.BufferedSink;
+import okio.Okio;
+
+/**
+ * Created by leon on 2/6/16.
+ */
+public final class FileUtils {
+
+  public static File saveBodytoFile(ResponseBody body, String name) {
+    String EXT_STORAGE = Environment.getExternalStorageDirectory().getPath()
+        + File.separator
+        + GlobalContext.getInstance().getString(R.string.app_name)
+        + File.separator;
+    final File wallpaper = new File(EXT_STORAGE, name);
+    final FileSystem fileSystem = FileSystem.SYSTEM;
+    try {
+      final BufferedSink sink = Okio.buffer(fileSystem.sink(wallpaper));
+      sink.writeAll(body.source());
+      sink.close();
+      return wallpaper;
+    } catch (IOException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+}

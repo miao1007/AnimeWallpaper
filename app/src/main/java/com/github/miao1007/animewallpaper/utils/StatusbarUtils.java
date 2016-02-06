@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -61,7 +62,10 @@ public final class StatusbarUtils {
    *
    * @return px
    */
-  public static int getStatusBarHeightPx(Context context) {
+  @IntRange(from = 0, to = 75) public static int getStatusBarOffsetPx(Context context) {
+    if (isLessKitkat()) {
+      return 0;
+    }
     Context appContext = context.getApplicationContext();
     int result = 0;
     int resourceId =
@@ -73,15 +77,15 @@ public final class StatusbarUtils {
   }
 
   public void processActionBar(final View v) {
-    if (v == null) {
+    if (v == null || !transparentStatusbar || isLessKitkat()) {
       return;
     }
     v.post(new Runnable() {
       @Override public void run() {
-        if (!transparentStatusbar) return;
-        v.setPadding(v.getPaddingLeft(), getStatusBarHeightPx(v.getContext()), v.getPaddingRight(),
+        v.setPadding(v.getPaddingLeft(), v.getPaddingTop() + getStatusBarOffsetPx(v.getContext()),
+            v.getPaddingRight(),
             v.getPaddingBottom());
-        v.getLayoutParams().height += getStatusBarHeightPx(v.getContext());
+        v.getLayoutParams().height += getStatusBarOffsetPx(v.getContext());
       }
     });
   }

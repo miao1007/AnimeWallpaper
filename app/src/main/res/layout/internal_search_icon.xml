@@ -3,7 +3,6 @@
     android:orientation="horizontal"
     android:id="@+id/internal_iv_search_icon"
     android:layout_width="match_parent"
-    android:background="@color/internal_search_red"
     android:layout_height="20dp">
 
   <ImageView android:layout_width="20dp" android:layout_height="20dp"
@@ -18,6 +17,7 @@
       android:maxLines="1"
       android:layout_width="match_parent"
       android:singleLine="true"
+      android:focusable="false"
       android:theme="@style/InternalSearchEditTextTheme"
       android:background="@android:color/transparent"
       android:hint="@android:string/search_go"

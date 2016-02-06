@@ -9,9 +9,8 @@ import android.widget.ImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
-import com.squareup.picasso.Picasso;
+import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,8 +45,7 @@ public class CardAdapter extends BaseAdapter<ImageResult> {
     final MyViewHolder holder = (MyViewHolder) baseViewHolder;
     final Context context = holder.itemView.getContext();
     ImageResult result = getData().get(position);
-    Picasso.with(context)
-        .load(result.getPreviewUrl().replace(ImageRepo.END_POINT_KONACHAN, ImageRepo.END_POINT_CDN))
+    SquareUtils.getPicasso(context).load(result.getPreviewUrl())
         .placeholder(R.drawable.place_holder)
         //.transform(new BlurTransformation(getContext()))
         .into(holder.imageView);

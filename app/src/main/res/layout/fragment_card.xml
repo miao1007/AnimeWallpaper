@@ -1,17 +1,43 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
-  <com.github.miao1007.animewallpaper.ui.widget.NavigationBar android:layout_width="match_parent"
-      android:id="@+id/navigation_bar"
-      android:elevation="4dp"
-      android:background="?attr/colorPrimary"
+  <!--<com.github.miao1007.animewallpaper.ui.widget.SearchBar android:layout_width="match_parent"-->
+  <!--app:layout_scrollFlags="scroll|snap"-->
+  <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+  <!--android:id="@+id/search_bar"-->
+  <!--app:sb_float_height="?attr/actionBarSize"-->
+  <!--android:layout_height="?attr/actionBarSize">-->
+
+  <!--</com.github.miao1007.animewallpaper.ui.widget.SearchBar>-->
+
+  <!--RecyclerView-->
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/rv_frag_card"
+      android:clipToPadding="false"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"
+      tools:listitem="@layout/list_item_sample"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
+
+  <com.github.miao1007.animewallpaper.ui.widget.NavigationBar
       xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="match_parent"
+      android:id="@+id/navigation_bar"
+      android:clickable="true"
+      android:background="@drawable/gradient_bg"
       android:layout_height="?attr/actionBarSize">
     <!--real icon size = ${?attr/actionBarSize} - 32 = 8dp-->
+
+    <ImageView
+        android:src="@drawable/search_black_96" android:layout_alignParentLeft="true"
+        android:padding="16dp"
+        android:id="@+id/iv_search"
+        android:scaleType="fitXY"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"/>
 
     <ImageView
         android:src="@drawable/settings_96" android:layout_alignParentRight="true"
@@ -21,24 +47,6 @@
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"/>
   </com.github.miao1007.animewallpaper.ui.widget.NavigationBar>
-
-
-  <com.github.miao1007.animewallpaper.ui.widget.SearchBar android:layout_width="match_parent"
-      app:layout_scrollFlags="scroll|snap"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      android:id="@+id/search_bar"
-      app:sb_float_height="?attr/actionBarSize"
-      android:layout_height="?attr/actionBarSize">
-
-  </com.github.miao1007.animewallpaper.ui.widget.SearchBar>
-
-  <!--RecyclerView-->
-  <android.support.v7.widget.RecyclerView
-      android:id="@+id/rv_frag_card"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior"
-      tools:listitem="@layout/list_item_sample"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
 
   <!---->
   <!--&lt;!&ndash;framelayout&ndash;&gt;-->
@@ -73,5 +81,5 @@
   <!--</android.support.design.widget.CoordinatorLayout>-->
 
 
-</LinearLayout>
+</FrameLayout>
 

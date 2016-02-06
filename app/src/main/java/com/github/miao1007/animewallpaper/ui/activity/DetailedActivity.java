@@ -9,12 +9,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
@@ -24,18 +27,23 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
 import com.github.miao1007.animewallpaper.ui.widget.ActionSheet;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
+import com.github.miao1007.animewallpaper.utils.FileUtils;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.StatusbarUtils;
+import com.github.miao1007.animewallpaper.utils.WallpaperUtils;
 import com.github.miao1007.animewallpaper.utils.animation.AnimateUtils;
 import com.github.miao1007.animewallpaper.utils.picasso.Blur;
 import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
 import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import java.io.File;
+import java.io.IOException;
+import okhttp3.CacheControl;
+import okhttp3.Request;
+import okhttp3.Response;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -86,33 +94,55 @@ public class DetailedActivity extends AppCompatActivity {
     }
   }
 
-  @OnClick(R.id.iv_detailed_card) void download(final ImageView v) {
-    //final File file = getFilesDir();
-    //Log.d(TAG, file.toString());
-    //PhotoViewActivity.startScaleActivity(v.getContext(), Position.from(v));
-    Toast.makeText(DetailedActivity.this, "iv_detailed_card", Toast.LENGTH_SHORT).show();
-    //DownloadService.startService(v.getContext(), imageResult.getSampleUrl());
-    final String str =
-        imageResult.getSampleUrl().replaceAll("konachan.net", "7xq3s7.com1.z0.glb.clouddn.com");
-    Log.d(TAG, str);
-    SquareUtils.getProgressPicasso(this, new SquareUtils.ProgressListener() {
-      @Override public void update(long bytesRead, long contentLength, boolean done) {
-        System.out.format("%d%% done\n", (100 * bytesRead) / contentLength);
-        DetailedActivity.this.runOnUiThread(new Runnable() {
-          @Override public void run() {
+  //@OnClick(R.id.ll_detailed_downloads)
+  void photoview_iv_setwallpaper() {
+    Request request = new Request.Builder().cacheControl(CacheControl.FORCE_CACHE)
+        .url(imageResult.getSampleUrl())
+        .get()
+        .build();
+    SquareUtils.getClient().newCall(request).enqueue(new okhttp3.Callback() {
+      @Override @WorkerThread public void onFailure(Request request, IOException e) {
 
+      }
+
+      @WorkerThread @Override public void onResponse(Response response) throws IOException {
+        final File file = FileUtils.saveBodytoFile(response.body(),
+            Uri.parse(imageResult.getSampleUrl()).getLastPathSegment());
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+          @Override public void run() {
+            WallpaperUtils.from(DetailedActivity.this).setWallpaper(file);
           }
         });
       }
-    }).load(str).placeholder(v.getDrawable()).into(v, new Callback() {
+    });
+  }
+
+  @OnClick(R.id.iv_detailed_card) void download(final ImageView v) {
+    //final File file = getFilesDir();
+    //Log.d(TAG, file.toString());
+    //WallpaperSetActivity.startScaleActivity(v.getContext(), Position.from(v));
+    Toast.makeText(DetailedActivity.this, "iv_detailed_card", Toast.LENGTH_SHORT).show();
+    //DownloadService.startService(v.getContext(), imageResult.getSampleUrl());
+    mNavigationBar.setProgressBar(true);
+    SquareUtils.getPicasso(this)
+        .load(imageResult.getSampleUrl())
+        .placeholder(v.getDrawable())
+        .into(v, new Callback() {
       @Override public void onSuccess() {
-        PhotoViewActivity.startScaleActivity(v.getContext(), Position.from(v), str);
+        mNavigationBar.setProgressBar(false);
+        photoview_iv_setwallpaper();
       }
 
       @Override public void onError() {
+        mNavigationBar.setProgressBar(false);
 
       }
     });
+  }
+
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    SquareUtils.getPicasso(this).cancelRequest(ivDetailedCard);
   }
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,7 +150,6 @@ public class DetailedActivity extends AppCompatActivity {
     StatusbarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(false).process();
     setContentView(R.layout.fragment_image_detailed_card);
     ButterKnife.bind(this);
-    mNavigationBar.setProgress(true);
     mNavigationBar.setTextColor(Color.WHITE);
     //mNavigationBar.setLeftClickListener(new View.OnClickListener() {
     //  @Override public void onClick(View v) {
@@ -129,10 +158,7 @@ public class DetailedActivity extends AppCompatActivity {
     //});
     //mNavigationBar.setRightClickListener(new O);
     imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);
-    Picasso.with(this)
-        //we use qiniu CDN
-        .load(imageResult.getPreviewUrl()
-            .replace(ImageRepo.END_POINT_KONACHAN, ImageRepo.END_POINT_CDN))
+    SquareUtils.getPicasso(this).load(imageResult.getPreviewUrl())
         .config(Bitmap.Config.ARGB_8888)
         .into(ivDetailedCard, new Callback.EmptyCallback() {
           @Override public void onSuccess() {
@@ -181,48 +207,47 @@ public class DetailedActivity extends AppCompatActivity {
   /**
    * 动画封装，千万不要剁手改正负
    */
-  void anim(final Position position, final boolean isEnter,
+  void anim(final Position position, final boolean in,
       final Animator.AnimatorListener listener, View... views) {
     if (isPlaying) {
       return;
     }
     //记住括号哦，我这里调试了一小时
     float delta = ((float) (position.width)) / ((float) (position.height));
-    final float fromY, toY;
-    float[] toDelta = new float[2];
-    float[] fromDelta = new float[2];
 
-    View view = views[0];
-    float delt_Y = position.top;
-    float delt_X = position.left - view.getLeft();
-    if (isEnter) {
-      fromDelta[0] = 1f;
-      toDelta[0] = delta;
-      fromDelta[1] = 4f;
-      toDelta[1] = 1f;
-      fromY = delt_Y;
-      toY = 0;
-    } else {
-      fromDelta[0] = delta;
-      toDelta[0] = 1f;
-      fromDelta[1] = 1f;
-      toDelta[1] = 4f;
-      fromY = 0;
-      toY = delt_Y;
-    }
-    view.setPivotX(view.getWidth() / 2);
-    ObjectAnimator trans_Y = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, fromY, toY);
-    ObjectAnimator scale_X = ObjectAnimator.ofFloat(view, View.SCALE_X, fromDelta[0], toDelta[0]);
-    ObjectAnimator scale_Y = ObjectAnimator.ofFloat(view, View.SCALE_Y, fromDelta[0], toDelta[0]);
+    float[] y_img = { position.top, 0 };
+    float[] s_img = { 1f, delta };
+
+    float[] y_icn = { views[1].getHeight() * 2, 0 };
+    float[] s_icn = { 4f, 1f };
+
+    views[0].setPivotX(views[0].getWidth() / 2);
+    views[1].setPivotX(views[1].getWidth() / 2);
+
+    ObjectAnimator trans_Y =
+        ObjectAnimator.ofFloat(views[0], View.TRANSLATION_Y, in ? y_img[0] : y_img[1],
+            in ? y_img[1] : y_img[0]);
+    ObjectAnimator scale_X =
+        ObjectAnimator.ofFloat(views[0], View.SCALE_X, in ? s_img[0] : s_img[1],
+            in ? s_img[1] : s_img[0]);
+    ObjectAnimator scale_Y =
+        ObjectAnimator.ofFloat(views[0], View.SCALE_Y, in ? s_img[0] : s_img[1],
+            in ? s_img[1] : s_img[0]);
     ObjectAnimator scale_icn_X =
-        ObjectAnimator.ofFloat(views[1], View.SCALE_X, fromDelta[1], toDelta[1]);
+        ObjectAnimator.ofFloat(views[1], View.SCALE_X, in ? s_icn[0] : s_icn[1],
+            in ? s_icn[1] : s_icn[0]);
     ObjectAnimator scale_icn_Y =
-        ObjectAnimator.ofFloat(views[1], View.SCALE_Y, fromDelta[1], toDelta[1]);
+        ObjectAnimator.ofFloat(views[1], View.SCALE_Y, in ? s_icn[0] : s_icn[1],
+            in ? s_icn[1] : s_icn[0]);
+
+    ObjectAnimator trans_icn_Y =
+        ObjectAnimator.ofFloat(views[1], View.TRANSLATION_Y, in ? y_icn[0] : y_icn[1],
+            in ? y_icn[1] : y_icn[0]);
 
     AnimatorSet set = new AnimatorSet();
 
     set.playTogether(trans_Y, scale_X, scale_Y);
-    set.playTogether(scale_icn_X, scale_icn_Y);
+    set.playTogether(scale_icn_X, scale_icn_Y, trans_icn_Y);
     set.setDuration(400);
     set.addListener(new Animator.AnimatorListener() {
       @Override public void onAnimationStart(Animator animation) {

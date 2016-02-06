@@ -23,7 +23,7 @@
         android:text="Searching for relevant tags"
         android:id="@+id/internal_actionsheet_title"
         android:maxLines="1"
-        android:textColor="@color/ios_internal_blue"
+        android:textColor="@color/internal_search_grey"
         android:layout_alignParentTop="true"
         android:textSize="18sp"
         android:gravity="center_vertical"

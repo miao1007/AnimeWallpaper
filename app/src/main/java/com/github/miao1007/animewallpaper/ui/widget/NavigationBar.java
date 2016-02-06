@@ -2,6 +2,7 @@ package com.github.miao1007.animewallpaper.ui.widget;
 
 import android.content.Context;
 import android.support.annotation.ColorInt;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -37,14 +38,18 @@ public class NavigationBar extends RelativeLayout {
     initView();
   }
 
-  public void setProgress(boolean isLoading) {
+  public void setProgressBar(boolean isLoading) {
     if (mProgress != null) {
       mProgress.setVisibility(isLoading ? VISIBLE : GONE);
       Log.d(TAG, Position.from(mProgress).toString());
     }
   }
 
-  public void setTitle(@NonNull String title) {
+  public void setProgress(@IntRange(from = 0, to = 100) int progress) {
+    mProgress.setProgress(progress);
+  }
+
+  public void setTitle(@NonNull CharSequence title) {
     if (mNaviTitle != null) {
       mNaviTitle.setText(title);
     }
@@ -56,6 +61,19 @@ public class NavigationBar extends RelativeLayout {
     }
   }
 
+  public void setFitTranslucent(final boolean translucent) {
+    post(new Runnable() {
+      @Override public void run() {
+        if (StatusbarUtils.isLessKitkat() || !translucent) {
+          return;
+        }
+        int height = StatusbarUtils.getStatusBarOffsetPx(getContext());
+        setPadding(getPaddingLeft(), height, getPaddingRight(), getPaddingBottom());
+        getLayoutParams().height += height;
+      }
+    });
+  }
+
   /**
    * Create a new relativelayout and inflate xml in it,
    * remember use merge instead of RelativeLayout
@@ -63,16 +81,7 @@ public class NavigationBar extends RelativeLayout {
   private void initView() {
     View.inflate(getContext(), R.layout.internal_navigationbar, this);  //correct way to inflate..
     ButterKnife.bind(this);
-    post(new Runnable() {
-      @Override public void run() {
-        if (StatusbarUtils.isLessKitkat()) {
-          return;
-        }
-        int height = StatusbarUtils.getStatusBarHeightPx(getContext());
-        setPadding(getPaddingLeft(), height, getPaddingRight(), getPaddingBottom());
-        getLayoutParams().height += height;
-      }
-    });
+    setFitTranslucent(true);
   }
 }
 
