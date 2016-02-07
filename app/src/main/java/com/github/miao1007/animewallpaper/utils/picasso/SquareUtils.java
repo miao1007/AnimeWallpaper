@@ -2,8 +2,10 @@ package com.github.miao1007.animewallpaper.utils.picasso;
 
 import android.content.Context;
 import android.support.annotation.WorkerThread;
+import android.util.Log;
 import com.github.miao1007.animewallpaper.support.GlobalContext;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
+import com.github.miao1007.animewallpaper.utils.network.HttpLoggingInterceptor;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import java.io.File;
@@ -52,10 +54,21 @@ public class SquareUtils {
     }).build();
   }
 
+  static public Interceptor getLogger() {
+    HttpLoggingInterceptor loggingInterceptor =
+        new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+          @Override public void log(String message) {
+            Log.d("retrofit", message);
+          }
+        });
+    loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+    return loggingInterceptor;
+  }
+
   static public synchronized OkHttpClient getClient() {
     if (client == null) {
       final File cacheDir = GlobalContext.getInstance().getExternalCacheDir();
-      client = new OkHttpClient.Builder()
+      client = new OkHttpClient.Builder().addNetworkInterceptor(getLogger())
           //.addInterceptor(ImageRepo.CDN)
           .cache(
           new Cache(new File(cacheDir, "okhttp"), 20 * 1024 * 1024)).build();

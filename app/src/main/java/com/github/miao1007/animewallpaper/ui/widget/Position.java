@@ -8,6 +8,9 @@ import android.view.View;
  * Created by leon on 1/19/16.
  */
 public class Position implements Parcelable {
+
+  static final String TAG = "Position";
+
   public static final Creator<Position> CREATOR = new Creator<Position>() {
     public Position createFromParcel(Parcel source) {
       return new Position(source);
@@ -46,7 +49,12 @@ public class Position implements Parcelable {
   }
 
   public static Position from(View view) {
-
+    //int top = ((int) view.getY());
+    //int[] location = new int[2];
+    //view.getLocationOnScreen(location);
+    //Log.d(TAG, "y" + view.getY());
+    //Log.d(TAG, Arrays.toString(location));
+    //Log.d(TAG, position.toString());
     return new Position(view.getLeft(), view.getRight(), view.getTop(), view.getBottom(),
         view.getWidth(), view.getHeight());
   }

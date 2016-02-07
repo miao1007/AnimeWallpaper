@@ -19,7 +19,7 @@ public interface ImageRepo {
 
   //qiniu CDN
   String CDN_HOST = "7xq3s7.com1.z0.glb.clouddn.com";
-  String END_POINT_KONACHAN = "http://www.konachan.net";
+  String END_POINT_KONACHAN = "http://konachan.net";
   String END_POINT = CDN_HOST;
   String END_PONIT_YANDE = "https://yande.re/post.json/";
   String TAGS = "tags";

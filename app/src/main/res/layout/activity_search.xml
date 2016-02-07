@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.github.miao1007.animewallpaper.ui.activity.SearchActivity">
+
+
+  <ListView android:layout_width="match_parent" android:id="@+id/search_list"
+      android:layout_height="match_parent"
+      android:clipToPadding="false"
+      tools:listitem="@android:layout/simple_list_item_1"
+      android:background="@color/ios_internal_bg"
+
+  />
+
+  <com.github.miao1007.animewallpaper.ui.widget.SearchBar android:layout_width="match_parent"
+      android:id="@+id/search_bar"
+      android:background="@drawable/gradient_bg"
+      android:layout_height="?attr/actionBarSize"/>
+
+</FrameLayout>

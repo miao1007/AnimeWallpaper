@@ -7,13 +7,10 @@
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
   <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
 
-  <!--setwallpaper-->
+  <!-- setwallpaper -->
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
   <uses-permission android:name="android.permission.SET_WALLPAPER"/>
-
-
 
   <application
       android:name=".support.GlobalContext"
@@ -34,28 +31,30 @@
         android:label="@string/title_activity_detailed"
         android:theme="@style/DetailedTheme">
     </activity>
-    <activity android:name=".ui.activity.SettingsActivity"
+    <activity
+        android:name=".ui.activity.SettingsActivity"
         android:label="Settings"/>
-
-
     <activity
         android:name=".ui.activity.WallpaperSetActivity"
         android:label="CropWallpaperCompat"
         android:theme="@style/Settings">
       <intent-filter>
         <action android:name="android.service.wallpaper.CROP_AND_SET_WALLPAPER"/>
+
         <category android:name="android.intent.category.DEFAULT"/>
+
         <data android:mimeType="image/*"/>
       </intent-filter>
-
     </activity>
-
 
     <service
         android:name=".support.service.DownloadService"
         android:enabled="true"
         android:exported="false">
     </service>
+
+    <activity android:name=".ui.activity.SearchActivity" android:theme="@style/DetailedTheme">
+    </activity>
   </application>
 
 </manifest>

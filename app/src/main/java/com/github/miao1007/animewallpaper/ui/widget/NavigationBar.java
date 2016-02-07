@@ -61,18 +61,18 @@ public class NavigationBar extends RelativeLayout {
     }
   }
 
-  public void setFitTranslucent(final boolean translucent) {
-    post(new Runnable() {
-      @Override public void run() {
-        if (StatusbarUtils.isLessKitkat() || !translucent) {
-          return;
-        }
-        int height = StatusbarUtils.getStatusBarOffsetPx(getContext());
-        setPadding(getPaddingLeft(), height, getPaddingRight(), getPaddingBottom());
-        getLayoutParams().height += height;
-      }
-    });
-  }
+public void setFitTranslucent(final boolean translucent) {
+  post(new Runnable() {
+    @Override public void run() {
+      if (StatusbarUtils.isLessKitkat() || !translucent) {
+        return;
+    }
+      int height = StatusbarUtils.getStatusBarOffsetPx(getContext());
+      setPadding(getPaddingLeft(), height, getPaddingRight(), getPaddingBottom());
+      getLayoutParams().height += height;
+    }
+  });
+}
 
   /**
    * Create a new relativelayout and inflate xml in it,

@@ -17,7 +17,6 @@
       android:maxLines="1"
       android:layout_width="match_parent"
       android:singleLine="true"
-      android:focusable="false"
       android:theme="@style/InternalSearchEditTextTheme"
       android:background="@android:color/transparent"
       android:hint="@android:string/search_go"

@@ -64,6 +64,10 @@ public class MainActivity extends AppCompatActivity
     startActivity(new Intent(this, SettingsActivity.class));
   }
 
+  @OnClick(R.id.iv_search) void iv_search(View v) {
+    startActivity(new Intent(this, SearchActivity.class));
+  }
+
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     StatusbarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(true).process();
@@ -185,7 +189,7 @@ public class MainActivity extends AppCompatActivity
   //  if (mSearchBar.isClosed()) {
   //    super.onBackPressed();
   //  } else {
-  //    mSearchBar.toggle();
+  //    mSearchBar.showCancel();
   //  }
   //}
 }

@@ -263,40 +263,36 @@ public class DetailedActivity extends AppCompatActivity {
   /**
    * 动画封装，千万不要剁手改正负
    */
-  void anim(final Position position, final boolean in,
-      final Animator.AnimatorListener listener, View... views) {
+  void anim(final Position position, final boolean in, final Animator.AnimatorListener listener,
+      View... views) {
     if (isPlaying) {
       return;
     }
     //记住括号哦，我这里调试了一小时
     float delta = ((float) (position.width)) / ((float) (position.height));
 
-    float[] y_img = { position.top, 0 };
+    float[] y_img = { position.top - views[0].getTop(), 0 };
     float[] s_img = { 1f, delta };
 
-    float[] y_icn = { views[1].getHeight() * 2, 0 };
-    float[] s_icn = { 4f, 1f };
+    float[] y_icn = { views[1].getHeight() * 4, 0 };
+    float[] s_icn = { 3f, 1f };
 
     views[0].setPivotX(views[0].getWidth() / 2);
     views[1].setPivotX(views[1].getWidth() / 2);
 
-    ObjectAnimator trans_Y =
+    Animator trans_Y =
         ObjectAnimator.ofFloat(views[0], View.TRANSLATION_Y, in ? y_img[0] : y_img[1],
             in ? y_img[1] : y_img[0]);
-    ObjectAnimator scale_X =
-        ObjectAnimator.ofFloat(views[0], View.SCALE_X, in ? s_img[0] : s_img[1],
-            in ? s_img[1] : s_img[0]);
-    ObjectAnimator scale_Y =
-        ObjectAnimator.ofFloat(views[0], View.SCALE_Y, in ? s_img[0] : s_img[1],
-            in ? s_img[1] : s_img[0]);
-    ObjectAnimator scale_icn_X =
-        ObjectAnimator.ofFloat(views[1], View.SCALE_X, in ? s_icn[0] : s_icn[1],
-            in ? s_icn[1] : s_icn[0]);
-    ObjectAnimator scale_icn_Y =
-        ObjectAnimator.ofFloat(views[1], View.SCALE_Y, in ? s_icn[0] : s_icn[1],
-            in ? s_icn[1] : s_icn[0]);
+    Animator scale_X = ObjectAnimator.ofFloat(views[0], View.SCALE_X, in ? s_img[0] : s_img[1],
+        in ? s_img[1] : s_img[0]);
+    Animator scale_Y = ObjectAnimator.ofFloat(views[0], View.SCALE_Y, in ? s_img[0] : s_img[1],
+        in ? s_img[1] : s_img[0]);
+    Animator scale_icn_X = ObjectAnimator.ofFloat(views[1], View.SCALE_X, in ? s_icn[0] : s_icn[1],
+        in ? s_icn[1] : s_icn[0]);
+    Animator scale_icn_Y = ObjectAnimator.ofFloat(views[1], View.SCALE_Y, in ? s_icn[0] : s_icn[1],
+        in ? s_icn[1] : s_icn[0]);
 
-    ObjectAnimator trans_icn_Y =
+    Animator trans_icn_Y =
         ObjectAnimator.ofFloat(views[1], View.TRANSLATION_Y, in ? y_icn[0] : y_icn[1],
             in ? y_icn[1] : y_icn[0]);
 
@@ -333,7 +329,6 @@ public class DetailedActivity extends AppCompatActivity {
 
     anim(getPosition(getIntent()), false, new Animator.AnimatorListener() {
       @Override public void onAnimationStart(Animator animation) {
-        //mLlDetailedDownloads.animate().alpha(0f).setDuration(AnimateUtils.ANIM_DORITION).start();
         AnimateUtils.animateViewBitmap(ivDetailedCardBlur, null);
       }
 

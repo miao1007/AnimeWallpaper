@@ -3,48 +3,53 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:orientation="horizontal"
-    android:id="@+id/internal_search"
-    android:layout_margin="8dp"
-    android:layout_height="wrap_content">
+    android:layout_height="?attr/actionBarSize">
 
 
   <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
       android:layout_width="match_parent"
-      android:layout_height="40dp"
+      android:layout_height="match_parent"
+      android:layout_marginLeft="@dimen/internal_searchbar_radius"
+      android:layout_marginTop="@dimen/internal_searchbar_radius"
+      android:layout_marginBottom="@dimen/internal_searchbar_radius"
+      android:layout_alignParentBottom="true"
       android:id="@+id/internal_rv_holder"
       android:background="@drawable/internal_search_shape_bg_left_8"
       android:layout_toLeftOf="@+id/internal_vs_cancel"
       android:layout_toStartOf="@+id/internal_vs_cancel">
-
-    <ImageView android:layout_alignParentRight="true"
+    <include layout="@layout/internal_search_icon" android:layout_height="20dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="wrap_content"
+        android:layout_centerVertical="true" android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" android:layout_toLeftOf="@+id/internal_iv_clear"
+        android:layout_toStartOf="@+id/internal_iv_clear"/>
+    <ImageView
         android:visibility="invisible"
         android:id="@+id/internal_iv_clear"
         android:layout_width="14dp" android:layout_height="14dp"
-        android:layout_centerVertical="true"
-        android:src="@drawable/clear"/>
-
-    <include layout="@layout/internal_search_icon" android:layout_height="20dp"
-        android:gravity="center_horizontal|center_vertical"
-        android:layout_gravity="center"
-        android:layout_marginRight="@dimen/internal_searchbar_radius"
-        android:layout_marginLeft="@dimen/internal_searchbar_radius"
-        android:layout_centerVertical="true"
-        android:layout_width="wrap_content" android:layout_toLeftOf="@+id/internal_iv_clear"
-        android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
+        android:src="@drawable/clear"
+        android:layout_centerVertical="true" android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
   </RelativeLayout>
 
 
   <com.github.miao1007.animewallpaper.ui.widget.ViewSwitcher
       android:layout_width="80dp"
-      app:vsReserve="@dimen/internal_searchbar_radius"
+      android:layout_alignParentBottom="true"
+      android:layout_marginRight="@dimen/internal_searchbar_radius"
+      android:layout_marginTop="@dimen/internal_searchbar_radius"
+      android:layout_marginBottom="@dimen/internal_searchbar_radius"
+      app:vsReserve="8dp"
       android:layout_alignParentRight="true"
-      android:layout_height="40dp"
+      android:layout_alignParentEnd="true"
+      android:layout_height="match_parent"
       android:id="@+id/internal_vs_cancel" android:layout_alignParentTop="true">
 
 
     <TextView android:layout_width="match_parent" android:layout_height="match_parent"
         android:gravity="center"
+        android:id="@+id/search_cancel"
         android:textColor="@color/internal_search_blue"
         android:textSize="@dimen/internal_searchbar_textsize"
         android:text="@android:string/cancel"/>
