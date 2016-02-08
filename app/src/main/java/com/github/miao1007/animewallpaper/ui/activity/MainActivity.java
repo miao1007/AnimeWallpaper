@@ -49,6 +49,9 @@ public class MainActivity extends AppCompatActivity
   //@Bind(R.id.search_bar) SearchBar mSearchBar;
   private Map<String, Object> query = new HashMap<>(4);
 
+  //void multiple dynamic proxy
+  ImageRepo repo = SquareUtils.getRetrofit().create(ImageRepo.class);
+
   public static void startRefreshActivity(Context context, String query) {
     Intent intent = new Intent(context, MainActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -79,7 +82,6 @@ public class MainActivity extends AppCompatActivity
       query.clear();
       query.put(ImageRepo.TAGS, tag + ImageRepo.TAG_SAFE);
     }
-    onRefresh();
   }
 
   private void setUpList() {
@@ -100,7 +102,6 @@ public class MainActivity extends AppCompatActivity
       @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-
           Picasso.with(recyclerView.getContext()).resumeTag(TAG);
         } else {
           Picasso.with(recyclerView.getContext()).pauseTag(TAG);
@@ -110,8 +111,12 @@ public class MainActivity extends AppCompatActivity
       @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
         //if (Math.abs(dy))
+        mNavigationBar.invalidate();
+
       }
     });
+    //mNavigationBar.setBackgroundDrawable(new BlurDrawable(mRvFragCard));
+    mNavigationBar.setBlurredView(mRvFragCard);
     onRefresh();
   }
 
@@ -129,9 +134,7 @@ public class MainActivity extends AppCompatActivity
       query.put(ImageRepo.TAGS, ImageRepo.TAG_SAFE);
       query.put(ImageRepo.LIMIT, 10);
     }
-    SquareUtils.getRetrofit()
-        .create(ImageRepo.class)
-        .getImageList(query)
+    repo.getImageList(query)
         .subscribeOn(Schedulers.io())
         .flatMap(new Func1<List<ImageResult>, Observable<ImageResult>>() {
           @Override public Observable<ImageResult> call(List<ImageResult> imageResults) {

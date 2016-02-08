@@ -3,61 +3,31 @@ package com.github.miao1007.animewallpaper.utils.picasso;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
-import android.util.Log;
-import android.view.View;
 
+// Code borrowed from Nicolas Pomepuy
+// https://github.com/PomepuyN/BlurEffectForAndroidDesign
 public class Blur {
 
-
-    public static Bitmap drawViewToBitmap(Bitmap dest, View view, int width, int height, int downSampling, Drawable drawable) {
-        float scale = 1f / downSampling;
-        int heightCopy = view.getHeight();
-        view.layout(0, 0, width, height);
-        int bmpWidth = (int)(width * scale);
-        int bmpHeight = (int)(height * scale);
-        if (dest == null || dest.getWidth() != bmpWidth || dest.getHeight() != bmpHeight) {
-            dest = Bitmap.createBitmap(bmpWidth, bmpHeight, Bitmap.Config.ARGB_8888);
-        }
-        Canvas c = new Canvas(dest);
-        drawable.setBounds(new Rect(0, 0, width, height));
-        drawable.draw(c);
-        if (downSampling > 1) {
-            c.scale(scale, scale);
-        }
-        view.draw(c);
-        view.layout(0, 0, width, heightCopy);
-        // saveToSdCard(original, "original.png");
-        return dest;
+    public static Bitmap apply(Context context, Bitmap sentBitmap) {
+        return apply(context, sentBitmap, 10);
     }
 
-
-    private static final String TAG = "Blur";
-
     @SuppressLint("NewApi")
-    public static Bitmap fastblur(Context context, Bitmap sentBitmap, int radius) {
-
-      /**
-       * see {@link <a href="http://chiuki.github.io/android-shaders-filters/"></a>}
-       */
+    public static Bitmap apply(Context context, Bitmap sentBitmap, int radius) {
         if (VERSION.SDK_INT > 16) {
             Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
+
             final RenderScript rs = RenderScript.create(context);
-            final Allocation input = Allocation.createFromBitmap(rs,
-                    sentBitmap, Allocation.MipmapControl.MIPMAP_NONE,
+            final Allocation input = Allocation.createFromBitmap(rs, sentBitmap, Allocation.MipmapControl.MIPMAP_NONE,
                     Allocation.USAGE_SCRIPT);
-            final Allocation output = Allocation.createTyped(rs,
-                    input.getType());
-            final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs,
-                    Element.U8_4(rs));
-            script.setRadius(radius /* e.g. 3.f */);
+            final Allocation output = Allocation.createTyped(rs, input.getType());
+            final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+            script.setRadius(radius);
             script.setInput(input);
             script.forEach(output);
             output.copyTo(bitmap);
@@ -102,7 +72,6 @@ public class Blur {
         int h = bitmap.getHeight();
 
         int[] pix = new int[w * h];
-        Log.e("pix", w + " " + h + " " + pix.length);
         bitmap.getPixels(pix, 0, w, 0, 0, w, h);
 
         int wm = w - 1;
@@ -243,8 +212,7 @@ public class Blur {
             stackpointer = radius;
             for (y = 0; y < h; y++) {
                 // Preserve alpha channel: ( 0xff000000 & pix[yi] )
-                pix[yi] = (0xff000000 & pix[yi]) | (dv[rsum] << 16)
-                        | (dv[gsum] << 8) | dv[bsum];
+                pix[yi] = (0xff000000 & pix[yi]) | (dv[rsum] << 16) | (dv[gsum] << 8) | dv[bsum];
 
                 rsum -= routsum;
                 gsum -= goutsum;
@@ -289,7 +257,6 @@ public class Blur {
             }
         }
 
-        Log.e("pix", w + " " + h + " " + pix.length);
         bitmap.setPixels(pix, 0, w, 0, 0, w, h);
         return (bitmap);
     }

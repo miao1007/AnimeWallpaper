@@ -78,7 +78,7 @@ public class SearchActivity extends AppCompatActivity {
         })
         .map(new Func1<CharSequence, String>() {
           @Override public String call(CharSequence charSequence) {
-            //fit api require
+            //fit network api require
             return charSequence + "*";
           }
         })
@@ -106,6 +106,7 @@ public class SearchActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
           }
         });
+
   }
 
   @Override protected void onPause() {

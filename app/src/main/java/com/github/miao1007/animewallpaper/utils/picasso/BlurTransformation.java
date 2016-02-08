@@ -16,7 +16,7 @@ public class BlurTransformation implements Transformation {
 
     @Override
     public Bitmap transform(Bitmap bitmap) {
-        Bitmap blurredBitmap = new Blur().fastblur(context, bitmap, BLUR_RADIUS);
+        Bitmap blurredBitmap = Blur.apply(context, bitmap, BLUR_RADIUS);
         bitmap.recycle();
         return blurredBitmap;
     }

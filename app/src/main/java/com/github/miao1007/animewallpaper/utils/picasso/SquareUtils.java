@@ -70,21 +70,19 @@ public class SquareUtils {
       final File cacheDir = GlobalContext.getInstance().getExternalCacheDir();
       client = new OkHttpClient.Builder().addNetworkInterceptor(getLogger())
           //.addInterceptor(ImageRepo.CDN)
-          .cache(
-          new Cache(new File(cacheDir, "okhttp"), 20 * 1024 * 1024)).build();
+          .cache(new Cache(new File(cacheDir, "okhttp"), 60 * 1024 * 1024)).build();
     }
     return client;
   }
 
   /**
-   * Singleton Picasso shared cache with OkHttp/Retrofit
+   * Singleton Picasso shared cache with OkH ttp/Retrofit
    */
   static public Picasso getPicasso(Context context) {
 
     if (picasso == null) {
       synchronized (SquareUtils.class) {
         picasso = new Picasso.Builder(context).downloader(new OkHttp3Downloader(getClient()))
-            .loggingEnabled(true)
             .build();
       }
     }

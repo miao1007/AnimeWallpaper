@@ -226,7 +226,7 @@ public class DetailedActivity extends AppCompatActivity {
                 })
                 .map(new Func1<Bitmap, Bitmap>() {
                   @Override public Bitmap call(Bitmap bitmap) {
-                    return Blur.fastblur(DetailedActivity.this, bitmap, 20);
+                    return Blur.apply(DetailedActivity.this, bitmap, 20);
                   }
                 })
                 .subscribeOn(Schedulers.computation())
