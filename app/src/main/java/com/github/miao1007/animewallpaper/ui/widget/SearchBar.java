@@ -17,6 +17,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
+import com.jakewharton.rxbinding.widget.RxTextView;
+import java.util.concurrent.TimeUnit;
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Created by leon on 1/28/16.
@@ -32,10 +36,9 @@ public class SearchBar extends RelativeLayout {
   @Bind(R.id.internal_iv_clear) ImageView mInternalIvClear;
   float upDimen = 0f;
   InputMethodManager imm;
-  TextListener textListener;
 
-  public void setTextListener(TextListener textListener) {
-    this.textListener = textListener;
+  public EditText getmInternalEtSearch() {
+    return mInternalEtSearch;
   }
 
   @Bind(R.id.internal_et_search) EditText mInternalEtSearch;
@@ -96,11 +99,9 @@ public class SearchBar extends RelativeLayout {
      */
     mInternalEtSearch.addTextChangedListener(new TextWatcher() {
       @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        Log.d(TAG, "beforeTextChanged: " + System.currentTimeMillis());
       }
 
       @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-        //Log.d(TAG, "onTextChanged: " + System);
       }
 
       @Override public void afterTextChanged(final Editable s) {
@@ -109,14 +110,6 @@ public class SearchBar extends RelativeLayout {
         } else {
           mInternalIvClear.setVisibility(VISIBLE);
         }
-        Log.d(TAG, "afterTextChanged: " + System.currentTimeMillis());
-        postDelayed(new Runnable() {
-          @Override public void run() {
-            if (textListener != null) {
-              textListener.onTextInput(s);
-            }
-          }
-        }, 0);
       }
     });
     imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -131,9 +124,6 @@ public class SearchBar extends RelativeLayout {
     }
   }
 
-  public interface TextListener {
-    void onTextInput(Editable editable);
-  }
 
   public boolean isClosed() {
     return in;

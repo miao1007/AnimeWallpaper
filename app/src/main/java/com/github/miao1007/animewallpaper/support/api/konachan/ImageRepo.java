@@ -44,6 +44,6 @@ public interface ImageRepo {
   @GET("post.json") Observable<List<ImageResult>> getImageList(@QueryMap Map<String, Object> query);
 
   //http://konachan.net/tag.json?limit=10&name=suzu*
-  @GET("tag.json") Observable<List<Tag>> searchHint(@Query("limit") int limit,
+  @GET("tag.json") Observable<List<Tag>> getTags(@Query("limit") int limit,
       @Query("name") String name);
 }

@@ -7,6 +7,7 @@ import android.os.IBinder;
 import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
 import java.io.File;
 import java.io.IOException;
+import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,11 +29,11 @@ public class DownloadService extends Service {
     //getClient.dispatcher().
     final Request request = new Request.Builder().url(url).get().build();
     client.newCall(request).enqueue(new Callback() {
-      @Override public void onFailure(Request request, IOException e) {
+      @Override public void onFailure(Call call, IOException e) {
 
       }
 
-      @Override public void onResponse(Response response) throws IOException {
+      @Override public void onResponse(Call call, Response response) throws IOException {
         try {
           File file = new File(getExternalCacheDir(), Uri.parse(url).getLastPathSegment());
           BufferedSink sink = Okio.buffer(Okio.sink(file));

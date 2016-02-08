@@ -3,7 +3,6 @@ package com.github.miao1007.animewallpaper.ui.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +10,17 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.github.miao1007.animewallpaper.R;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
 import com.github.miao1007.animewallpaper.support.api.konachan.Tag;
 import com.github.miao1007.animewallpaper.ui.widget.SearchBar;
+import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.StatusbarUtils;
 import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
+import com.jakewharton.rxbinding.widget.RxTextView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -29,6 +31,8 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class SearchActivity extends AppCompatActivity {
+
+  static final String TAG = LogUtils.makeLogTag(SearchActivity.class);
 
   @Bind(R.id.search_bar) SearchBar mSearchbar;
   @Bind(R.id.search_list) ListView mSearchListView;
@@ -63,41 +67,45 @@ public class SearchActivity extends AppCompatActivity {
         finish();
       }
     });
-    mSearchbar.setTextListener(new SearchBar.TextListener() {
-      @Override public void onTextInput(Editable editable) {
-        Observable.just(editable)
-            .debounce(2, TimeUnit.SECONDS)
-            .map(new Func1<Editable, String>() {
-              @Override public String call(Editable editable) {
-                //return editable.toString() + '*';
-                return "suzumiya";
-              }
-            })
-            .flatMap(new Func1<String, Observable<List<Tag>>>() {
-              @Override public Observable<List<Tag>> call(String s) {
-                return SquareUtils.getRetrofit().create(ImageRepo.class).searchHint(10, s);
-              }
-            })
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Subscriber<List<Tag>>() {
-              @Override public void onCompleted() {
+    RxTextView.textChanges(mSearchbar.getmInternalEtSearch())
+        //delay 1s
+        .debounce(1, TimeUnit.SECONDS)
+        .filter(new Func1<CharSequence, Boolean>() {
+          @Override public Boolean call(CharSequence charSequence) {
+            //void unnecessary request
+            return charSequence.length() != 0;
+          }
+        })
+        .map(new Func1<CharSequence, String>() {
+          @Override public String call(CharSequence charSequence) {
+            //fit api require
+            return charSequence + "*";
+          }
+        })
+        .subscribeOn(AndroidSchedulers.mainThread())
+        .switchMap(new Func1<String, Observable<List<Tag>>>() {
+          @Override public Observable<List<Tag>> call(String s) {
+            return SquareUtils.getRetrofit().create(ImageRepo.class).getTags(10, s);
+          }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Subscriber<List<Tag>>() {
+          @Override public void onCompleted() {
 
-              }
+          }
 
-              @Override public void onError(Throwable e) {
+          @Override public void onError(Throwable e) {
+            Toast.makeText(SearchActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+          }
 
-              }
+          @Override public void onNext(List<Tag> tags) {
 
-              @Override public void onNext(List<Tag> tags) {
-
-                arrayList.clear();
-                arrayList.addAll(tags);
-                adapter.notifyDataSetChanged();
-              }
-            });
-      }
-    });
+            arrayList.clear();
+            arrayList.addAll(tags);
+            adapter.notifyDataSetChanged();
+          }
+        });
   }
 
   @Override protected void onPause() {

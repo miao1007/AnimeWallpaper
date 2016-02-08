@@ -1,6 +1,9 @@
 package com.github.miao1007.animewallpaper.utils;
 
 import android.os.Environment;
+import android.support.annotation.CheckResult;
+import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
 import com.github.miao1007.animewallpaper.R;
 import com.github.miao1007.animewallpaper.support.GlobalContext;
 import java.io.File;
@@ -13,8 +16,10 @@ import okio.Okio;
 /**
  * Created by leon on 2/6/16.
  */
+@WorkerThread
 public final class FileUtils {
 
+  @CheckResult @Nullable
   public static File saveBodytoFile(ResponseBody body, String name) {
     String EXT_STORAGE = Environment.getExternalStorageDirectory().getPath()
         + File.separator

@@ -15,6 +15,7 @@
       android:textColorHint="@color/internal_search_grey"
       android:ellipsize="end"
       android:maxLines="1"
+      android:imeOptions="actionSearch"
       android:layout_width="match_parent"
       android:singleLine="true"
       android:theme="@style/InternalSearchEditTextTheme"
