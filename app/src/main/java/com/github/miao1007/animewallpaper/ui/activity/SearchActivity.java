@@ -100,6 +100,13 @@ public class SearchActivity extends AppCompatActivity {
     });
   }
 
+  @Override protected void onPause() {
+    super.onPause();
+    if (isFinishing()) {
+      overridePendingTransition(0, 0);
+    }
+  }
+
   static class ResultAdapter extends BaseAdapter {
 
     Context context;
