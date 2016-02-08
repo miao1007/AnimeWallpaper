@@ -270,15 +270,19 @@ public class DetailedActivity extends AppCompatActivity {
     }
     //记住括号哦，我这里调试了一小时
     float delta = ((float) (position.width)) / ((float) (position.height));
-
-    float[] y_img = { position.top - views[0].getTop(), 0 };
+    //243 - 168(navi) = 75 = status_bar
+    float[] y_img = {
+        position.top - (views[0].getY() + (in ? (StatusbarUtils.getStatusBarOffsetPx(this)) : 0)), 0
+    };
     float[] s_img = { 1f, delta };
 
     float[] y_icn = { views[1].getHeight() * 4, 0 };
     float[] s_icn = { 3f, 1f };
 
     views[0].setPivotX(views[0].getWidth() / 2);
+    views[0].setPivotY(0);
     views[1].setPivotX(views[1].getWidth() / 2);
+    views[1].setPivotY(0);
 
     Animator trans_Y =
         ObjectAnimator.ofFloat(views[0], View.TRANSLATION_Y, in ? y_img[0] : y_img[1],

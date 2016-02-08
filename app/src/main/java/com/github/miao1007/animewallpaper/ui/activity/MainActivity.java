@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity
   @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
   @Bind(R.id.rv_frag_card) RecyclerView mRvFragCard;
   @Bind(R.id.iv_settings) ImageView mIvCardSettings;
+  BlurDrawable drawable;
   //@Bind(R.id.search_bar) SearchBar mSearchBar;
   private Map<String, Object> query = new HashMap<>(4);
 
@@ -116,8 +117,7 @@ public class MainActivity extends AppCompatActivity
 
       }
     });
-    BlurDrawable drawable = new BlurDrawable();
-    drawable.setBlurredView(mRvFragCard);
+    drawable = new BlurDrawable(mRvFragCard);
     mNavigationBar.setBackgroundDrawable(drawable);
     //mNavigationBar.setBlurredView(mRvFragCard);
     onRefresh();
@@ -189,6 +189,13 @@ public class MainActivity extends AppCompatActivity
     Log.d(TAG, "loadMore:" + query);
     query.put(ImageRepo.PAGE, page);
     loadPage(query);//这里多线程也要手动控制isLoadingMore
+  }
+
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    if (drawable != null) {
+      drawable.onDestroy();
+    }
   }
 
   //@Override public void onBackPressed() {

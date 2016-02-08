@@ -2,7 +2,9 @@ package com.github.miao1007.animewallpaper.ui.widget;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
+import java.util.Arrays;
 
 /**
  * Created by leon on 1/19/16.
@@ -52,8 +54,8 @@ public class Position implements Parcelable {
     //int top = ((int) view.getY());
     //int[] location = new int[2];
     //view.getLocationOnScreen(location);
-    //Log.d(TAG, "y" + view.getY());
-    //Log.d(TAG, Arrays.toString(location));
+    //Log.d(TAG, "y:" + view.getY());
+    //Log.d(TAG, "location:" + Arrays.toString(location));
     //Log.d(TAG, position.toString());
     return new Position(view.getLeft(), view.getRight(), view.getTop(), view.getBottom(),
         view.getWidth(), view.getHeight());

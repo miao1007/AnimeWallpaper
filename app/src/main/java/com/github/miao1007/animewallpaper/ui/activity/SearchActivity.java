@@ -36,6 +36,7 @@ public class SearchActivity extends AppCompatActivity {
 
   @Bind(R.id.search_bar) SearchBar mSearchbar;
   @Bind(R.id.search_list) ListView mSearchListView;
+  ImageRepo repo = SquareUtils.getRetrofit().create(ImageRepo.class);
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -68,8 +69,8 @@ public class SearchActivity extends AppCompatActivity {
       }
     });
     RxTextView.textChanges(mSearchbar.getmInternalEtSearch())
-        //delay 1s
-        .debounce(1, TimeUnit.SECONDS)
+        //delay 500ms
+        .debounce(500, TimeUnit.MILLISECONDS)
         .filter(new Func1<CharSequence, Boolean>() {
           @Override public Boolean call(CharSequence charSequence) {
             //void unnecessary request
@@ -85,7 +86,7 @@ public class SearchActivity extends AppCompatActivity {
         .subscribeOn(AndroidSchedulers.mainThread())
         .switchMap(new Func1<String, Observable<List<Tag>>>() {
           @Override public Observable<List<Tag>> call(String s) {
-            return SquareUtils.getRetrofit().create(ImageRepo.class).getTags(10, s);
+            return repo.getTags(10, s);
           }
         })
         .subscribeOn(Schedulers.io())
@@ -96,7 +97,10 @@ public class SearchActivity extends AppCompatActivity {
           }
 
           @Override public void onError(Throwable e) {
-            Toast.makeText(SearchActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+            if (!(e instanceof InterruptedException)) {
+              Toast.makeText(SearchActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
           }
 
           @Override public void onNext(List<Tag> tags) {

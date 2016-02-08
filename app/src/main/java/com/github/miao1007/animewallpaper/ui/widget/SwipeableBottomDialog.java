@@ -78,7 +78,7 @@ public abstract class SwipeableBottomDialog extends DialogFragment {
     listView.setOnScrollListener(onScrollListener);
     listView.setAdapter(new SwipeableAdapter(views));
     setContentPeekHeight();
-//getActivity().getWindow().getDecorView().
+
     return rootView;
   }
 
@@ -139,6 +139,10 @@ public abstract class SwipeableBottomDialog extends DialogFragment {
     if (listView != null) {
       listView.setSelectionFromTop(SPACE_VIEW_POS, -contentPeekHeight);
     }
+  }
+
+  protected int getContentPeekHeight() {
+    return contentPeekHeight;
   }
 
   protected void setContentPeekHeight() {

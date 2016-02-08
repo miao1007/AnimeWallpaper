@@ -18,6 +18,7 @@ import android.view.View;
 
 /**
  * Created by leon on 2/8/16.
+ * Real time Blur on Android, For API17 above
  * port Blur from @link https://github.com/500px/500px-android-blur
  */
 public class BlurDrawable extends Drawable {
@@ -32,6 +33,8 @@ public class BlurDrawable extends Drawable {
   private RenderScript mRenderScript;
   private ScriptIntrinsicBlur mBlurScript;
   private Allocation mBlurInput, mBlurOutput;
+
+  private float offsetX;
 
   private void initBlur() {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -50,7 +53,6 @@ public class BlurDrawable extends Drawable {
       return;
     }
     mBlurredBgView = blurredView;
-    initBlur();
   }
 
   public void setBlurRadius(int radius) {
@@ -147,7 +149,14 @@ public class BlurDrawable extends Drawable {
     mBlurOutput.copyTo(mBlurredBitmap);
   }
 
-  protected void onDetachedFromWindow() {
+  private float offsetY;
+
+  public BlurDrawable(View mBlurredBgView) {
+    this.mBlurredBgView = mBlurredBgView;
+    initBlur();
+  }
+
+  public void onDestroy() {
     if (mRenderScript != null) {
       mRenderScript.destroy();
     }
@@ -176,7 +185,7 @@ public class BlurDrawable extends Drawable {
         blur(mBitmapToBlur, mBlurredBitmap);
         //
         canvas.save();
-        //canvas.translate(mBlurredBgView.getX() - getX(), mBlurredBgView.getY() - getY());
+        canvas.translate(offsetX, offsetY);
         //实际输出的只有 136 x 244的像素，缩放后就和当前view一样大了
         canvas.scale(mDownsampleFactor, mDownsampleFactor);
         canvas.drawBitmap(mBlurredBitmap, 0, 0, null);
@@ -184,6 +193,11 @@ public class BlurDrawable extends Drawable {
       }
       canvas.drawColor(mOverlayColor);
     }
+  }
+
+  public void setDrawOffset(float x, float y) {
+    this.offsetX = x;
+    this.offsetY = y;
   }
 
   @Override public void setAlpha(int alpha) {

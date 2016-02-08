@@ -1,6 +1,7 @@
 package com.github.miao1007.animewallpaper.ui.widget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -95,6 +96,15 @@ public class ActionSheet extends SwipeableBottomDialog {
         ActionSheet.this.dismiss();
       }
     });
+    BlurDrawable drawable = new BlurDrawable(getActivity().getWindow().getDecorView());
+    drawable.setOverlayColor(Color.TRANSPARENT);
+    drawable.setBlurRadius(1);
+    drawable.setDownsampleFactor(2);
+    // TODO: 2/9/16 wtf magic number
+    drawable.setDrawOffset(-24, -912);
+    drawable.setOverlayColor(Color.argb(0xae, 0xff, 0xff, 0xff));
+
+    actionsheet.findViewById(R.id.internal_actionsheet_holder).setBackgroundDrawable(drawable);
     return actionsheet;
   }
 
