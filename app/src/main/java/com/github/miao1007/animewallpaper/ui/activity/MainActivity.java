@@ -20,6 +20,7 @@ import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
 import com.github.miao1007.animewallpaper.ui.adapter.BaseAdapter;
 import com.github.miao1007.animewallpaper.ui.adapter.CardAdapter;
+import com.github.miao1007.animewallpaper.ui.widget.BlurDrawable;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
@@ -115,8 +116,10 @@ public class MainActivity extends AppCompatActivity
 
       }
     });
-    //mNavigationBar.setBackgroundDrawable(new BlurDrawable(mRvFragCard));
-    mNavigationBar.setBlurredView(mRvFragCard);
+    BlurDrawable drawable = new BlurDrawable();
+    drawable.setBlurredView(mRvFragCard);
+    mNavigationBar.setBackgroundDrawable(drawable);
+    //mNavigationBar.setBlurredView(mRvFragCard);
     onRefresh();
   }
 
