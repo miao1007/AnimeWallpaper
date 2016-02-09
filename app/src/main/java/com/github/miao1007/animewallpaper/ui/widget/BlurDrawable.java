@@ -1,6 +1,7 @@
 package com.github.miao1007.animewallpaper.ui.widget;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,7 +14,6 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
-import android.support.annotation.NonNull;
 import android.view.View;
 
 /**
@@ -33,11 +33,13 @@ public class BlurDrawable extends Drawable {
   private RenderScript mRenderScript;
   private ScriptIntrinsicBlur mBlurScript;
   private Allocation mBlurInput, mBlurOutput;
-
   private float offsetX;
+  private boolean enabled;
 
-  private void initBlur() {
+  public BlurDrawable(View mBlurredBgView) {
+    this.mBlurredBgView = mBlurredBgView;
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+      enabled = false;
       return;
     }
     initializeRenderScript(mBlurredBgView.getContext());
@@ -48,15 +50,18 @@ public class BlurDrawable extends Drawable {
     setOverlayColor(Color.argb(175, 0xff, 0xff, 0xff));
   }
 
-  public void setBlurredView(@NonNull View blurredView) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-      return;
-    }
-    mBlurredBgView = blurredView;
+  /**
+   * used for dialog/fragment/popWindow
+   *
+   * @param activity the activity attached
+   * @see #setDrawOffset
+   */
+  public BlurDrawable(Activity activity) {
+    this(activity.getWindow().getDecorView());
   }
 
   public void setBlurRadius(int radius) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+    if (!enabled) {
       return;
     }
     mBlurScript.setRadius(radius);
@@ -131,12 +136,14 @@ public class BlurDrawable extends Drawable {
     return true;
   }
 
+  private float offsetY;
+
   /**
    * 渲染任务，可以在16ms完成，可以调用多核
    * 将mBitmapToBlur渲染为mBlurredBitmap输出
    */
   protected void blur(Bitmap mBitmapToBlur, Bitmap mBlurredBitmap) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+    if (!enabled) {
       return;
     }
     //类似于c中的alloc，这里是栈内存，这样就把bitmap放入了c的栈中
@@ -149,11 +156,14 @@ public class BlurDrawable extends Drawable {
     mBlurOutput.copyTo(mBlurredBitmap);
   }
 
-  private float offsetY;
-
-  public BlurDrawable(View mBlurredBgView) {
-    this.mBlurredBgView = mBlurredBgView;
-    initBlur();
+  /**
+   * force enable blur, however it will only works on API 17 or higher
+   */
+  public void setEnabled(boolean enabled) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+      enabled = false;
+    }
+    this.enabled = enabled;
   }
 
   public void onDestroy() {
@@ -163,7 +173,7 @@ public class BlurDrawable extends Drawable {
   }
 
   @Override public void draw(Canvas canvas) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+    if (!enabled) {
       return;
     }
     if (mBlurredBgView != null) {
@@ -194,6 +204,7 @@ public class BlurDrawable extends Drawable {
       canvas.drawColor(mOverlayColor);
     }
   }
+
 
   public void setDrawOffset(float x, float y) {
     this.offsetX = x;
