@@ -185,7 +185,7 @@ public class BlurDrawable extends Drawable {
         blur(mBitmapToBlur, mBlurredBitmap);
         //
         canvas.save();
-        canvas.translate(offsetX, offsetY);
+        canvas.translate(mBlurredBgView.getX() - offsetX, mBlurredBgView.getY() - offsetY);
         //实际输出的只有 136 x 244的像素，缩放后就和当前view一样大了
         canvas.scale(mDownsampleFactor, mDownsampleFactor);
         canvas.drawBitmap(mBlurredBitmap, 0, 0, null);

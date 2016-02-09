@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_height="342dp"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_height="360dp"
     android:orientation="vertical"
     android:id="@+id/internal_actionsheet_bg"
     android:layout_width="match_parent">
@@ -14,7 +14,6 @@
       android:id="@+id/internal_actionsheet_holder"
       android:layout_marginRight="8dp"
       android:orientation="vertical"
-      android:background="@drawable/internal_actionsheet_radius_8"
       android:clickable="true"
       android:layout_width="match_parent"
       android:layout_height="280dp">
@@ -53,7 +52,7 @@
       android:layout_height="48dp"
       android:gravity="center"
       android:clickable="true"
-      android:background="@drawable/internal_actionsheet_radius_8"
+      android:background="#fafafa"
       android:textColor="@color/ios_internal_blue"
       android:textStyle="bold"
       android:textSize="18sp"/>

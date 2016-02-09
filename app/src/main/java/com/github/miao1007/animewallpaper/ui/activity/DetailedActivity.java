@@ -52,12 +52,10 @@ import rx.schedulers.Schedulers;
  */
 public class DetailedActivity extends AppCompatActivity {
 
+  public static final String TAG = LogUtils.makeLogTag(DetailedActivity.class);
   private static final String EXTRA_IMAGE = "URL";
   private static final String EXTRA_POSITION = "EXTRA_POSITION";
   private static final String FRAGMENT_TAG = "FRAGMENT_TAG";
-
-  public static final String TAG = LogUtils.makeLogTag(DetailedActivity.class);
-
   @Bind(R.id.iv_detailed_card) ImageView ivDetailedCard;
   @Bind(R.id.blur_bg) ImageView ivDetailedCardBlur;
 
@@ -157,10 +155,7 @@ public class DetailedActivity extends AppCompatActivity {
 
   //@OnClick(R.id.ll_detailed_downloads)
   Observable<File> fileDownload() {
-    final Request request = new Request.Builder()
-        .url(imageResult.getSampleUrl())
-        .get()
-        .build();
+    final Request request = new Request.Builder().url(imageResult.getSampleUrl()).get().build();
     return Observable.create(new Observable.OnSubscribe<Response>() {
       @Override public void call(Subscriber<? super Response> subscriber) {
         try {
@@ -173,7 +168,7 @@ public class DetailedActivity extends AppCompatActivity {
       @Override public File call(Response response) {
         return FileUtils.saveBodytoFile(response.body(),
             Uri.parse(imageResult.getSampleUrl()).getLastPathSegment());
-          }
+      }
     }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
   }
 
@@ -185,15 +180,14 @@ public class DetailedActivity extends AppCompatActivity {
         .load(imageResult.getSampleUrl())
         .placeholder(v.getDrawable())
         .into(v, new Callback() {
-      @Override public void onSuccess() {
-        mNavigationBar.setProgressBar(false);
-      }
+          @Override public void onSuccess() {
+            mNavigationBar.setProgressBar(false);
+          }
 
-      @Override public void onError() {
-        mNavigationBar.setProgressBar(false);
-
-      }
-    });
+          @Override public void onError() {
+            mNavigationBar.setProgressBar(false);
+          }
+        });
   }
 
   @Override protected void onDestroy() {
@@ -215,7 +209,6 @@ public class DetailedActivity extends AppCompatActivity {
     //mNavigationBar.setRightClickListener(new O);
     imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);
     SquareUtils.getPicasso(this).load(imageResult.getPreviewUrl())
-        .config(Bitmap.Config.ARGB_8888)
         .into(ivDetailedCard, new Callback.EmptyCallback() {
           @Override public void onSuccess() {
             Observable.just(ivDetailedCard)
@@ -234,9 +227,6 @@ public class DetailedActivity extends AppCompatActivity {
                 .subscribe(new Action1<Bitmap>() {
                   @TargetApi(Build.VERSION_CODES.JELLY_BEAN) @Override
                   public void call(final Bitmap bitmap) {
-
-                    AnimateUtils.animateViewBitmap(ivDetailedCardBlur, bitmap);
-
                     anim(getPosition(getIntent()), true, new Animator.AnimatorListener() {
                       @Override public void onAnimationStart(Animator animation) {
 

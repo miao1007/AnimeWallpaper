@@ -59,7 +59,7 @@ public abstract class SwipeableBottomDialog extends DialogFragment {
       }
     }
   };
-  private ListView listView;
+  protected ListView rawlistView;
   private int contentPeekHeight;
   private ViewGroup rootView;
   private View spaceView;
@@ -74,9 +74,9 @@ public abstract class SwipeableBottomDialog extends DialogFragment {
     views.add(spaceView);
     views.add(inflateDialogView(inflater, container));
 
-    listView = (ListView) rootView.findViewById(R.id.bottom_swipe_container_list);
-    listView.setOnScrollListener(onScrollListener);
-    listView.setAdapter(new SwipeableAdapter(views));
+    rawlistView = (ListView) rootView.findViewById(R.id.bottom_swipe_container_list);
+    rawlistView.setOnScrollListener(onScrollListener);
+    rawlistView.setAdapter(new SwipeableAdapter(views));
     setContentPeekHeight();
 
     return rootView;
@@ -113,10 +113,10 @@ public abstract class SwipeableBottomDialog extends DialogFragment {
 
     setWindowLayout();
     spaceView.getLayoutParams().height = dialogHeightPx();
-    listView.getLayoutParams().width = dialogWidthPx();
+    rawlistView.getLayoutParams().width = dialogWidthPx();
 
     // Post new scroll offset after the layout has been resized.
-    listView.post(new Runnable() {
+    rawlistView.post(new Runnable() {
       @Override public void run() {
         setContentPeekHeight();
       }
@@ -136,8 +136,8 @@ public abstract class SwipeableBottomDialog extends DialogFragment {
     contentPeekHeight = height;
 
     // The client may call this call this code prior to onCreateView().
-    if (listView != null) {
-      listView.setSelectionFromTop(SPACE_VIEW_POS, -contentPeekHeight);
+    if (rawlistView != null) {
+      rawlistView.setSelectionFromTop(SPACE_VIEW_POS, -contentPeekHeight);
     }
   }
 
