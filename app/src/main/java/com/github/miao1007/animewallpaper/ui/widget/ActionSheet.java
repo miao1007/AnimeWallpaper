@@ -37,7 +37,6 @@ public class ActionSheet extends BlurDialog {
     this.title = title;
     this.listener = listener;
     this.tags = tags;
-
   }
 
   /**

@@ -33,9 +33,9 @@ public abstract class BlurDialog extends Dialog {
     super(view.getContext(), themeResId);
     this.blurredView = view;
     this.drawable = new BlurDrawable(blurredView);
-    drawable.setOverlayColor(Color.argb(0xae, 0xff, 0xff, 0xff));
-    drawable.setBlurRadius(12);
-    drawable.setDownsampleFactor(8);
+    drawable.setOverlayColor(Color.argb(128, 0xff, 0xff, 0xff));
+    setBlurRadius(16);
+    setDownsampleFactor(16);
   }
 
   public BlurDialog(View view) {
@@ -69,7 +69,7 @@ public abstract class BlurDialog extends Dialog {
    */
   @Override public void onStart() {
     super.onStart();
-    getWindow().setWindowAnimations(0);
+    getWindow().setWindowAnimations(R.style.DialogAnimation);
     onSetWindowAttrs(getWindow());
   }
 
