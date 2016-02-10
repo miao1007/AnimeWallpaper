@@ -1,13 +1,12 @@
 package com.github.miao1007.animewallpaper.ui.widget;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,15 +19,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.ui.activity.MainActivity;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by leon on 1/27/16.
  */
-public class ActionSheet extends DialogFragment {
+public class ActionSheet extends Dialog {
 
 
   String title;
@@ -37,65 +34,76 @@ public class ActionSheet extends DialogFragment {
   List<String> tags;
   BlurDrawable drawable;
   View actionsheet;
+  Window blurredWindow;
+  private int[] anim = { dialogHeightPx(), 0 };
 
-  //public ActionSheet(String title, List<String> tags) {
-  //  this.title = title;
-  //  this.tags = tags;
-  //}
-
-  public static ActionSheet newInstance(String title, String[] tags) {
-    ActionSheet dialog = new ActionSheet();
-    Bundle args = new Bundle();
-    args.putString("title", title);
-    args.putStringArray("tags", tags);
-    dialog.setArguments(args);
-    return dialog;
-  }
-
-  @Override public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setStyle(STYLE_NO_TITLE, android.R.style.Theme_Dialog);
+  public ActionSheet(Window blurredWindow, String title,
+      @Nullable AdapterView.OnItemClickListener listener, List<String> tags) {
+    super(blurredWindow.getContext(), android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
+    this.title = title;
+    this.listener = listener;
+    this.tags = tags;
+    this.blurredWindow = blurredWindow;
   }
 
   /**
-   * wtf: settings won't work on onCreateDialog or xml
+   * Called when the dialog is starting.
+   * set dialog window attrs.
+   * Note this window is a new window, not belongs to Activity
    */
   @Override public void onStart() {
     super.onStart();
-    Window w = getDialog().getWindow();
+    Window w = getWindow();
     w.setBackgroundDrawableResource(android.R.color.transparent);
-    w.setLayout(dialogWidthPx(), dialogHeightPx());
+    w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, dialogHeightPx());
     w.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
     w.setDimAmount(0.5f);
     w.setWindowAnimations(0);
   }
 
-  protected DisplayMetrics getDisplayMetrics() {
-    return getResources().getDisplayMetrics();
+  /**
+   * Load content view
+   */
+  @Override public void show() {
+    getWindow().setContentView(inflateDialogView(getLayoutInflater(), null));
+    super.show();
   }
 
-  protected int dialogWidthPx() {
-    return Math.min(getDisplayMetrics().widthPixels,
-        (int) getResources().getDimension(R.dimen.internal_actionsheet_height));
+  @Override public void dismiss() {
+    Animator dismiss = loadAnimation(actionsheet, false);
+    dismiss.addListener(new Animator.AnimatorListener() {
+      @Override public void onAnimationStart(Animator animation) {
+
+      }
+
+      @Override public void onAnimationEnd(Animator animation) {
+        ActionSheet.super.dismiss();
+      }
+
+      @Override public void onAnimationCancel(Animator animation) {
+
+      }
+
+      @Override public void onAnimationRepeat(Animator animation) {
+
+      }
+    });
+    dismiss.start();
+  }
+
+  protected DisplayMetrics getDisplayMetrics() {
+    return getContext().getResources().getDisplayMetrics();
   }
 
   private int dialogHeightPx() {
-    return (int) getResources().getDimension(R.dimen.internal_actionsheet_height);
-  }
-
-  @Nullable @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
-    return inflateDialogView(inflater, container);
+    return (int) getContext().getResources().getDimension(R.dimen.internal_actionsheet_height);
   }
 
   /**
-   * 这里的window与activity中的windows不一样，虽然在底部显示，但是从0开始
+   * Load views from xml
    */
   protected View inflateDialogView(LayoutInflater inflater, ViewGroup container) {
     Log.d(TAG, "inflateDialogView");
-    title = getArguments().getString("title");
-    tags = Arrays.asList(getArguments().getStringArray("tags"));
 
     actionsheet = inflater.inflate(R.layout.internal_actionsheet, container, false);
     final ListView listView = ((ListView) actionsheet.findViewById(R.id.internal_actionsheet_list));
@@ -104,62 +112,44 @@ public class ActionSheet extends DialogFragment {
     TextView tv_cancel = ((TextView) actionsheet.findViewById(R.id.internal_sheet_cancel));
 
     tv_title.setText(title);
-
-    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        MainActivity.startRefreshActivity(getContext(), tags.get(position));
-      }
-    });
+    if (listener != null) {
+      listView.setOnItemClickListener(listener);
+    }
     tv_cancel.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         ActionSheet.this.dismiss();
       }
     });
-    drawable = new BlurDrawable(getActivity());
-    //eg. 720 - 360 = space top
-    final int del = getActivity().getWindow().getDecorView().getHeight() - dialogHeightPx();
-
-    //drawable.setDrawOffset(0, del);
+    drawable = new BlurDrawable(blurredWindow.getDecorView());
+    //drawable.setBlurRadius(2);
+    //drawable.setDownsampleFactor(2);
     drawable.setOverlayColor(Color.argb(0xae, 0xff, 0xff, 0xff));
     actionsheet.setBackgroundDrawable(drawable);
-    ObjectAnimator animator =
-        ObjectAnimator.ofFloat(actionsheet, View.TRANSLATION_Y, dialogHeightPx(), 0);
-    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-      @Override public void onAnimationUpdate(ValueAnimator animation) {
-        //360dp -> 0
-        //(720 -360) -> (720 - 0)
-        drawable.setDrawOffset(0, del + actionsheet.getTranslationY());
-        actionsheet.invalidate();
-      }
-    });
-    animator.start();
+    loadAnimation(actionsheet, true).start();
     return actionsheet;
   }
 
-  @Override public void onDismiss(DialogInterface dialog) {
-    if (actionsheet != null) {
-      ObjectAnimator animator =
-          ObjectAnimator.ofFloat(actionsheet, View.TRANSLATION_Y, 0, dialogHeightPx());
-      final int del = getActivity().getWindow().getDecorView().getHeight() - dialogHeightPx();
-
-      animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-        @Override public void onAnimationUpdate(ValueAnimator animation) {
-          //360dp -> 0
-          //(720 -360) -> (720 - 0)
-          drawable.setDrawOffset(0, del + actionsheet.getTranslationY());
-          actionsheet.invalidate();
-        }
-      });
-      animator.start();
-    }
-    super.onDismiss(dialog);
+  /**
+   * the offset between blurredWindow and dialog
+   */
+  protected int getWindowOffset() {
+    return blurredWindow.getDecorView().getHeight() - getWindow().getDecorView().getHeight();
   }
 
-  @Override public void onDetach() {
-    super.onDetach();
-    if (drawable != null) {
-      drawable.onDestroy();
-    }
+  /**
+   * Translation animation of root view
+   */
+  protected ObjectAnimator loadAnimation(View view, boolean in) {
+    ObjectAnimator animator =
+        ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, in ? (anim[0]) : (anim[1]),
+            in ? (anim[1]) : (anim[0]));
+    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+      @Override public void onAnimationUpdate(ValueAnimator animation) {
+        drawable.setDrawOffset(0, getWindowOffset() + actionsheet.getTranslationY());
+        actionsheet.invalidate();
+      }
+    });
+    return animator;
   }
 
   static class BlueAdapter extends ArrayAdapter {
@@ -168,7 +158,7 @@ public class ActionSheet extends DialogFragment {
       super(context, resource);
     }
 
-    public BlueAdapter(Context context, int resource, List objects) {
+    public BlueAdapter(Context context, int resource, List<String> objects) {
       super(context, resource, objects);
     }
 

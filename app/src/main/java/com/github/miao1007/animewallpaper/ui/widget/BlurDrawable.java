@@ -14,6 +14,7 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 /**
@@ -34,9 +35,9 @@ public class BlurDrawable extends Drawable {
   private ScriptIntrinsicBlur mBlurScript;
   private Allocation mBlurInput, mBlurOutput;
   private float offsetX;
-  private boolean enabled;
+  private boolean enabled = true;
 
-  public BlurDrawable(View mBlurredBgView) {
+  public BlurDrawable(@NonNull View mBlurredBgView) {
     this.mBlurredBgView = mBlurredBgView;
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
       enabled = false;
@@ -53,11 +54,11 @@ public class BlurDrawable extends Drawable {
   /**
    * used for dialog/fragment/popWindow
    *
-   * @param activity the activity attached
+   * @param activity the blurredWindow attached
    * @see #setDrawOffset
    */
   public BlurDrawable(Activity activity) {
-    this(activity.getWindow().getDecorView());
+    this(activity.getWindow().getDecorView().findViewById(android.R.id.content));
   }
 
   public void setBlurRadius(int radius) {
@@ -205,7 +206,9 @@ public class BlurDrawable extends Drawable {
     }
   }
 
-
+  /**
+   * set the offset between top view and blurred view
+   */
   public void setDrawOffset(float x, float y) {
     this.offsetX = x;
     this.offsetY = y;

@@ -17,6 +17,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -38,6 +39,8 @@ import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
 import com.squareup.picasso.Callback;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import okhttp3.Request;
 import okhttp3.Response;
 import rx.Observable;
@@ -83,10 +86,12 @@ public class DetailedActivity extends AppCompatActivity {
 
   @OnClick(R.id.detailed_tags) void tags() {
     String tilte = "Relevant tags";
-    if (getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
-      ActionSheet actionSheet = ActionSheet.newInstance(tilte, imageResult.getTags().split(" "));
-      actionSheet.show(getSupportFragmentManager(), FRAGMENT_TAG);
-    }
+    final List<String> tags = Arrays.asList(imageResult.getTags().split(" "));
+    new ActionSheet(getWindow(), tilte, new AdapterView.OnItemClickListener() {
+      @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        MainActivity.startRefreshActivity(DetailedActivity.this, tags.get(position));
+      }
+    }, tags).show();
   }
 
   @OnClick(R.id.image_setwallpaper) void image_setwallpaper() {

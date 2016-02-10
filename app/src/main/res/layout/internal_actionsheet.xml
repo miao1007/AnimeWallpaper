@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="@dimen/internal_actionsheet_height"
     android:orientation="vertical"
-    android:background="@drawable/gradient_bg"
     android:id="@+id/internal_actionsheet_bg"
     android:layout_width="match_parent">
 

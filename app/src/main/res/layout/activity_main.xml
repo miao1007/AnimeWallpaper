@@ -4,7 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.github.miao1007.animewallpaper.ui.activity.MainActivity">
+    tools:context="com.github.miao1007.animewallpaper.ui.blurredWindow.MainActivity">
 
   <include layout="@layout/include_toolbar_framelayout"/>
 
