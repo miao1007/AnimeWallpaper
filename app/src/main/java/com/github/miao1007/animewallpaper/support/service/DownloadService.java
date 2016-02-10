@@ -4,7 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.IBinder;
-import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
+import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import java.io.File;
 import java.io.IOException;
 import okhttp3.Call;

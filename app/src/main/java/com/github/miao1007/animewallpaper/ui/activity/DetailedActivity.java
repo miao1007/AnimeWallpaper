@@ -31,11 +31,11 @@ import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
 import com.github.miao1007.animewallpaper.utils.FileUtils;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
+import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import com.github.miao1007.animewallpaper.utils.StatusbarUtils;
 import com.github.miao1007.animewallpaper.utils.WallpaperUtils;
 import com.github.miao1007.animewallpaper.utils.animation.AnimateUtils;
 import com.github.miao1007.animewallpaper.utils.picasso.Blur;
-import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
 import com.squareup.picasso.Callback;
 import java.io.File;
 import java.io.IOException;
@@ -61,11 +61,10 @@ public class DetailedActivity extends AppCompatActivity {
   private static final String FRAGMENT_TAG = "FRAGMENT_TAG";
   @Bind(R.id.iv_detailed_card) ImageView ivDetailedCard;
   @Bind(R.id.blur_bg) ImageView ivDetailedCardBlur;
-
-  ImageResult imageResult;
   @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
   @Bind(R.id.ll_detailed_downloads) LinearLayout mLlDetailedDownloads;
 
+  ImageResult imageResult;
   boolean isPlaying = false;
 
   public static void startActivity(Context context, Position position, Parcelable parcelable) {
@@ -87,11 +86,12 @@ public class DetailedActivity extends AppCompatActivity {
   @OnClick(R.id.detailed_tags) void tags() {
     String tilte = "Relevant tags";
     final List<String> tags = Arrays.asList(imageResult.getTags().split(" "));
-    new ActionSheet(getWindow(), tilte, new AdapterView.OnItemClickListener() {
+    ActionSheet a = new ActionSheet(this, tilte, new AdapterView.OnItemClickListener() {
       @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MainActivity.startRefreshActivity(DetailedActivity.this, tags.get(position));
       }
-    }, tags).show();
+    }, tags);
+    a.show();
   }
 
   @OnClick(R.id.image_setwallpaper) void image_setwallpaper() {

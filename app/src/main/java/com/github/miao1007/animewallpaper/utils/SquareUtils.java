@@ -1,4 +1,4 @@
-package com.github.miao1007.animewallpaper.utils.picasso;
+package com.github.miao1007.animewallpaper.utils;
 
 import android.content.Context;
 import android.support.annotation.WorkerThread;
@@ -69,7 +69,7 @@ public class SquareUtils {
     if (client == null) {
       final File cacheDir = GlobalContext.getInstance().getExternalCacheDir();
       client = new OkHttpClient.Builder().addNetworkInterceptor(getLogger())
-          .addInterceptor(ImageRepo.CDN)
+          //.addInterceptor(ImageRepo.CDN)
           .cache(new Cache(new File(cacheDir, "okhttp"), 60 * 1024 * 1024)).build();
     }
     return client;

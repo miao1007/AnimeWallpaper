@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
-import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
+import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import com.squareup.picasso.Callback;
 import uk.co.senab.photoview.PhotoViewAttacher;
 

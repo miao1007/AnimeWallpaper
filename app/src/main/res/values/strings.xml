@@ -12,5 +12,6 @@
   <string name="excerpt">This is a news excerpt sample</string>
   <string name="title_activity_detailed">DownloadImage</string>
   <string name="title_activity_settings">SettingsActivity</string>
+  <string name="confirm_exit">Confirm exit?</string>
 
 </resources>

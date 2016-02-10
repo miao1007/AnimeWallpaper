@@ -6,7 +6,6 @@
     android:id="@+id/internal_actionsheet_bg"
     android:layout_width="match_parent">
 
-
   <!--280-->
   <RelativeLayout
       android:layout_marginLeft="8dp"

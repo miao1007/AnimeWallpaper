@@ -35,6 +35,7 @@
         android:src="@drawable/search_black_96" android:layout_alignParentLeft="true"
         android:padding="16dp"
         android:id="@+id/iv_search"
+        android:layout_alignParentBottom="true"
         android:scaleType="fitXY"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"/>
@@ -43,6 +44,7 @@
         android:src="@drawable/settings_96" android:layout_alignParentRight="true"
         android:padding="16dp"
         android:id="@+id/iv_settings"
+        android:layout_alignParentBottom="true"
         android:scaleType="fitXY"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"/>

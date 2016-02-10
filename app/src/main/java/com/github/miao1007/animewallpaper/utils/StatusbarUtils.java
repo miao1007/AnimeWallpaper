@@ -23,14 +23,14 @@ public final class StatusbarUtils {
   boolean lightStatusBar;
   //透明且背景不占用控件的statusbar，这里估且叫做沉浸
   boolean transparentStatusbar;
-  Activity activity;
+  Window window;
   View actionBarView;
 
   private StatusbarUtils(Activity activity, boolean lightStatusBar, boolean transparentStatusbar,
       View actionBarView) {
     this.lightStatusBar = lightStatusBar;
     this.transparentStatusbar = transparentStatusbar;
-    this.activity = activity;
+    this.window = activity.getWindow();
     this.actionBarView = actionBarView;
   }
 
@@ -118,15 +118,14 @@ public final class StatusbarUtils {
    */
   @TargetApi(Build.VERSION_CODES.KITKAT) void processKitkat() {
     //int current = activity.getWindow().gef
-    Window win = activity.getWindow();
-    WindowManager.LayoutParams winParams = win.getAttributes();
+    WindowManager.LayoutParams winParams = window.getAttributes();
     final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
     if (transparentStatusbar) {
       winParams.flags |= bits;
     } else {
       winParams.flags &= ~bits;
     }
-    win.setAttributes(winParams);
+    window.setAttributes(winParams);
   }
 
   /**
@@ -134,14 +133,14 @@ public final class StatusbarUtils {
    * Tested on: MIUIV7 5.0 Redmi-Note3
    */
   void processMIUI(boolean lightStatusBar) {
-    Class<? extends Window> clazz = activity.getWindow().getClass();
+    Class<? extends Window> clazz = window.getClass();
     try {
       int darkModeFlag = 0;
       Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
       Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
       darkModeFlag = field.getInt(layoutParams);
       Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
-      extraFlagField.invoke(activity.getWindow(), lightStatusBar ? darkModeFlag : 0, darkModeFlag);
+      extraFlagField.invoke(window, lightStatusBar ? darkModeFlag : 0, darkModeFlag);
     } catch (Exception ignored) {
 
     }
@@ -151,7 +150,7 @@ public final class StatusbarUtils {
    * 改变魅族的状态栏字体为黑色，要求FlyMe4以上
    */
   private void processFlyme(boolean isLightStatusBar) {
-    WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+    WindowManager.LayoutParams lp = window.getAttributes();
     try {
       Class<?> instance = Class.forName("android.view.WindowManager$LayoutParams");
       int value = instance.getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON").getInt(lp);
@@ -174,7 +173,6 @@ public final class StatusbarUtils {
    * M(API23)可以设定
    */
   @TargetApi(Build.VERSION_CODES.LOLLIPOP) void processLollipopAbove() {
-    Window window = activity.getWindow();
     int flag = window.getDecorView().getSystemUiVisibility();
     if (lightStatusBar) {
       /**

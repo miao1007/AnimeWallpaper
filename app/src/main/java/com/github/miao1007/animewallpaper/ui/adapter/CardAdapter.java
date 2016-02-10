@@ -10,7 +10,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.github.miao1007.animewallpaper.R;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
-import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
+import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import java.util.ArrayList;
 import java.util.List;
 

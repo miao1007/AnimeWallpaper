@@ -19,7 +19,7 @@ import com.github.miao1007.animewallpaper.support.api.konachan.Tag;
 import com.github.miao1007.animewallpaper.ui.widget.SearchBar;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.StatusbarUtils;
-import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
+import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import java.util.ArrayList;
 import java.util.List;

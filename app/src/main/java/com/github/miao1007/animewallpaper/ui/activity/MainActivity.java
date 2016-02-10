@@ -2,6 +2,7 @@ package com.github.miao1007.animewallpaper.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -20,12 +21,13 @@ import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
 import com.github.miao1007.animewallpaper.ui.adapter.BaseAdapter;
 import com.github.miao1007.animewallpaper.ui.adapter.CardAdapter;
+import com.github.miao1007.animewallpaper.ui.widget.BlurAlertView;
 import com.github.miao1007.animewallpaper.ui.widget.BlurDrawable;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
+import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import com.github.miao1007.animewallpaper.utils.StatusbarUtils;
-import com.github.miao1007.animewallpaper.utils.picasso.SquareUtils;
 import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.List;
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+    setTheme(android.R.style.Theme_DeviceDefault_Light_NoActionBar);
     super.onCreate(savedInstanceState);
     StatusbarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(true).process();
     setContentView(R.layout.fragment_card);
@@ -198,12 +201,20 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
-  //@Override public void onBackPressed() {
-  //  if (mSearchBar.isClosed()) {
-  //    super.onBackPressed();
-  //  } else {
-  //    mSearchBar.showCancel();
-  //  }
-  //}
+  /**
+   * 加载渲染引擎比较耗时，但是把引擎单例话，非常不好管理
+   */
+  @Override public void onBackPressed() {
+    BlurAlertView alert = new BlurAlertView(mRvFragCard, new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        finish();
+      }
+    });
+    alert.setBlurRadius(12);
+    alert.setDownsampleFactor(16);
+    alert.setOverlayColor(Color.argb(120, 0x00, 0x00, 0x00));
+    alert.setduration(200);
+    alert.show();
+  }
 }
 
