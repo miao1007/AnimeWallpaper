@@ -43,7 +43,7 @@ public class BlurDrawable extends ColorDrawable {
 
   private boolean enabled;
 
-  private int mOverlayColor;
+  private int mOverlayColor = Color.argb(175, 0xff, 0xff, 0xff);
 
   public BlurDrawable(@NonNull View mBlurredBgView) {
     this.mBlurredBgView = mBlurredBgView;
@@ -53,7 +53,6 @@ public class BlurDrawable extends ColorDrawable {
       enabled = true;
       initializeRenderScript(mBlurredBgView.getContext());
     }
-    setOverlayColor(Color.argb(175, 0xff, 0xff, 0xff));
   }
 
   /**
@@ -108,9 +107,9 @@ public class BlurDrawable extends ColorDrawable {
     mRenderScript = RenderScript.create(context);
     mBlurScript = ScriptIntrinsicBlur.create(mRenderScript, Element.U8_4(mRenderScript));
     //设置blur半径, iOS中默认为12px
-    setBlurRadius(15);
+    setBlurRadius(16);
     //图片缩放等级，缩放越大越节约性能，理论要在100px^2以内
-    setDownsampleFactor(8);
+    setDownsampleFactor(16);
   }
 
   /**

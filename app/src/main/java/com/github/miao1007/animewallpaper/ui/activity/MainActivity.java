@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity
         super.onScrolled(recyclerView, dx, dy);
         //if (Math.abs(dy))
         mNavigationBar.invalidate();
-
       }
     });
     drawable = new BlurDrawable(mRvFragCard);
@@ -198,14 +197,14 @@ public class MainActivity extends AppCompatActivity
     super.onDestroy();
     if (drawable != null) {
       drawable.onDestroy();
-    }
+  }
   }
 
   /**
    * 加载渲染引擎比较耗时，但是把引擎单例话，非常不好管理
    */
   @Override public void onBackPressed() {
-    BlurAlertView alert = new BlurAlertView(mRvFragCard, new View.OnClickListener() {
+    final BlurAlertView alert = new BlurAlertView(mRvFragCard, new View.OnClickListener() {
       @Override public void onClick(View v) {
         finish();
       }

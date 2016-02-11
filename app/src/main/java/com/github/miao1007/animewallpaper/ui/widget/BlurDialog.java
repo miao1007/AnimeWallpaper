@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import com.github.miao1007.animewallpaper.R;
@@ -69,7 +70,6 @@ public abstract class BlurDialog extends Dialog {
    */
   @Override public void onStart() {
     super.onStart();
-    getWindow().setWindowAnimations(R.style.DialogAnimation);
     onSetWindowAttrs(getWindow());
   }
 
@@ -94,18 +94,15 @@ public abstract class BlurDialog extends Dialog {
     Animator animator = loadAnimation(getContentView(), true);
     animator.addListener(new Animator.AnimatorListener() {
       @Override public void onAnimationStart(Animator animation) {
-        getContentView().setLayerType(View.LAYER_TYPE_HARDWARE, null);
         BlurDialog.super.show();
         isAnimating = true;
       }
 
       @Override public void onAnimationEnd(Animator animation) {
-        getContentView().setLayerType(View.LAYER_TYPE_NONE, null);
         isAnimating = false;
       }
 
       @Override public void onAnimationCancel(Animator animation) {
-        getContentView().setLayerType(View.LAYER_TYPE_NONE, null);
       }
 
       @Override public void onAnimationRepeat(Animator animation) {
@@ -113,6 +110,9 @@ public abstract class BlurDialog extends Dialog {
       }
     });
     animator.start();
+
+    BlurDialog.super.show();
+
   }
 
   private View getContentView() {
@@ -122,31 +122,34 @@ public abstract class BlurDialog extends Dialog {
   /**
    * Called when the dialog is dismiss. clean work should be done when #onStop
    */
-  @Override public void dismiss() {
-    if (isAnimating) {
-      return;
-    }
-    Animator dismiss = loadAnimation(getContentView(), false);
-    dismiss.addListener(new Animator.AnimatorListener() {
-      @Override public void onAnimationStart(Animator animation) {
-        isAnimating = true;
-      }
-
-      @Override public void onAnimationEnd(Animator animation) {
-        isAnimating = false;
-        BlurDialog.super.dismiss();
-      }
-
-      @Override public void onAnimationCancel(Animator animation) {
-
-      }
-
-      @Override public void onAnimationRepeat(Animator animation) {
-
-      }
-    });
-    dismiss.start();
-  }
+  //@Override public void dismiss() {
+  //  if (isAnimating) {
+  //    return;
+  //  }
+  //  Animator dismiss = loadAnimation(getContentView(), false);
+  //  dismiss.addListener(new Animator.AnimatorListener() {
+  //    @Override public void onAnimationStart(Animator animation) {
+  //      isAnimating = true;
+  //    }
+  //
+  //    @Override public void onAnimationEnd(Animator animation) {
+  //      isAnimating = false;
+  //      BlurDialog.super.dismiss();
+  //    }
+  //
+  //    @Override public void onAnimationCancel(Animator animation) {
+  //
+  //    }
+  //
+  //    @Override public void onAnimationRepeat(Animator animation) {
+  //
+  //    }
+  //  });
+  //  dismiss.start();
+  //
+  //  BlurDialog.super.dismiss();
+  //
+  //}
 
   /**
    * do clean work when stop

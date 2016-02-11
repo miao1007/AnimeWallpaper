@@ -28,6 +28,7 @@ public class BlurAlertView extends BlurDialog {
     WindowManager.LayoutParams winParams = window.getAttributes();
     winParams.flags |= bits;
     window.setAttributes(winParams);
+    getWindow().setWindowAnimations(R.style.AlphaDialogAnimation);
     window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     window.setBackgroundDrawableResource(android.R.color.transparent);
   }
@@ -44,7 +45,12 @@ public class BlurAlertView extends BlurDialog {
         dismiss();
       }
     });
-    view.findViewById(R.id.internal_alert_ok).setOnClickListener(okListener);
+    view.findViewById(R.id.internal_alert_ok).setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        dismiss();
+        okListener.onClick(v);
+      }
+    });
     view.findViewById(R.id.internal_alert_cancel).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         dismiss();

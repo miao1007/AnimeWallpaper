@@ -200,7 +200,7 @@ public final class StatusbarUtils {
       return this;
     }
 
-    Builder setActivity(@NonNull Activity activity) {
+    private Builder setActivity(@NonNull Activity activity) {
       this.activity = activity;
       return this;
     }

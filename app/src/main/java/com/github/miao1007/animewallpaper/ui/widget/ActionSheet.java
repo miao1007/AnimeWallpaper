@@ -23,9 +23,8 @@ import java.util.List;
  */
 public class ActionSheet extends BlurDialog {
 
-
-  String title;
   static final String TAG = LogUtils.makeLogTag(ActionSheet.class);
+  String title;
   AdapterView.OnItemClickListener listener;
   List<String> tags;
 
@@ -64,10 +63,10 @@ public class ActionSheet extends BlurDialog {
 
   @Override protected void onSetWindowAttrs(Window w) {
     w.setBackgroundDrawableResource(android.R.color.transparent);
+    w.setWindowAnimations(R.style.DialogAnimation);
     w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, dialogHeightPx());
     w.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
     w.setDimAmount(0.5f);
-    w.setWindowAnimations(0);
   }
 
   protected ObjectAnimator animationFactory(final View view, boolean in) {

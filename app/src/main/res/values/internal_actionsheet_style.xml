@@ -8,4 +8,11 @@
     <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
   </style>
 
+
+  <!-- For dialog Animation -->
+  <style name="AlphaDialogAnimation">
+    <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+    <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+  </style>
+
 </resources>
