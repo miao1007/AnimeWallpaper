@@ -50,11 +50,10 @@ public class MainActivity extends AppCompatActivity
   @Bind(R.id.rv_frag_card) RecyclerView mRvFragCard;
   @Bind(R.id.iv_settings) ImageView mIvCardSettings;
   BlurDrawable drawable;
-  //@Bind(R.id.search_bar) SearchBar mSearchBar;
-  private Map<String, Object> query = new HashMap<>(4);
-
   //void multiple dynamic proxy
   ImageRepo repo = SquareUtils.getRetrofit().create(ImageRepo.class);
+  //@Bind(R.id.search_bar) SearchBar mSearchBar;
+  private Map<String, Object> query = new HashMap<>(4);
 
   public static void startRefreshActivity(Context context, String query) {
     Intent intent = new Intent(context, MainActivity.class);
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   @OnClick(R.id.iv_settings) void settings(View v) {
-    startActivity(new Intent(this, SettingsActivity.class));
+    //startActivity(new Intent(this, SettingsActivity.class));
   }
 
   @OnClick(R.id.iv_search) void iv_search(View v) {
@@ -90,7 +89,6 @@ public class MainActivity extends AppCompatActivity
   }
 
   private void setUpList() {
-    //mSwipe.setOnRefreshListener(this);
     CardAdapter mAdapter = new CardAdapter();
     mAdapter.setLoadMoreListener(this);
     mAdapter.setItemClickListener(this);
@@ -99,8 +97,9 @@ public class MainActivity extends AppCompatActivity
     mRvFragCard.setAdapter(mAdapter);
     mRvFragCard.post(new Runnable() {
       @Override public void run() {
-        mRvFragCard.setPadding(0, mNavigationBar.getHeight() + StatusbarUtils.getStatusBarOffsetPx(
-            getApplicationContext()), 0, 0);
+        int padding = mNavigationBar.getHeight() + StatusbarUtils.getStatusBarOffsetPx(
+            getApplicationContext());
+        mRvFragCard.setPadding(0, padding, 0, 0);
       }
     });
     mRvFragCard.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -121,7 +120,6 @@ public class MainActivity extends AppCompatActivity
     });
     drawable = new BlurDrawable(mRvFragCard);
     mNavigationBar.setBackgroundDrawable(drawable);
-    //mNavigationBar.setBlurredView(mRvFragCard);
     onRefresh();
   }
 
@@ -197,7 +195,7 @@ public class MainActivity extends AppCompatActivity
     super.onDestroy();
     if (drawable != null) {
       drawable.onDestroy();
-  }
+    }
   }
 
   /**

@@ -5,25 +5,23 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Dialog;
-import android.graphics.Color;
-import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import com.github.miao1007.animewallpaper.R;
+import com.github.miao1007.animewallpaper.utils.LogUtils;
 
 /**
  * Created by leon on 2/10/16.
  */
 public abstract class BlurDialog extends Dialog {
 
+  static final String TAG = LogUtils.makeLogTag(BlurDialog.class.getSimpleName());
   View blurredView;
   boolean isAnimating;
   private BlurDrawable drawable;
   private long duration = 300;
 
   public BlurDialog(Activity activity, int themeResId) {
-    this(activity.getWindow().getDecorView(), themeResId);
+    this(activity.getWindow(), themeResId);
   }
 
   public BlurDialog(Window blurredWindow, int themeResId) {
@@ -34,9 +32,6 @@ public abstract class BlurDialog extends Dialog {
     super(view.getContext(), themeResId);
     this.blurredView = view;
     this.drawable = new BlurDrawable(blurredView);
-    drawable.setOverlayColor(Color.argb(128, 0xff, 0xff, 0xff));
-    setBlurRadius(16);
-    setDownsampleFactor(16);
   }
 
   public BlurDialog(View view) {
@@ -71,6 +66,31 @@ public abstract class BlurDialog extends Dialog {
   @Override public void onStart() {
     super.onStart();
     onSetWindowAttrs(getWindow());
+    //getWindow().getDecorView().setOnTouchListener(new View.OnTouchListener() {
+    //  @Override public boolean onTouch(View view, MotionEvent event) {
+    //
+    //    float dX = 0f, dY = 0f;
+    //
+    //    switch (event.getActionMasked()) {
+    //
+    //      case MotionEvent.ACTION_DOWN:
+    //        Log.d(TAG, "onTouch: DOWN: " + event.getRawY());
+    //
+    //        //dX = view.getX() - event.getRawX();
+    //        //dY = view.getY() - event.getRawY();
+    //        break;
+    //
+    //      case MotionEvent.ACTION_MOVE:
+    //        Log.d(TAG, "onTouch: MOVE: " + event.getRawY());
+    //        //view.setY(dY + event.getRawY());
+    //        //view.animate().x(event.getRawX() + dX).y(event.getRawY() + dY).setDuration(0).start();
+    //        break;
+    //      default:
+    //        return false;
+    //    }
+    //    return true;
+    //  }
+    //});
   }
 
   /**
@@ -115,6 +135,10 @@ public abstract class BlurDialog extends Dialog {
 
   }
 
+  /**
+   * FrameLayout: android.R.id.content
+   * set/getContentView: your view defined in xml
+   */
   private View getContentView() {
     return findViewById(android.R.id.content);
   }
@@ -163,9 +187,6 @@ public abstract class BlurDialog extends Dialog {
     }
   }
 
-  protected int dialogHeightPx() {
-    return (int) getContext().getResources().getDimension(R.dimen.internal_actionsheet_height);
-  }
 
   /**
    * Load views from xml
@@ -184,26 +205,14 @@ public abstract class BlurDialog extends Dialog {
    * do not use a window animation in style, because it can't be listened
    */
   protected ObjectAnimator loadAnimation(final View view, boolean in) {
-    ObjectAnimator animator;
-    if (in) {
-      animator = getInAnimator(view);
-    } else {
-      animator = getOutAnimator(view);
-    }
-    if (animator == null) {
-      animator = ObjectAnimator.ofFloat(view, View.ALPHA, in ? 0f : 1f, in ? 1f : 0f);
-    }
-    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-      @Override public void onAnimationUpdate(ValueAnimator animation) {
-        drawable.setDrawOffset(0, getWindowOffset() + view.getTranslationY());
-        view.invalidate();
-      }
-    });
+    ObjectAnimator animator = ObjectAnimator.ofFloat(view, View.ALPHA, in ? 0f : 1f, in ? 1f : 0f);
+    //animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+    //  @Override public void onAnimationUpdate(ValueAnimator animation) {
+    //    drawable.setDrawOffset(0, getWindowOffset() + view.getTranslationY());
+    //    view.invalidate();
+    //  }
+    //});
     animator.setDuration(duration);
     return animator;
   }
-
-  @Nullable protected abstract ObjectAnimator getInAnimator(View view);
-
-  @Nullable protected abstract ObjectAnimator getOutAnimator(View view);
 }

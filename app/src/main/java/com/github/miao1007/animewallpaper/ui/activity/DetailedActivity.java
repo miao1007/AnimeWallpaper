@@ -213,7 +213,8 @@ public class DetailedActivity extends AppCompatActivity {
     //});
     //mNavigationBar.setRightClickListener(new O);
     imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);
-    SquareUtils.getPicasso(this).load(imageResult.getPreviewUrl())
+    SquareUtils.getPicasso(this)
+        .load(imageResult.getPreviewUrl())
         .into(ivDetailedCard, new Callback.EmptyCallback() {
           @Override public void onSuccess() {
             Observable.just(ivDetailedCard)

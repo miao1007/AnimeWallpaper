@@ -61,6 +61,10 @@ public class ActionSheet extends BlurDialog {
     return actionsheet;
   }
 
+  protected int dialogHeightPx() {
+    return (int) getContext().getResources().getDimension(R.dimen.internal_actionsheet_height);
+  }
+
   @Override protected void onSetWindowAttrs(Window w) {
     w.setBackgroundDrawableResource(android.R.color.transparent);
     w.setWindowAnimations(R.style.DialogAnimation);
@@ -69,17 +73,9 @@ public class ActionSheet extends BlurDialog {
     w.setDimAmount(0.5f);
   }
 
-  protected ObjectAnimator animationFactory(final View view, boolean in) {
+  @Override protected ObjectAnimator loadAnimation(View view, boolean in) {
     return ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, in ? (anim[0]) : (anim[1]),
         !in ? (anim[0]) : (anim[1]));
-  }
-
-  @Override protected ObjectAnimator getInAnimator(View view) {
-    return animationFactory(view, true);
-  }
-
-  @Override protected ObjectAnimator getOutAnimator(View view) {
-    return animationFactory(view, false);
   }
 
   /**

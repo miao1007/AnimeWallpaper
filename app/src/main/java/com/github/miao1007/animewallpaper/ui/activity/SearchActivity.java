@@ -18,8 +18,8 @@ import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
 import com.github.miao1007.animewallpaper.support.api.konachan.Tag;
 import com.github.miao1007.animewallpaper.ui.widget.SearchBar;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
-import com.github.miao1007.animewallpaper.utils.StatusbarUtils;
 import com.github.miao1007.animewallpaper.utils.SquareUtils;
+import com.github.miao1007.animewallpaper.utils.StatusbarUtils;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,9 +68,13 @@ public class SearchActivity extends AppCompatActivity {
         finish();
       }
     });
+    /**
+     * Port from {@link https://github.com/ReactiveX/RxSwift}
+     */
     RxTextView.textChanges(mSearchbar.getmInternalEtSearch())
         //delay 500ms
-        .debounce(500, TimeUnit.MILLISECONDS)
+        .throttleWithTimeout(300, TimeUnit.MICROSECONDS)
+        .distinctUntilChanged()
         .filter(new Func1<CharSequence, Boolean>() {
           @Override public Boolean call(CharSequence charSequence) {
             //void unnecessary request
@@ -84,7 +88,8 @@ public class SearchActivity extends AppCompatActivity {
           }
         })
         .subscribeOn(AndroidSchedulers.mainThread())
-        .switchMap(new Func1<String, Observable<List<Tag>>>() {
+        .flatMap(
+            new Func1<String, Observable<List<Tag>>>() {
           @Override public Observable<List<Tag>> call(String s) {
             return repo.getTags(10, s);
           }

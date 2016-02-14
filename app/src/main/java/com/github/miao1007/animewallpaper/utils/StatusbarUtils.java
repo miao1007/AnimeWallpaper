@@ -2,6 +2,7 @@ package com.github.miao1007.animewallpaper.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -26,11 +27,11 @@ public final class StatusbarUtils {
   Window window;
   View actionBarView;
 
-  private StatusbarUtils(Activity activity, boolean lightStatusBar, boolean transparentStatusbar,
+  private StatusbarUtils(Window window, boolean lightStatusBar, boolean transparentStatusbar,
       View actionBarView) {
     this.lightStatusBar = lightStatusBar;
     this.transparentStatusbar = transparentStatusbar;
-    this.window = activity.getWindow();
+    this.window = window;
     this.actionBarView = actionBarView;
   }
 
@@ -47,7 +48,15 @@ public final class StatusbarUtils {
   }
 
   public static Builder from(Activity activity) {
-    return new StatusbarUtils.Builder().setActivity(activity);
+    return new StatusbarUtils.Builder().setWindow(activity);
+  }
+
+  public static Builder from(Dialog dialog) {
+    return new StatusbarUtils.Builder().setWindow(dialog);
+  }
+
+  public static Builder from(Window window) {
+    return new StatusbarUtils.Builder().setWindow(window);
   }
 
   /**
@@ -190,7 +199,7 @@ public final class StatusbarUtils {
   }
 
   final public static class Builder {
-    private Activity activity;
+    private Window window;
     private boolean lightStatusBar = false;
     private boolean transparentStatusbar = false;
     private View actionBarView;
@@ -200,8 +209,18 @@ public final class StatusbarUtils {
       return this;
     }
 
-    private Builder setActivity(@NonNull Activity activity) {
-      this.activity = activity;
+    private Builder setWindow(@NonNull Window Window) {
+      this.window = window;
+      return this;
+    }
+
+    private Builder setWindow(@NonNull Activity activity) {
+      this.window = activity.getWindow();
+      return this;
+    }
+
+    private Builder setWindow(@NonNull Dialog dialog) {
+      this.window = dialog.getWindow();
       return this;
     }
 
@@ -216,7 +235,7 @@ public final class StatusbarUtils {
     }
 
     public void process() {
-      new StatusbarUtils(activity, lightStatusBar, transparentStatusbar, actionBarView).process();
+      new StatusbarUtils(window, lightStatusBar, transparentStatusbar, actionBarView).process();
     }
   }
 }

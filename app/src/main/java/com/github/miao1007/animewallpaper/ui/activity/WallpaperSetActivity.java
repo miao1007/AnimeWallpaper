@@ -39,7 +39,7 @@ public class WallpaperSetActivity extends AppCompatActivity {
     final Bitmap bitmap = mAttacher.getVisibleRectangleBitmap();
     if (bitmap != null) {
       final WallpaperManager manager = WallpaperManager.getInstance(this);
-      Snackbar.make(((View) mIvPhoto.getParent()), "SnackbarTest", Snackbar.LENGTH_LONG)
+      Snackbar.make(((View) mIvPhoto.getParent()), "Setting Wallpaper", Snackbar.LENGTH_LONG)
           .setActionTextColor(Color.WHITE)
           .show();
       new Thread(new Runnable() {

@@ -43,7 +43,7 @@ public class BlurDrawable extends ColorDrawable {
 
   private boolean enabled;
 
-  private int mOverlayColor = Color.argb(175, 0xff, 0xff, 0xff);
+  private int mOverlayColor = Color.argb(200, 0xff, 0xff, 0xff);
 
   public BlurDrawable(@NonNull View mBlurredBgView) {
     this.mBlurredBgView = mBlurredBgView;
@@ -56,13 +56,13 @@ public class BlurDrawable extends ColorDrawable {
   }
 
   /**
-   * used for dialog/fragment/popWindow
+   * used for dialog/fragment/popWindow/dialog
    *
    * @param activity the blurredView attached
    * @see #setDrawOffset
    */
   public BlurDrawable(Activity activity) {
-    this(activity.getWindow().getDecorView());
+    this(activity.getWindow());
   }
 
   /**
@@ -81,11 +81,7 @@ public class BlurDrawable extends ColorDrawable {
     mBlurScript.setRadius(radius);
   }
 
-  @TargetApi(17)
-  public void setDownsampleFactor(int factor) {
-    if (factor <= 0) {
-      throw new IllegalArgumentException("Downsample factor must be greater than 0.");
-    }
+  @TargetApi(17) public void setDownsampleFactor(@IntRange(from = 0) int factor) {
     if (!enabled) {
       return;
     }
