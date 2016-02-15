@@ -2,7 +2,6 @@ package com.github.miao1007.animewallpaper.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -11,7 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -21,8 +20,8 @@ import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
 import com.github.miao1007.animewallpaper.ui.adapter.BaseAdapter;
 import com.github.miao1007.animewallpaper.ui.adapter.CardAdapter;
-import com.github.miao1007.animewallpaper.ui.widget.BlurAlertView;
 import com.github.miao1007.animewallpaper.ui.widget.BlurDrawable;
+import com.github.miao1007.animewallpaper.ui.widget.FullScreenBlurAlertDialog;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
@@ -48,10 +47,10 @@ public class MainActivity extends AppCompatActivity
   boolean isLoadingMore;
   @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
   @Bind(R.id.rv_frag_card) RecyclerView mRvFragCard;
-  @Bind(R.id.iv_settings) ImageView mIvCardSettings;
   BlurDrawable drawable;
   //void multiple dynamic proxy
   ImageRepo repo = SquareUtils.getRetrofit().create(ImageRepo.class);
+  @Bind(R.id.card_holder) FrameLayout mCardHolder;
   //@Bind(R.id.search_bar) SearchBar mSearchBar;
   private Map<String, Object> query = new HashMap<>(4);
 
@@ -66,12 +65,19 @@ public class MainActivity extends AppCompatActivity
     return intent.getStringExtra(EXTRA_MAP);
   }
 
-  @OnClick(R.id.iv_settings) void settings(View v) {
-    //startActivity(new Intent(this, SettingsActivity.class));
-  }
+  boolean in = true;
+  //@OnClick(R.id.iv_settings) void settings(View v) {
+  //  //startActivity(new Intent(this, SettingsActivity.class));
+  //  //mNavigationBar.setPopView( in);
+  //  in = !in;
+  //}
 
   @OnClick(R.id.iv_search) void iv_search(View v) {
     startActivity(new Intent(this, SearchActivity.class));
+  }
+
+  @OnClick(R.id.error_page_refresh) void error_page_refresh() {
+    onRefresh();
   }
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -154,6 +160,7 @@ public class MainActivity extends AppCompatActivity
               mNavigationBar.setProgressBar(false);
             }
             isLoadingMore = false;
+            mCardHolder.getChildAt(1).setVisibility(View.INVISIBLE);
           }
 
           @Override public void onError(Throwable e) {
@@ -163,6 +170,7 @@ public class MainActivity extends AppCompatActivity
             }
             isLoadingMore = false;
             Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            mCardHolder.getChildAt(1).setVisibility(View.VISIBLE);
           }
 
           @Override public void onNext(ImageResult imageResult) {
@@ -202,15 +210,12 @@ public class MainActivity extends AppCompatActivity
    * 加载渲染引擎比较耗时，但是把引擎单例话，非常不好管理
    */
   @Override public void onBackPressed() {
-    final BlurAlertView alert = new BlurAlertView(mRvFragCard, new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        finish();
-      }
-    });
-    alert.setBlurRadius(12);
-    alert.setDownsampleFactor(16);
-    alert.setOverlayColor(Color.argb(120, 0x00, 0x00, 0x00));
-    alert.setduration(200);
+    final FullScreenBlurAlertDialog alert =
+        new FullScreenBlurAlertDialog(getWindow(), new View.OnClickListener() {
+          @Override public void onClick(View v) {
+            finish();
+          }
+        });
     alert.show();
   }
 }

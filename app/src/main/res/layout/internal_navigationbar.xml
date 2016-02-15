@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--navigationbar 4x13 = 52 it w/h will be override-->
 <merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize">
-               
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-  <!--Do not set padding on it, see {@code NavigationBar}-->
   <com.github.miao1007.animewallpaper.ui.widget.FontedTextView android:layout_width="wrap_content"
       android:layout_height="?attr/actionBarSize"
       android:text="@string/app_name"
       android:id="@+id/internal_navi_title"
       android:maxLines="1"
       android:ellipsize="end"
-      android:layout_alignParentBottom="true"
       android:singleLine="true"
       android:textSize="24sp"
       android:gravity="center_vertical"
@@ -25,7 +19,6 @@
       android:id="@+id/internal_navi_progress"
       android:layout_width="20dp"
       android:gravity="center_vertical"
-      android:layout_alignParentBottom="true"
       android:visibility="invisible"
       android:layout_toLeftOf="@id/internal_navi_title"
       android:layout_height="?attr/actionBarSize"

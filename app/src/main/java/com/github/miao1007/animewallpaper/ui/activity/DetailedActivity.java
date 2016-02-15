@@ -86,7 +86,7 @@ public class DetailedActivity extends AppCompatActivity {
   @OnClick(R.id.detailed_tags) void tags() {
     String tilte = "Relevant tags";
     final List<String> tags = Arrays.asList(imageResult.getTags().split(" "));
-    ActionSheet a = new ActionSheet(this, tilte, new AdapterView.OnItemClickListener() {
+    ActionSheet a = new ActionSheet(this.getWindow(), tilte, new AdapterView.OnItemClickListener() {
       @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MainActivity.startRefreshActivity(DetailedActivity.this, tags.get(position));
       }
@@ -300,7 +300,7 @@ public class DetailedActivity extends AppCompatActivity {
 
     set.playTogether(trans_Y, scale_X, scale_Y);
     set.playTogether(scale_icn_X, scale_icn_Y, trans_icn_Y);
-    set.setDuration(400);
+    set.setDuration(300);
     set.addListener(new Animator.AnimatorListener() {
       @Override public void onAnimationStart(Animator animation) {
         listener.onAnimationStart(animation);

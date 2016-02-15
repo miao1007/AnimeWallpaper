@@ -14,13 +14,25 @@
   <!--</com.github.miao1007.animewallpaper.ui.widget.SearchBar>-->
 
   <!--RecyclerView-->
-  <android.support.v7.widget.RecyclerView
-      android:id="@+id/rv_frag_card"
-      android:clipToPadding="false"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior"
-      tools:listitem="@layout/list_item_sample"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
+  <FrameLayout android:layout_width="match_parent"
+      android:id="@+id/card_holder"
+      android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_frag_card"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/list_item_sample"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+    <include layout="@layout/include_errorview" android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+  </FrameLayout>
+
 
   <com.github.miao1007.animewallpaper.ui.widget.NavigationBar
       xmlns:android="http://schemas.android.com/apk/res/android"
@@ -35,19 +47,17 @@
         android:src="@drawable/search_black_96" android:layout_alignParentLeft="true"
         android:padding="16dp"
         android:id="@+id/iv_search"
-        android:layout_alignParentBottom="true"
         android:scaleType="fitXY"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"/>
 
-    <ImageView
-        android:src="@drawable/settings_96" android:layout_alignParentRight="true"
-        android:padding="16dp"
-        android:id="@+id/iv_settings"
-        android:layout_alignParentBottom="true"
-        android:scaleType="fitXY"
-        android:layout_width="?attr/actionBarSize"
-        android:layout_height="?attr/actionBarSize"/>
+    <!--<ImageView-->
+    <!--android:src="@drawable/settings_96" android:layout_alignParentRight="true"-->
+    <!--android:padding="16dp"-->
+    <!--android:id="@+id/iv_settings"-->
+    <!--android:scaleType="fitXY"-->
+    <!--android:layout_width="?attr/actionBarSize"-->
+    <!--android:layout_height="?attr/actionBarSize"/>-->
   </com.github.miao1007.animewallpaper.ui.widget.NavigationBar>
 
   <!---->

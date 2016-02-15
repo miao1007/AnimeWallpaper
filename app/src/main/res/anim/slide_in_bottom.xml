@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shareInterpolator="false" android:duration="@android:integer/config_mediumAnimTime">
+    android:shareInterpolator="true" android:duration="@android:integer/config_mediumAnimTime">
 
   <translate
       android:fromXDelta="0%"
       android:toXDelta="0%"
       android:fromYDelta="100%"
       android:toYDelta="0%"/>
+
+
+  <!--<alpha xmlns:android="http://schemas.android.com/apk/res/android"-->
+      <!--android:interpolator="@android:interpolator/decelerate_quad"-->
+      <!--android:fromAlpha="0.0" android:toAlpha="1.0"-->
+      <!--android:duration="@android:integer/config_longAnimTime" />-->
 </set>

@@ -6,7 +6,6 @@ import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -17,10 +16,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
-import com.jakewharton.rxbinding.widget.RxTextView;
-import java.util.concurrent.TimeUnit;
-import rx.Observable;
-import rx.Subscriber;
 
 /**
  * Created by leon on 1/28/16.
@@ -91,7 +86,7 @@ public class SearchBar extends RelativeLayout {
 
   void init() {
     //insert first view into the Framlayout,, and return `root view`(this)
-    inflate(getContext(), R.layout.include_searchbar, this);
+    inflate(getContext(), R.layout.internal_searchbar, this);
     ButterKnife.bind(this);
     /**
      * -root

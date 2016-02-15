@@ -13,5 +13,7 @@
   <string name="title_activity_detailed">DownloadImage</string>
   <string name="title_activity_settings">SettingsActivity</string>
   <string name="confirm_exit">Confirm exit?</string>
+  <string name="time_out">连接超时，请检查网络</string>
+  <string name="retry">重试</string>
 
 </resources>

@@ -5,8 +5,11 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,7 +44,6 @@ public class NavigationBar extends RelativeLayout {
   public void setProgressBar(boolean isLoading) {
     if (mProgress != null) {
       mProgress.setVisibility(isLoading ? VISIBLE : GONE);
-      Log.d(TAG, Position.from(mProgress).toString());
     }
   }
 
@@ -61,18 +63,8 @@ public class NavigationBar extends RelativeLayout {
     }
   }
 
-  public void setFitTranslucent(final boolean translucent) {
-    post(new Runnable() {
-      @Override public void run() {
-        if (StatusbarUtils.isLessKitkat() || !translucent) {
-          return;
-        }
-        int height = StatusbarUtils.getStatusBarOffsetPx(getContext());
-        setPadding(getPaddingLeft(), height, getPaddingRight(), getPaddingBottom());
-        getLayoutParams().height += height;
-      }
-    });
-  }
+  View view;
+  boolean doing = false;
 
   /**
    * Create a new relativelayout and inflate xml in it,
@@ -82,6 +74,57 @@ public class NavigationBar extends RelativeLayout {
     View.inflate(getContext(), R.layout.internal_navigationbar, this);  //correct way to inflate..
     ButterKnife.bind(this);
     setFitTranslucent(true);
+  }
+
+  public void setFitTranslucent(final boolean translucent) {
+    post(new Runnable() {
+      @Override public void run() {
+        if (StatusbarUtils.isLessKitkat() || !translucent) {
+          return;
+        }
+        int height = StatusbarUtils.getStatusBarOffsetPx(getContext());
+        setPadding(getPaddingLeft(), height + getPaddingTop(), getPaddingRight(),
+            getPaddingBottom());
+        getLayoutParams().height += height;
+        view = LayoutInflater.from(getContext()).inflate(R.layout.settings, null);
+      }
+    });
+  }
+
+  public void setPopView(final boolean in) {
+    if (doing) {
+      return;
+    }
+    this.setClipChildren(false);
+    //this.setClipToOutline(false);
+    final int h = ((int) getResources().getDimension(R.dimen.internal_navigation_pop_height));
+    final int init = getMeasuredHeight();
+    Animation animation = new Animation() {
+
+      @Override protected void applyTransformation(float interpolatedTime, Transformation t) {
+        getLayoutParams().height = init + (in ? (1) : (-1)) * (int) (h * interpolatedTime);
+        requestLayout();
+      }
+
+      @Override public boolean willChangeBounds() {
+        return true;
+      }
+    };
+    animation.setDuration(250);
+    view.setAnimation(animation);
+    if (in) {
+      LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h);
+      //params.addRule(ALIGN_BOTTOM, RelativeLayout.TRUE);
+      //params.ma
+      params.addRule(RelativeLayout.BELOW, mNaviTitle.getId());
+      if (view.getParent() == null) {
+        addView(view, params);
+        doing = false;
+      }
+    } else {
+      removeView(view);
+      doing = false;
+    }
   }
 }
 

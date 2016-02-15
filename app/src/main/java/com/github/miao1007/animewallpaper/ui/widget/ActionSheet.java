@@ -1,7 +1,5 @@
 package com.github.miao1007.animewallpaper.ui.widget;
 
-import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -30,9 +28,9 @@ public class ActionSheet extends BlurDialog {
 
   private int[] anim = { dialogHeightPx(), 0 };
 
-  public ActionSheet(Activity activity, String title,
+  public ActionSheet(Window window, String title,
       @Nullable AdapterView.OnItemClickListener listener, List<String> tags) {
-    super(activity, android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
+    super(window, android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
     this.title = title;
     this.listener = listener;
     this.tags = tags;
@@ -61,21 +59,24 @@ public class ActionSheet extends BlurDialog {
     return actionsheet;
   }
 
+  @Override protected int getWindowOffset() {
+    return blurredWindow.getDecorView().getHeight() - dialogHeightPx();
+  }
+
   protected int dialogHeightPx() {
     return (int) getContext().getResources().getDimension(R.dimen.internal_actionsheet_height);
   }
 
   @Override protected void onSetWindowAttrs(Window w) {
     w.setBackgroundDrawableResource(android.R.color.transparent);
-    w.setWindowAnimations(R.style.DialogAnimation);
+    w.setWindowAnimations(R.style.ActionsheetAnimation);
     w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, dialogHeightPx());
     w.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
     w.setDimAmount(0.5f);
   }
 
-  @Override protected ObjectAnimator loadAnimation(View view, boolean in) {
-    return ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, in ? (anim[0]) : (anim[1]),
-        !in ? (anim[0]) : (anim[1]));
+  @Override protected void onSetupBlur(BlurDrawable drawable) {
+
   }
 
   /**
