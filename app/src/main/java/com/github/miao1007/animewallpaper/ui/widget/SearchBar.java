@@ -37,7 +37,7 @@ public class SearchBar extends RelativeLayout {
   float upDimen = 0f;
   InputMethodManager imm;
 
-  public EditText getmInternalEtSearch() {
+  public EditText getEditTextSearch() {
     return mInternalEtSearch;
   }
 

@@ -4,16 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.github.miao1007.animewallpaper.ui.blurredView.SearchActivity">
+    android:background="#b1000000"
+    tools:context="com.github.miao1007.animewallpaper.ui.activity.SearchActivity">
 
 
   <ListView android:layout_width="match_parent" android:id="@+id/search_list"
       android:layout_height="match_parent"
       android:clipToPadding="false"
-      tools:listitem="@android:layout/simple_list_item_1"
-      android:background="@color/ios_internal_bg"
+      android:background="@color/internal_search_inactive"
+      tools:listitem="@android:layout/simple_list_item_1"/>
 
-  />
+
+  <!--make sure layout_height == full-->
+  <ProgressBar
+      android:id="@+id/internal_search_progress"
+      android:layout_width="20dp"
+      android:gravity="center"
+      android:layout_gravity="center"
+      android:visibility="invisible"
+      android:layout_height="20dp"
+      android:indeterminateDrawable="@drawable/progress_indicator"/>
 
   <com.github.miao1007.animewallpaper.ui.widget.SearchBar android:layout_width="match_parent"
       android:id="@+id/search_bar"

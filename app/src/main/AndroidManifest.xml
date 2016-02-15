@@ -7,6 +7,9 @@
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
   <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
 
+  <!--bughd-->
+  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
   <!-- setwallpaper -->
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -17,6 +20,9 @@
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
       android:theme="@style/AppTheme">
+
+    <meta-data android:value="141640f581df6968db968b2abc9f503b" android:name="BUG_HD_SDK_GENERAL_KEY" />
+
     <activity
         android:name=".ui.activity.MainActivity"
         android:label="@string/app_name">

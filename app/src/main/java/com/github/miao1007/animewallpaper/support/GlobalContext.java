@@ -1,6 +1,7 @@
 package com.github.miao1007.animewallpaper.support;
 
 import android.app.Application;
+import im.fir.sdk.FIR;
 
 /**
  * Created by leon on 4/19/15.
@@ -14,6 +15,7 @@ public class GlobalContext extends Application {
   @Override public void onCreate() {
     super.onCreate();
     instance = this;
+    FIR.init(this);
   }
 
   public static GlobalContext getInstance(){

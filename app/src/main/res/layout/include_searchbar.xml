@@ -34,30 +34,30 @@
   </RelativeLayout>
 
 
-  <com.github.miao1007.animewallpaper.ui.widget.ViewSwitcher
-      android:layout_width="80dp"
-      android:layout_alignParentBottom="true"
-      android:layout_marginRight="@dimen/internal_searchbar_radius"
-      android:layout_marginTop="@dimen/internal_searchbar_radius"
-      android:layout_marginBottom="@dimen/internal_searchbar_radius"
-      app:vsReserve="8dp"
-      android:layout_alignParentRight="true"
-      android:layout_alignParentEnd="true"
-      android:layout_height="match_parent"
-      android:id="@+id/internal_vs_cancel" android:layout_alignParentTop="true">
+<com.github.miao1007.animewallpaper.ui.widget.ViewSwitcher
+    android:layout_width="80dp"
+    android:layout_alignParentBottom="true"
+    android:layout_marginRight="@dimen/internal_searchbar_radius"
+    android:layout_marginTop="@dimen/internal_searchbar_radius"
+    android:layout_marginBottom="@dimen/internal_searchbar_radius"
+    app:vsReserve="8dp"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"
+    android:layout_height="match_parent"
+    android:id="@+id/internal_vs_cancel" android:layout_alignParentTop="true">
 
 
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:gravity="center"
-        android:id="@+id/search_cancel"
-        android:textColor="@color/internal_search_blue"
-        android:textSize="@dimen/internal_searchbar_textsize"
-        android:text="@android:string/cancel"/>
+  <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+      android:gravity="center"
+      android:id="@+id/search_cancel"
+      android:textColor="@color/internal_search_blue"
+      android:textSize="@dimen/internal_searchbar_textsize"
+      android:text="@android:string/cancel"/>
 
 
-    <View android:layout_width="match_parent" android:layout_height="match_parent"
-        android:background="@drawable/internal_search_shape_bg_right_8"/>
+  <View android:layout_width="match_parent" android:layout_height="match_parent"
+      android:background="@drawable/internal_search_shape_bg_right_8"/>
 
-  </com.github.miao1007.animewallpaper.ui.widget.ViewSwitcher>
+</com.github.miao1007.animewallpaper.ui.widget.ViewSwitcher>
 
 </RelativeLayout>

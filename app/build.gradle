@@ -36,6 +36,9 @@ android {
 
   repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven {
+      url "http://maven.bughd.com/public"
+    }
   }
 }
 
@@ -56,9 +59,7 @@ dependencies {
   compile 'com.android.support:design:23.1.1'
   compile 'com.android.support:cardview-v7:23.1.1'
 
-  //  compile 'im.fir:sdk:1.2.2'
-  //  compile 'com.commit451:PhotoView:1.2.4'
-  //  compile 'com.malinskiy:superrecyclerview:1.1.0'
   compile 'com.github.chrisbanes.photoview:library:1.2.3'
-  //  apt 'com.android.databinding:compiler:1.0-rc0'
+
+  compile 'im.fir:fir-sdk:latest.integration@aar'
 }

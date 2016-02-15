@@ -14,6 +14,8 @@ import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
@@ -29,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by leon on 1/26/16.
  * Singleton Utils
  */
-public class SquareUtils {
+public abstract class SquareUtils {
 
   static final String TAG = "SquareUtils";
 
@@ -69,7 +71,7 @@ public class SquareUtils {
     if (client == null) {
       final File cacheDir = GlobalContext.getInstance().getExternalCacheDir();
       client = new OkHttpClient.Builder().addNetworkInterceptor(getLogger())
-          .addInterceptor(ImageRepo.CDN)
+          //.addInterceptor(ImageRepo.CDN)
           .cache(new Cache(new File(cacheDir, "okhttp"), 60 * 1024 * 1024)).build();
     }
     return client;
@@ -147,6 +149,7 @@ public class SquareUtils {
     }
   }
 
+
   public static Retrofit getRetrofit() {
     if (retrofit == null) {
       synchronized (SquareUtils.class) {
@@ -158,4 +161,31 @@ public class SquareUtils {
     }
     return retrofit;
   }
+
+  Interceptor RC4 = new Interceptor() {
+    @Override public Response intercept(Chain chain) throws IOException {
+      Request originRequest = chain.request();
+      RequestBody body = originRequest.body();
+      RequestBody encryptedBody = encrypt(body);
+      Request newReq = originRequest.newBuilder().post(encryptedBody).build();
+      return chain.proceed(newReq);
+    }
+  };
+
+  RequestBody encrypt(RequestBody body) {
+    Buffer inBuff = new Buffer();
+    Buffer outBuff = new Buffer();
+
+    try {
+      //将body的内容放入缓存
+      body.writeTo(inBuff);
+      //进行rc4运算
+      outBuff.write(rc4(inBuff.readByteArray()));
+      return RequestBody.create(body.contentType(), outBuff.readByteArray());
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  abstract public byte[] rc4(byte[] input);
 }

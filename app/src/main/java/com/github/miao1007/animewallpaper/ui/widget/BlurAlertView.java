@@ -54,12 +54,4 @@ public class BlurAlertView extends BlurDialog {
     });
     return view;
   }
-
-  @Nullable @Override protected ObjectAnimator getInAnimator(View view) {
-    return null;
-  }
-
-  @Nullable @Override protected ObjectAnimator getOutAnimator(View view) {
-    return null;
-  }
 }
