@@ -2,6 +2,7 @@ package com.github.miao1007.animewallpaper.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity
   //void multiple dynamic proxy
   ImageRepo repo = SquareUtils.getRetrofit().create(ImageRepo.class);
   @Bind(R.id.card_holder) FrameLayout mCardHolder;
+  @Bind(R.id.card_error_page) RelativeLayout mCardErrorPage;
   //@Bind(R.id.search_bar) SearchBar mSearchBar;
   private Map<String, Object> query = new HashMap<>(4);
 
@@ -66,17 +69,23 @@ public class MainActivity extends AppCompatActivity
   }
 
   boolean in = true;
-  //@OnClick(R.id.iv_settings) void settings(View v) {
-  //  //startActivity(new Intent(this, SettingsActivity.class));
-  //  //mNavigationBar.setPopView( in);
-  //  in = !in;
-  //}
+
+  @OnClick(R.id.iv_github) void settings(View v) {
+    String url = "http://github.com/miao1007/AnimeWallpaper";
+    Intent i = new Intent(Intent.ACTION_VIEW);
+    i.setData(Uri.parse(url));
+    startActivity(i);
+
+    in = !in;
+  }
 
   @OnClick(R.id.iv_search) void iv_search(View v) {
     startActivity(new Intent(this, SearchActivity.class));
   }
 
   @OnClick(R.id.error_page_refresh) void error_page_refresh() {
+    mCardErrorPage.setVisibility(View.GONE);
+    mRvFragCard.setVisibility(View.VISIBLE);
     onRefresh();
   }
 
@@ -160,7 +169,7 @@ public class MainActivity extends AppCompatActivity
               mNavigationBar.setProgressBar(false);
             }
             isLoadingMore = false;
-            mCardHolder.getChildAt(1).setVisibility(View.INVISIBLE);
+            mCardErrorPage.setVisibility(View.INVISIBLE);
           }
 
           @Override public void onError(Throwable e) {
@@ -170,7 +179,8 @@ public class MainActivity extends AppCompatActivity
             }
             isLoadingMore = false;
             Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            mCardHolder.getChildAt(1).setVisibility(View.VISIBLE);
+            mRvFragCard.setVisibility(View.GONE);
+            mCardErrorPage.setVisibility(View.VISIBLE);
           }
 
           @Override public void onNext(ImageResult imageResult) {
@@ -180,8 +190,12 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override public void onItemClick(View v, int position) {
-    Parcelable imgInfo = ((CardAdapter) mRvFragCard.getAdapter()).getData().get(position);
-
+    List<ImageResult> imageResult = ((CardAdapter) mRvFragCard.getAdapter()).getData();
+    if (imageResult == null || imageResult.isEmpty() || imageResult.get(position) == null) {
+      //mi ui bug
+      return;
+    }
+    Parcelable imgInfo = imageResult.get(position);
     DetailedActivity.startActivity(v.getContext(), Position.from(v), imgInfo);
   }
 

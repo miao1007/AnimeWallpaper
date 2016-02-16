@@ -22,16 +22,14 @@ import java.util.List;
 public class ActionSheet extends BlurDialog {
 
   static final String TAG = LogUtils.makeLogTag(ActionSheet.class);
-  String title;
   AdapterView.OnItemClickListener listener;
   List<String> tags;
 
   private int[] anim = { dialogHeightPx(), 0 };
 
-  public ActionSheet(Window window, String title,
+  public ActionSheet(Window window,
       @Nullable AdapterView.OnItemClickListener listener, List<String> tags) {
     super(window, android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
-    this.title = title;
     this.listener = listener;
     this.tags = tags;
   }
@@ -46,8 +44,6 @@ public class ActionSheet extends BlurDialog {
     listView.setAdapter(new BlueAdapter(getContext(), android.R.layout.simple_list_item_1, tags));
     TextView tv_title = ((TextView) actionsheet.findViewById(R.id.internal_actionsheet_title));
     TextView tv_cancel = ((TextView) actionsheet.findViewById(R.id.internal_sheet_cancel));
-
-    tv_title.setText(title);
     if (listener != null) {
       listView.setOnItemClickListener(listener);
     }
@@ -69,7 +65,7 @@ public class ActionSheet extends BlurDialog {
 
   @Override protected void onSetWindowAttrs(Window w) {
     w.setBackgroundDrawableResource(android.R.color.transparent);
-    w.setWindowAnimations(R.style.ActionsheetAnimation);
+    w.setWindowAnimations(R.style.AlphaDialogAnimation);
     w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, dialogHeightPx());
     w.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
     w.setDimAmount(0.5f);

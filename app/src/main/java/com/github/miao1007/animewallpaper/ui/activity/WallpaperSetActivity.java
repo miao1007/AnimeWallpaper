@@ -2,14 +2,11 @@ package com.github.miao1007.animewallpaper.ui.activity;
 
 import android.app.WallpaperManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -39,9 +36,6 @@ public class WallpaperSetActivity extends AppCompatActivity {
     final Bitmap bitmap = mAttacher.getVisibleRectangleBitmap();
     if (bitmap != null) {
       final WallpaperManager manager = WallpaperManager.getInstance(this);
-      Snackbar.make(((View) mIvPhoto.getParent()), "Setting Wallpaper", Snackbar.LENGTH_LONG)
-          .setActionTextColor(Color.WHITE)
-          .show();
       new Thread(new Runnable() {
         @Override public void run() {
           try {

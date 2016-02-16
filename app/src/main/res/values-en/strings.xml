@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="app_name">KWallpaper</string>
+  <string name="action_settings">Settings</string>
+
+
+  <string name="confirm_exit">Confirm exit?</string>
+  <string name="time_out">Connection time out, please check network</string>
+  <string name="retry">Retry</string>
+  <string name="searching_for_relevant_tags">Relevant tags</string>
+  <string name="start_download_image">Starting preview large image</string>
+  <string name="share_image">Share image using</string>
+  <string name="view_image_by">View image using</string>
+  <string name="set_wallpaper_compat">Compat Mode</string>
+
+</resources>

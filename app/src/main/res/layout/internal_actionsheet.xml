@@ -19,7 +19,7 @@
 
     <TextView android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:text="Searching for relevant tags"
+        android:text="@string/searching_for_relevant_tags"
         android:id="@+id/internal_actionsheet_title"
         android:maxLines="1"
         android:textColor="@color/internal_search_grey"

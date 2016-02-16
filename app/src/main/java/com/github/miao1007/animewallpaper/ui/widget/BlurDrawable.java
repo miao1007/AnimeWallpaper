@@ -53,6 +53,7 @@ public class BlurDrawable extends ColorDrawable {
       enabled = true;
       initializeRenderScript(mBlurredBgView.getContext());
     }
+    setOverlayColor(mOverlayColor);
   }
 
   /**

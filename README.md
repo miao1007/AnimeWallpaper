@@ -1,10 +1,14 @@
 AnimeWallpaper
 =====================
 
+Download high quality pictures from Konachan.net.
+
+
+
 
 Build Environment
 -------------
-Android Studio 1.5 or higher
+Android Studio 2.0 or higher
 
 
 License

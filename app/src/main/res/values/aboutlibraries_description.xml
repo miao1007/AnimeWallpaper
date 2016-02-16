@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <string name="aboutLibraries_description_name">KWallPaper</string>
-  <string name="aboutLibraries_description_showIcon">true</string>
-  <string name="aboutLibraries_description_showVersion">true</string>
-  <string name="aboutLibraries_description_text">
-    <![CDATA[This is a wallpaper app in material design. <br /><br /><b>You can fork me on <a href="https://github.com/miao1007/Lollipop-Animation-Sample">GitHub</a> </b>]]>
-  </string>
-</resources>

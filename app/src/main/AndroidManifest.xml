@@ -34,15 +34,11 @@
     </activity>
     <activity
         android:name=".ui.activity.DetailedActivity"
-        android:label="@string/title_activity_detailed"
         android:theme="@style/DetailedTheme">
     </activity>
     <activity
-        android:name=".ui.activity.SettingsActivity"
-        android:label="Settings"/>
-    <activity
         android:name=".ui.activity.WallpaperSetActivity"
-        android:label="CropWallpaperCompat"
+        android:label="@string/set_wallpaper_compat"
         android:theme="@style/Settings">
       <intent-filter>
         <action android:name="android.service.wallpaper.CROP_AND_SET_WALLPAPER"/>

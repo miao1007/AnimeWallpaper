@@ -3,7 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/root_detailed"
-    tools:context="com.github.miao1007.animewallpaper.ui.blurredView.DetailedActivity"
+    tools:context="com.github.miao1007.animewallpaper.ui.activity.DetailedActivity"
 >
 
 

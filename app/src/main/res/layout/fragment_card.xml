@@ -51,13 +51,13 @@
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"/>
 
-    <!--<ImageView-->
-    <!--android:src="@drawable/settings_96" android:layout_alignParentRight="true"-->
-    <!--android:padding="16dp"-->
-    <!--android:id="@+id/iv_settings"-->
-    <!--android:scaleType="fitXY"-->
-    <!--android:layout_width="?attr/actionBarSize"-->
-    <!--android:layout_height="?attr/actionBarSize"/>-->
+    <ImageView
+        android:src="@drawable/github_96" android:layout_alignParentRight="true"
+        android:padding="12dp"
+        android:id="@+id/iv_github"
+        android:scaleType="fitXY"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"/>
   </com.github.miao1007.animewallpaper.ui.widget.NavigationBar>
 
   <!---->

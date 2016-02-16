@@ -84,9 +84,8 @@ public class DetailedActivity extends AppCompatActivity {
   }
 
   @OnClick(R.id.detailed_tags) void tags() {
-    String tilte = "Relevant tags";
     final List<String> tags = Arrays.asList(imageResult.getTags().split(" "));
-    ActionSheet a = new ActionSheet(this.getWindow(), tilte, new AdapterView.OnItemClickListener() {
+    ActionSheet a = new ActionSheet(this.getWindow(), new AdapterView.OnItemClickListener() {
       @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MainActivity.startRefreshActivity(DetailedActivity.this, tags.get(position));
       }
@@ -130,7 +129,7 @@ public class DetailedActivity extends AppCompatActivity {
 
         final Intent shareIntent = new Intent(Intent.ACTION_VIEW);
         shareIntent.setDataAndType(Uri.fromFile(file), "image/*");
-        startActivity(Intent.createChooser(shareIntent, "View image using"));
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.view_image_by)));
       }
     });
   }
@@ -151,7 +150,7 @@ public class DetailedActivity extends AppCompatActivity {
         final Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("image/*");
         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-        startActivity(Intent.createChooser(shareIntent, "Share image using"));
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_image)));
       }
     });
     //WallpaperUtils.from(DetailedActivity.this).setWallpaper(file);
@@ -178,7 +177,7 @@ public class DetailedActivity extends AppCompatActivity {
   }
 
   @OnClick(R.id.iv_detailed_card) void download(final ImageView v) {
-    Toast.makeText(DetailedActivity.this, "Starting preview large image", Toast.LENGTH_SHORT)
+    Toast.makeText(DetailedActivity.this, R.string.start_download_image, Toast.LENGTH_SHORT)
         .show();
     mNavigationBar.setProgressBar(true);
     SquareUtils.getPicasso(this)
@@ -187,6 +186,7 @@ public class DetailedActivity extends AppCompatActivity {
         .into(v, new Callback() {
           @Override public void onSuccess() {
             mNavigationBar.setProgressBar(false);
+            image_setwallpaper();
           }
 
           @Override public void onError() {
@@ -287,19 +287,15 @@ public class DetailedActivity extends AppCompatActivity {
         in ? s_img[1] : s_img[0]);
     Animator scale_Y = ObjectAnimator.ofFloat(views[0], View.SCALE_Y, in ? s_img[0] : s_img[1],
         in ? s_img[1] : s_img[0]);
-    Animator scale_icn_X = ObjectAnimator.ofFloat(views[1], View.SCALE_X, in ? s_icn[0] : s_icn[1],
-        in ? s_icn[1] : s_icn[0]);
-    Animator scale_icn_Y = ObjectAnimator.ofFloat(views[1], View.SCALE_Y, in ? s_icn[0] : s_icn[1],
-        in ? s_icn[1] : s_icn[0]);
+    Animator alpha_icn = ObjectAnimator.ofFloat(views[1], View.ALPHA, in ? 0f : 1f, in ? 1f : 0f);
 
     Animator trans_icn_Y =
         ObjectAnimator.ofFloat(views[1], View.TRANSLATION_Y, in ? y_icn[0] : y_icn[1],
             in ? y_icn[1] : y_icn[0]);
 
     AnimatorSet set = new AnimatorSet();
-
     set.playTogether(trans_Y, scale_X, scale_Y);
-    set.playTogether(scale_icn_X, scale_icn_Y, trans_icn_Y);
+    set.playTogether(trans_icn_Y, alpha_icn);
     set.setDuration(300);
     set.addListener(new Animator.AnimatorListener() {
       @Override public void onAnimationStart(Animator animation) {
