@@ -9,15 +9,15 @@ import java.util.List;
 
 public class ImageResult implements Parcelable {
 
-  @Expose private int id;
-  @Expose private String tags;
+  @SerializedName("id") @Expose private int id;
+  @Expose @SerializedName("tags") private String tags;
   @SerializedName("created_at") @Expose private int createdAt;
   @SerializedName("creator_id") @Expose private int creatorId;
-  @Expose private String author;
-  @Expose private int change;
-  @Expose private String source;
-  @Expose private int score;
-  @Expose private String md5;
+  @SerializedName("author") @Expose private String author;
+  @SerializedName("change") @Expose private int change;
+  @SerializedName("source") @Expose private String source;
+  @SerializedName("score") @Expose private int score;
+  @SerializedName("md5") @Expose private String md5;
   @SerializedName("file_size") @Expose private int fileSize;
   @SerializedName("file_url") @Expose private String fileUrl;
   @SerializedName("is_shown_in_index") @Expose private boolean isShownInIndex;

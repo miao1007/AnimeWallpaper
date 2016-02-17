@@ -1,6 +1,7 @@
 package com.github.miao1007.animewallpaper.support;
 
 import android.app.Application;
+import android.os.Build;
 import im.fir.sdk.FIR;
 
 /**

@@ -60,7 +60,7 @@ public abstract class SquareUtils {
     HttpLoggingInterceptor loggingInterceptor =
         new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
           @Override public void log(String message) {
-            Log.d("retrofit", message);
+            Log.d("okhttp", message);
           }
         });
     loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);

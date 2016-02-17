@@ -85,7 +85,7 @@ public class DetailedActivity extends AppCompatActivity {
 
   @OnClick(R.id.detailed_tags) void tags() {
     final List<String> tags = Arrays.asList(imageResult.getTags().split(" "));
-    ActionSheet a = new ActionSheet(this.getWindow(), new AdapterView.OnItemClickListener() {
+    ActionSheet a = new ActionSheet(getWindow(), new AdapterView.OnItemClickListener() {
       @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MainActivity.startRefreshActivity(DetailedActivity.this, tags.get(position));
       }

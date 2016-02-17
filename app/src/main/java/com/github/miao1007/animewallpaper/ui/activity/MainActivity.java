@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -129,8 +130,7 @@ public class MainActivity extends AppCompatActivity
 
       @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
-        //if (Math.abs(dy))
-        mNavigationBar.invalidate();
+        ViewCompat.postInvalidateOnAnimation(mNavigationBar);
       }
     });
     drawable = new BlurDrawable(mRvFragCard);
