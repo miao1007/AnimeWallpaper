@@ -39,7 +39,7 @@
 #butterknife has it own aar
 #see http://jakewharton.github.io/butterknife/
 
-#rxjava/android/bind use https://github.com/artem-zinnatullin/RxJavaProGuardRules
+#rxjava/android/bind will use https://github.com/artem-zinnatullin/RxJavaProGuardRules
 
 
 ##photoview
