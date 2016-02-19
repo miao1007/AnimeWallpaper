@@ -19,6 +19,12 @@ import okio.Okio;
 @WorkerThread
 public final class FileUtils {
 
+  /**
+   * Save bitmap to /sdcard/$(name)
+   * @param body
+   * @param name
+   * @return
+   */
   @CheckResult @Nullable
   public static File saveBodytoFile(ResponseBody body, String name) {
     String EXT_STORAGE = Environment.getExternalStorageDirectory().getPath()

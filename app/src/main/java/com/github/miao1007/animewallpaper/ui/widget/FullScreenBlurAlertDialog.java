@@ -26,6 +26,7 @@ public class FullScreenBlurAlertDialog extends BlurDialog {
 
   @Override protected void onSetWindowAttrs(Window window) {
     getWindow().setWindowAnimations(R.style.AlphaDialogAnimation);
+    //机智如我，不用再写一遍
     window.getAttributes().flags = getBlurredWindow().getAttributes().flags;
     window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     window.setBackgroundDrawableResource(android.R.color.transparent);

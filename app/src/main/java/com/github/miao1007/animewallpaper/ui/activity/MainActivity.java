@@ -1,5 +1,6 @@
 package com.github.miao1007.animewallpaper.ui.activity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -75,8 +76,12 @@ public class MainActivity extends AppCompatActivity
     String url = "http://github.com/miao1007/AnimeWallpaper";
     Intent i = new Intent(Intent.ACTION_VIEW);
     i.setData(Uri.parse(url));
-    startActivity(i);
-
+    try {
+      startActivity(i);
+      //some device don't have a browser
+    } catch (ActivityNotFoundException e) {
+      Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
     in = !in;
   }
 

@@ -26,7 +26,7 @@ public abstract class BlurDialog extends Dialog {
   }
 
   public BlurDialog(Window window) {
-    this(window, android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
+    this(window,android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
   }
 
   /**
