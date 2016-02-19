@@ -1,11 +1,8 @@
 package com.github.miao1007.animewallpaper.ui.activity;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -31,9 +28,8 @@ import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.SquareUtils;
-import com.github.miao1007.animewallpaper.utils.StatusbarUtils;
+import com.github.miao1007.animewallpaper.utils.StatusBarUtils;
 import com.squareup.picasso.Picasso;
-import java.net.ConnectException;
 import java.net.SocketException;
 import java.util.HashMap;
 import java.util.List;
@@ -102,7 +98,7 @@ public class MainActivity extends AppCompatActivity
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     setTheme(android.R.style.Theme_DeviceDefault_Light_NoActionBar);
     super.onCreate(savedInstanceState);
-    StatusbarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(true).process();
+    StatusBarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(true).process();
     setContentView(R.layout.fragment_card);
     ButterKnife.bind(this);
     setUpList();
@@ -122,7 +118,7 @@ public class MainActivity extends AppCompatActivity
     mRvFragCard.setAdapter(mAdapter);
     mRvFragCard.post(new Runnable() {
       @Override public void run() {
-        int padding = mNavigationBar.getHeight() + StatusbarUtils.getStatusBarOffsetPx(
+        int padding = mNavigationBar.getHeight() + StatusBarUtils.getStatusBarOffsetPx(
             getApplicationContext());
         mRvFragCard.setPadding(0, padding, 0, 0);
       }

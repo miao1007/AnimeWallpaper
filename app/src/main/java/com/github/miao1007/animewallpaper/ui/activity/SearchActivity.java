@@ -22,7 +22,7 @@ import com.github.miao1007.animewallpaper.support.api.konachan.Tag;
 import com.github.miao1007.animewallpaper.ui.widget.SearchBar;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.SquareUtils;
-import com.github.miao1007.animewallpaper.utils.StatusbarUtils;
+import com.github.miao1007.animewallpaper.utils.StatusBarUtils;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import im.fir.sdk.FIR;
 import java.io.InterruptedIOException;
@@ -50,7 +50,7 @@ public class SearchActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_search);
     ButterKnife.bind(this);
-    StatusbarUtils.from(this)
+    StatusBarUtils.from(this)
         .setActionbarView(mSearchbar)
         .setTransparentStatusbar(true)
         .setLightStatusBar(true)
@@ -61,7 +61,7 @@ public class SearchActivity extends AppCompatActivity {
     mSearchListView.post(new Runnable() {
       @Override public void run() {
         mSearchListView.setPadding(0,
-            mSearchbar.getHeight() + StatusbarUtils.getStatusBarOffsetPx(getApplicationContext()),
+            mSearchbar.getHeight() + StatusBarUtils.getStatusBarOffsetPx(getApplicationContext()),
             0, 0);
       }
     });

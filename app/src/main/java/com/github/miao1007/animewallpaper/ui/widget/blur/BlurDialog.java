@@ -1,12 +1,26 @@
 package com.github.miao1007.animewallpaper.ui.widget.blur;
 
 import android.app.Dialog;
+import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
 
 /**
  * Created by leon on 2/10/16.
+ *
+ * @see #onCreate(Bundle)
+ *
+ * @see #onStart()
+ *
+ * mWindowManager.addView(mDecor, l);
+ *
+ * @see #dismiss()
+ *
+ * mWindowManager.removeViewImmediate(mDecor);
+ *
+ * @see #onStop()
+ *
  */
 public abstract class BlurDialog extends Dialog {
 

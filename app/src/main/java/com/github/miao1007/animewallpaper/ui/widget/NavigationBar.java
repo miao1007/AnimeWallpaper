@@ -2,29 +2,23 @@ package com.github.miao1007.animewallpaper.ui.widget;
 
 import android.content.Context;
 import android.support.annotation.ColorInt;
-import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.utils.LogUtils;
-import com.github.miao1007.animewallpaper.utils.StatusbarUtils;
+import com.github.miao1007.animewallpaper.utils.StatusBarUtils;
 
 /**
  * Created by leon on 1/18/16.
+ * iOS like UINavigationBar
  */
 public class NavigationBar extends RelativeLayout {
 
-  static final String TAG = LogUtils.makeLogTag(NavigationBar.class);
   @Bind(R.id.internal_navi_title) TextView mNaviTitle;
   @Bind(R.id.internal_navi_progress) ProgressBar mProgress;
 
@@ -51,10 +45,6 @@ public class NavigationBar extends RelativeLayout {
     }
   }
 
-  public void setProgress(@IntRange(from = 0, to = 100) int progress) {
-    mProgress.setProgress(progress);
-  }
-
   public void setTitle(@NonNull CharSequence title) {
     if (mNaviTitle != null) {
       mNaviTitle.setText(title);
@@ -67,26 +57,27 @@ public class NavigationBar extends RelativeLayout {
     }
   }
 
-  View view;
-  boolean doing = false;
-
   /**
    * Create a new relativelayout and inflate xml in it,
-   * remember use merge instead of RelativeLayout
+   * remember use **merge** instead of RelativeLayout
    */
   private void initView() {
     View.inflate(getContext(), R.layout.internal_navigationbar, this);  //correct way to inflate..
     ButterKnife.bind(this);
+  }
+
+  @Override protected void onFinishInflate() {
+    super.onFinishInflate();
     setFitTranslucent(true);
   }
 
   public void setFitTranslucent(final boolean translucent) {
     post(new Runnable() {
       @Override public void run() {
-        if (StatusbarUtils.isLessKitkat() || !translucent) {
+        if (StatusBarUtils.isLessKitkat() || !translucent) {
           return;
         }
-        int height = StatusbarUtils.getStatusBarOffsetPx(getContext());
+        int height = StatusBarUtils.getStatusBarOffsetPx(getContext());
         setPadding(getPaddingLeft(), height + getPaddingTop(), getPaddingRight(),
             getPaddingBottom());
         getLayoutParams().height += height;

@@ -12,11 +12,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
@@ -37,23 +35,19 @@ import com.github.miao1007.animewallpaper.ui.widget.Position;
 import com.github.miao1007.animewallpaper.utils.FileUtils;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.SquareUtils;
-import com.github.miao1007.animewallpaper.utils.StatusbarUtils;
+import com.github.miao1007.animewallpaper.utils.StatusBarUtils;
 import com.github.miao1007.animewallpaper.utils.WallpaperUtils;
 import com.github.miao1007.animewallpaper.utils.animation.AnimateUtils;
 import com.github.miao1007.animewallpaper.utils.picasso.Blur;
 import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import okhttp3.CacheControl;
-import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
 import rx.Observable;
 import rx.Subscriber;
-import rx.android.MainThreadSubscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -226,7 +220,7 @@ public class DetailedActivity extends AppCompatActivity {
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    StatusbarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(false).process();
+    StatusBarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(false).process();
     setContentView(R.layout.fragment_image_detailed_card);
     ButterKnife.bind(this);
     mNavigationBar.setTextColor(Color.WHITE);
@@ -286,7 +280,7 @@ public class DetailedActivity extends AppCompatActivity {
     float delta = ((float) (position.width)) / ((float) (position.height));
     //243 - 168(navi) = 75 = status_bar
     float[] y_img = {
-        position.top - (views[0].getY() + (in ? (StatusbarUtils.getStatusBarOffsetPx(this)) : 0)), 0
+        position.top - (views[0].getY() + (in ? (StatusBarUtils.getStatusBarOffsetPx(this)) : 0)), 0
     };
     float[] s_img = { 1f, delta };
 
