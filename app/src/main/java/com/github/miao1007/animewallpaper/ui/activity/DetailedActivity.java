@@ -13,13 +13,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,15 +42,18 @@ import com.github.miao1007.animewallpaper.utils.WallpaperUtils;
 import com.github.miao1007.animewallpaper.utils.animation.AnimateUtils;
 import com.github.miao1007.animewallpaper.utils.picasso.Blur;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
 import rx.Observable;
 import rx.Subscriber;
+import rx.android.MainThreadSubscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -59,25 +67,42 @@ public class DetailedActivity extends AppCompatActivity {
   public static final String TAG = LogUtils.makeLogTag(DetailedActivity.class);
   private static final String EXTRA_IMAGE = "URL";
   private static final String EXTRA_POSITION = "EXTRA_POSITION";
-  private static final String FRAGMENT_TAG = "FRAGMENT_TAG";
+
   @Bind(R.id.iv_detailed_card) ImageView ivDetailedCard;
   @Bind(R.id.blur_bg) ImageView ivDetailedCardBlur;
   @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
   @Bind(R.id.ll_detailed_downloads) LinearLayout mLlDetailedDownloads;
+  @Bind(R.id.image_download_progress) ProgressBar mImageDownloadProgress;
+  @Bind(R.id.image_share) ImageView mImageShare;
+  @Bind(R.id.image_holder) RelativeLayout mImageHolder;
+  @Bind(R.id.root_detailed) FrameLayout mRootDetailed;
 
   ImageResult imageResult;
   boolean isPlaying = false;
-
-  public static void startActivity(Context context, Position position, Parcelable parcelable) {
-    Intent intent = new Intent(context, DetailedActivity.class);
-    //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-    intent.putExtra(EXTRA_IMAGE, parcelable);
-    intent.putExtra(EXTRA_POSITION, position);
-    context.startActivity(intent);
-  }
+  SquareUtils.ProgressListener listener = new SquareUtils.ProgressListener() {
+    @Override public void update(@IntRange(from = 0, to = 100) final int percent) {
+      runOnUiThread(new Runnable() {
+        @Override public void run() {
+          mImageDownloadProgress.setProgress(percent);
+          if (percent == 100) {
+            mImageDownloadProgress.setVisibility(View.GONE);
+          } else {
+            mImageDownloadProgress.setVisibility(View.VISIBLE);
+          }
+        }
+      });
+    }
+  };
 
   public static Position getPosition(Intent intent) {
     return intent.getParcelableExtra(EXTRA_POSITION);
+  }
+
+  public static void startActivity(Context context, Position position, ImageResult parcelable) {
+    Intent intent = new Intent(context, DetailedActivity.class);
+    intent.putExtra(EXTRA_IMAGE, parcelable);
+    intent.putExtra(EXTRA_POSITION, position);
+    context.startActivity(intent);
   }
 
   @OnClick(R.id.detailed_back) void back() {
@@ -94,39 +119,17 @@ public class DetailedActivity extends AppCompatActivity {
     a.show();
   }
 
-  @OnClick(R.id.image_setwallpaper) void image_setWallpaper() {
-    mNavigationBar.setProgressBar(true);
-
-    fileDownload().subscribe(new Subscriber<File>() {
-      @Override public void onCompleted() {
-        mNavigationBar.setProgressBar(false);
-      }
-
-      @Override public void onError(Throwable e) {
-        mNavigationBar.setProgressBar(false);
-      }
-
-      @Override public void onNext(File file) {
-        mNavigationBar.setProgressBar(false);
-        WallpaperUtils.from(DetailedActivity.this).setWallpaper(file);
-      }
-    });
-  }
-
   @OnClick(R.id.image_download) void image_download() {
-    mNavigationBar.setProgressBar(true);
-
-    fileDownload().subscribe(new Subscriber<File>() {
+    downloadViaPicasso(new Subscriber<File>() {
       @Override public void onCompleted() {
-        mNavigationBar.setProgressBar(false);
+
       }
 
       @Override public void onError(Throwable e) {
-        mNavigationBar.setProgressBar(false);
+
       }
 
       @Override public void onNext(File file) {
-        mNavigationBar.setProgressBar(false);
         final Intent shareIntent = new Intent(Intent.ACTION_VIEW);
         shareIntent.setDataAndType(Uri.fromFile(file), "image/*");
         startActivity(Intent.createChooser(shareIntent, getString(R.string.view_image_by)));
@@ -134,18 +137,37 @@ public class DetailedActivity extends AppCompatActivity {
     });
   }
 
-  @OnClick(R.id.image_share) void image_share() {
-    fileDownload().subscribe(new Subscriber<File>() {
+  @OnClick(R.id.image_setwallpaper) void image_setWallpaper(ImageView v) {
+    Toast.makeText(DetailedActivity.this, R.string.start_download_image, Toast.LENGTH_SHORT).show();
+    downloadViaPicasso(new Subscriber<File>() {
       @Override public void onCompleted() {
-        mNavigationBar.setProgressBar(false);
       }
 
       @Override public void onError(Throwable e) {
-        mNavigationBar.setProgressBar(false);
+
       }
 
       @Override public void onNext(File file) {
-        mNavigationBar.setProgressBar(false);
+        WallpaperUtils.from(DetailedActivity.this).setWallpaper(file);
+      }
+    });
+  }
+
+  @OnClick(R.id.iv_detailed_card) void download(final ImageView v) {
+    image_setWallpaper(v);
+  }
+
+  @OnClick(R.id.image_share) void image_share(ImageView v) {
+    downloadViaPicasso(new Subscriber<File>() {
+      @Override public void onCompleted() {
+
+      }
+
+      @Override public void onError(Throwable e) {
+
+      }
+
+      @Override public void onNext(File file) {
         final Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("image/*");
         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
@@ -154,16 +176,40 @@ public class DetailedActivity extends AppCompatActivity {
     });
   }
 
-  @OnClick(R.id.iv_detailed_card) void download(final ImageView v) {
-    Toast.makeText(DetailedActivity.this, R.string.start_download_image, Toast.LENGTH_SHORT).show();
+  void downloadViaPicasso(final Subscriber<File> subscriber) {
+    if (mNavigationBar.getProgress()) {
+      //debounce
+      return;
+    }
     mNavigationBar.setProgressBar(true);
-    SquareUtils.getPicasso(this)
+    SquareUtils.getPicasso(this, listener)
         .load(imageResult.getSampleUrl())
-        .placeholder(v.getDrawable())
-        .into(v, new Callback() {
+        .placeholder(ivDetailedCard.getDrawable())
+        .into(ivDetailedCard, new Callback() {
           @Override public void onSuccess() {
             mNavigationBar.setProgressBar(false);
-            image_setWallpaper();
+            final Request request = new Request.Builder().url(imageResult.getSampleUrl())
+                .cacheControl(CacheControl.FORCE_CACHE)
+                .get()
+                .build();
+            Observable.create(new Observable.OnSubscribe<Response>() {
+              @Override public void call(final Subscriber<? super Response> subscriber) {
+                try {
+                  subscriber.onNext(SquareUtils.getClient().newCall(request).execute());
+                } catch (Exception e) {
+                  subscriber.onError(e);
+                }
+              }
+            })
+                .map(new Func1<Response, File>() {
+                  @Override public File call(Response response) {
+                    return FileUtils.saveBodytoFile(response.body(),
+                        Uri.parse(imageResult.getSampleUrl()).getLastPathSegment());
+                  }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
           }
 
           @Override public void onError() {
@@ -172,31 +218,9 @@ public class DetailedActivity extends AppCompatActivity {
         });
   }
 
-  //@OnClick(R.id.ll_detailed_downloads)
-  Observable<File> fileDownload() {
-    final Request request = new Request.Builder().url(imageResult.getSampleUrl()).get().build();
-    return Observable.create(new Observable.OnSubscribe<Response>() {
-      @Override public void call(final Subscriber<? super Response> subscriber) {
-        SquareUtils.getClient().newCall(request).enqueue(new okhttp3.Callback() {
-          @Override public void onFailure(Call call, IOException e) {
-            subscriber.onError(e);
-          }
-
-          @Override public void onResponse(Call call, Response response) throws IOException {
-            subscriber.onNext(response);
-          }
-        });
-      }
-    }).map(new Func1<Response, File>() {
-      @Override public File call(Response response) {
-        return FileUtils.saveBodytoFile(response.body(),
-            Uri.parse(imageResult.getSampleUrl()).getLastPathSegment());
-      }
-    }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-  }
-
   @Override protected void onDestroy() {
     super.onDestroy();
+    listener = null;
     SquareUtils.getPicasso(this).cancelRequest(ivDetailedCard);
   }
 

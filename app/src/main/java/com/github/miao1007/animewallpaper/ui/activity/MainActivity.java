@@ -210,8 +210,7 @@ public class MainActivity extends AppCompatActivity
       //mi ui bug
       return;
     }
-    Parcelable imgInfo = imageResult.get(position);
-    DetailedActivity.startActivity(v.getContext(), Position.from(v), imgInfo);
+    DetailedActivity.startActivity(v.getContext(), Position.from(v), imageResult.get(position));
   }
 
   //swipe layout refresh callback

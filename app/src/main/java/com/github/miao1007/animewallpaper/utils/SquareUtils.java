@@ -1,6 +1,7 @@
 package com.github.miao1007.animewallpaper.utils;
 
 import android.content.Context;
+import android.support.annotation.IntRange;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 import com.github.miao1007.animewallpaper.support.GlobalContext;
@@ -46,7 +47,9 @@ public abstract class SquareUtils {
    */
   static public OkHttpClient getProgressBarClient(final ProgressListener listener) {
 
-    return getClient().newBuilder().addNetworkInterceptor(new Interceptor() {
+    return getClient().newBuilder()
+        .addNetworkInterceptor(getLogger())
+        .addNetworkInterceptor(new Interceptor() {
       @Override public Response intercept(Chain chain) throws IOException {
         Response originalResponse = chain.proceed(chain.request());
         return originalResponse.newBuilder()
@@ -104,7 +107,7 @@ public abstract class SquareUtils {
   }
 
   public interface ProgressListener {
-    @WorkerThread void update(long bytesRead, long contentLength, boolean done);
+    @WorkerThread void update(@IntRange(from = 0, to = 100) int percent);
   }
 
   private static class ProgressResponseBody extends ResponseBody {
@@ -142,7 +145,10 @@ public abstract class SquareUtils {
           long bytesRead = super.read(sink, byteCount);
           // read() returns the number of bytes read, or -1 if this source is exhausted.
           totalBytesRead += bytesRead != -1 ? bytesRead : 0;
-          progressListener.update(totalBytesRead, responseBody.contentLength(), bytesRead == -1);
+          if (progressListener != null) {
+            progressListener.update(
+                ((int) ((100 * totalBytesRead) / responseBody.contentLength())));
+          }
           return bytesRead;
         }
       };
@@ -161,31 +167,4 @@ public abstract class SquareUtils {
     }
     return retrofit;
   }
-
-  Interceptor RC4 = new Interceptor() {
-    @Override public Response intercept(Chain chain) throws IOException {
-      Request originRequest = chain.request();
-      RequestBody body = originRequest.body();
-      RequestBody encryptedBody = encrypt(body);
-      Request newReq = originRequest.newBuilder().post(encryptedBody).build();
-      return chain.proceed(newReq);
-    }
-  };
-
-  RequestBody encrypt(RequestBody body) {
-    Buffer inBuff = new Buffer();
-    Buffer outBuff = new Buffer();
-
-    try {
-      //将body的内容放入缓存
-      body.writeTo(inBuff);
-      //进行rc4运算
-      outBuff.write(rc4(inBuff.readByteArray()));
-      return RequestBody.create(body.contentType(), outBuff.readByteArray());
-    } catch (Exception e) {
-      return null;
-    }
-  }
-
-  abstract public byte[] rc4(byte[] input);
 }

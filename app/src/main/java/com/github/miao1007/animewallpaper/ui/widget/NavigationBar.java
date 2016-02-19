@@ -41,6 +41,10 @@ public class NavigationBar extends RelativeLayout {
     initView();
   }
 
+  public boolean getProgress() {
+    return mProgress.getVisibility() == VISIBLE;
+  }
+
   public void setProgressBar(boolean isLoading) {
     if (mProgress != null) {
       mProgress.setVisibility(isLoading ? VISIBLE : GONE);
