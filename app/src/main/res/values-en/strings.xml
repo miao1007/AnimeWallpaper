@@ -13,5 +13,7 @@
   <string name="share_image">Share image using</string>
   <string name="view_image_by">View image using</string>
   <string name="set_wallpaper_compat">Compat Mode</string>
+  <string name="please_try_proxy">Please try to use proxy</string>
+
 
 </resources>

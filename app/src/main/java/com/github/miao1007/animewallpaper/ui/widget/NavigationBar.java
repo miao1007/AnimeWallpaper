@@ -86,46 +86,10 @@ public class NavigationBar extends RelativeLayout {
         setPadding(getPaddingLeft(), height + getPaddingTop(), getPaddingRight(),
             getPaddingBottom());
         getLayoutParams().height += height;
-        view = LayoutInflater.from(getContext()).inflate(R.layout.settings, null);
       }
     });
   }
 
-  public void setPopView(final boolean in) {
-    if (doing) {
-      return;
-    }
-    this.setClipChildren(false);
-    //this.setClipToOutline(false);
-    final int h = ((int) getResources().getDimension(R.dimen.internal_navigation_pop_height));
-    final int init = getMeasuredHeight();
-    Animation animation = new Animation() {
-
-      @Override protected void applyTransformation(float interpolatedTime, Transformation t) {
-        getLayoutParams().height = init + (in ? (1) : (-1)) * (int) (h * interpolatedTime);
-        requestLayout();
-      }
-
-      @Override public boolean willChangeBounds() {
-        return true;
-      }
-    };
-    animation.setDuration(250);
-    view.setAnimation(animation);
-    if (in) {
-      LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h);
-      //params.addRule(ALIGN_BOTTOM, RelativeLayout.TRUE);
-      //params.ma
-      params.addRule(RelativeLayout.BELOW, mNaviTitle.getId());
-      if (view.getParent() == null) {
-        addView(view, params);
-        doing = false;
-      }
-    } else {
-      removeView(view);
-      doing = false;
-    }
-  }
 }
 
 

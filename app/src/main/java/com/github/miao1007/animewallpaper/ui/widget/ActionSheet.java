@@ -12,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.github.miao1007.animewallpaper.R;
+import com.github.miao1007.animewallpaper.ui.widget.blur.BlurDialog;
+import com.github.miao1007.animewallpaper.ui.widget.blur.BlurDrawable;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
 import java.util.List;
 

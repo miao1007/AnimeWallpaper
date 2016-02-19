@@ -89,4 +89,9 @@ public class WallpaperSetActivity extends AppCompatActivity {
     }
     super.onDestroy();
   }
+
+  @Override public void finish() {
+    super.finish();
+    overridePendingTransition(0,android.R.anim.slide_in_left);
+  }
 }

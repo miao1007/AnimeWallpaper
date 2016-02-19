@@ -24,14 +24,17 @@ import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
 import com.github.miao1007.animewallpaper.ui.adapter.BaseAdapter;
 import com.github.miao1007.animewallpaper.ui.adapter.CardAdapter;
-import com.github.miao1007.animewallpaper.ui.widget.BlurDrawable;
-import com.github.miao1007.animewallpaper.ui.widget.FullScreenBlurAlertDialog;
+import com.github.miao1007.animewallpaper.ui.widget.SettingDialog;
+import com.github.miao1007.animewallpaper.ui.widget.blur.BlurDrawable;
+import com.github.miao1007.animewallpaper.ui.widget.ExitAlertDialog;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import com.github.miao1007.animewallpaper.utils.StatusbarUtils;
 import com.squareup.picasso.Picasso;
+import java.net.ConnectException;
+import java.net.SocketException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,16 +76,17 @@ public class MainActivity extends AppCompatActivity
   boolean in = true;
 
   @OnClick(R.id.iv_github) void settings(View v) {
-    String url = "http://github.com/miao1007/AnimeWallpaper";
-    Intent i = new Intent(Intent.ACTION_VIEW);
-    i.setData(Uri.parse(url));
-    try {
-      startActivity(i);
-      //some device don't have a browser
-    } catch (ActivityNotFoundException e) {
-      Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-    in = !in;
+    //String url = "http://github.com/miao1007/AnimeWallpaper";
+    //Intent i = new Intent(Intent.ACTION_VIEW);
+    //i.setData(Uri.parse(url));
+    //try {
+    //  startActivity(i);
+    //  //some device don't have a browser
+    //} catch (ActivityNotFoundException e) {
+    //  Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    //}
+    //in = !in;
+    new SettingDialog(getWindow()).show();
   }
 
   @OnClick(R.id.iv_search) void iv_search(View v) {
@@ -183,9 +187,15 @@ public class MainActivity extends AppCompatActivity
               mNavigationBar.setProgressBar(false);
             }
             isLoadingMore = false;
-            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             mRvFragCard.setVisibility(View.GONE);
             mCardErrorPage.setVisibility(View.VISIBLE);
+            //fix bugs on gfw
+            if (e instanceof SocketException) {
+              Toast.makeText(MainActivity.this, R.string.please_try_proxy, Toast.LENGTH_SHORT)
+                  .show();
+              return;
+            }
+            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
           }
 
           @Override public void onNext(ImageResult imageResult) {
@@ -229,8 +239,7 @@ public class MainActivity extends AppCompatActivity
    * 加载渲染引擎比较耗时，但是把引擎单例话，非常不好管理
    */
   @Override public void onBackPressed() {
-    final FullScreenBlurAlertDialog alert =
-        new FullScreenBlurAlertDialog(getWindow(), new View.OnClickListener() {
+    final ExitAlertDialog alert = new ExitAlertDialog(getWindow(), new View.OnClickListener() {
           @Override public void onClick(View v) {
             finish();
           }

@@ -1,4 +1,4 @@
-package com.github.miao1007.animewallpaper.ui.widget;
+package com.github.miao1007.animewallpaper.ui.widget.blur;
 
 import android.app.Dialog;
 import android.view.View;

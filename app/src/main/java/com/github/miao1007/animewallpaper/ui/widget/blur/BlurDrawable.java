@@ -1,4 +1,4 @@
-package com.github.miao1007.animewallpaper.ui.widget;
+package com.github.miao1007.animewallpaper.ui.widget.blur;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

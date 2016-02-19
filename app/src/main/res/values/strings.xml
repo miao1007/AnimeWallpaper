@@ -13,6 +13,7 @@
   <string name="share_image">分享图片</string>
   <string name="view_image_by">查看图片</string>
   <string name="set_wallpaper_compat">兼容模式</string>
+  <string name="please_try_proxy">请尝试使用代理进行连接</string>
 
 
 </resources>
