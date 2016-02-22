@@ -6,6 +6,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Path;
+import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.renderscript.Allocation;
@@ -44,6 +46,9 @@ public class BlurDrawable extends ColorDrawable {
   private boolean enabled;
 
   private int mOverlayColor = Color.argb(200, 0xff, 0xff, 0xff);
+
+  private float cornerRadius = 0;
+  final Path path = new Path();
 
   public BlurDrawable(@NonNull View mBlurredBgView) {
     this.mBlurredBgView = mBlurredBgView;
@@ -91,6 +96,12 @@ public class BlurDrawable extends ColorDrawable {
       mDownsampleFactorChanged = true;
     }
   }
+
+  public void setCornerRadius(float radius) {
+    this.cornerRadius = radius;
+  }
+
+
 
   /**
    * set both for blur and non-blur
@@ -199,6 +210,14 @@ public class BlurDrawable extends ColorDrawable {
   }
 
   @Override public void draw(Canvas canvas) {
+
+    if (cornerRadius != 0){
+      path.reset();
+      RectF rectF = new RectF(0,0,canvas.getWidth(),canvas.getHeight());
+      path.addRoundRect(rectF,cornerRadius, cornerRadius, Path.Direction.CCW);
+      canvas.clipPath(path);
+    }
+
     if (!enabled) {
       //draw overlay color
       super.draw(canvas);

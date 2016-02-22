@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/trans_black_bg"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="177dp"
+    android:layout_width="match_parent">
+
 
   <com.github.miao1007.animewallpaper.ui.widget.FontedTextView android:layout_width="match_parent"
       android:text="@string/confirm_exit"
       android:textSize="20sp"
-      android:textColor="@android:color/white"
+      android:textColor="@android:color/black"
       android:gravity="center"
-      android:layout_height="wrap_content"
-      android:layout_above="@+id/linearLayout" android:layout_alignParentLeft="true"
-      android:layout_alignParentStart="true"/>
+      android:layout_marginTop="8dp"
+      android:layout_gravity="top" android:layout_height="36dp"/>
+
+
+  <View android:layout_width="match_parent" android:layout_height="0.5dp"
+      android:layout_marginBottom="46dp"
+      android:layout_gravity="bottom"
+      android:background="@color/divider"/>
 
 
   <LinearLayout android:layout_width="match_parent"
-      android:layout_marginTop="16dp"
-      android:layout_marginLeft="20dp"
-      android:layout_marginRight="20dp" android:layout_height="wrap_content"
-      android:layout_centerInParent="true"
+      android:layout_gravity="bottom" android:layout_height="46dp"
       android:id="@+id/linearLayout">
     <com.github.miao1007.animewallpaper.ui.widget.FontedTextView android:layout_width="0dp"
         android:text="@android:string/ok"
         android:layout_weight="1"
         android:id="@+id/internal_alert_ok"
-        android:layout_margin="8dp"
-        android:padding="8dp"
-        android:textColor="@android:color/white"
-        android:background="@drawable/internal_border_r_16"
+        android:textColor="@color/internal_search_blue"
         android:gravity="center"
         android:textSize="16sp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
+
+    <View android:layout_width="0.5dp" android:layout_height="match_parent"
+        android:background="@color/divider"/>
+
     <com.github.miao1007.animewallpaper.ui.widget.FontedTextView android:layout_width="0dp"
         android:text="@android:string/cancel"
         android:layout_weight="1"
-        android:padding="8dp"
         android:id="@+id/internal_alert_cancel"
-        android:textColor="@android:color/white"
-        android:layout_margin="8dp"
+        android:textColor="@color/internal_search_blue"
         android:gravity="center"
-        android:background="@drawable/internal_border_r_16"
         android:textSize="16sp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
 
   </LinearLayout>
 
-</RelativeLayout>
+</FrameLayout>

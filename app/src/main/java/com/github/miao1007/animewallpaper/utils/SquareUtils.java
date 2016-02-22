@@ -15,8 +15,6 @@ import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
@@ -46,9 +44,7 @@ public abstract class SquareUtils {
    * Not singleton
    */
   static public OkHttpClient getProgressBarClient(final ProgressListener listener) {
-
     return getClient().newBuilder()
-        .addNetworkInterceptor(getLogger())
         .addNetworkInterceptor(new Interceptor() {
       @Override public Response intercept(Chain chain) throws IOException {
         Response originalResponse = chain.proceed(chain.request());
@@ -140,7 +136,6 @@ public abstract class SquareUtils {
 
       return new ForwardingSource(source) {
         long totalBytesRead = 0L;
-
         @Override public long read(Buffer sink, long byteCount) throws IOException {
           long bytesRead = super.read(sink, byteCount);
           // read() returns the number of bytes read, or -1 if this source is exhausted.

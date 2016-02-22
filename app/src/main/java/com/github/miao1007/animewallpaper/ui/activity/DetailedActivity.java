@@ -40,6 +40,7 @@ import com.github.miao1007.animewallpaper.utils.WallpaperUtils;
 import com.github.miao1007.animewallpaper.utils.animation.AnimateUtils;
 import com.github.miao1007.animewallpaper.utils.picasso.Blur;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -87,6 +88,7 @@ public class DetailedActivity extends AppCompatActivity {
       });
     }
   };
+  Picasso largeImagepicasso;
 
   public static Position getPosition(Intent intent) {
     return intent.getParcelableExtra(EXTRA_POSITION);
@@ -176,7 +178,7 @@ public class DetailedActivity extends AppCompatActivity {
       return;
     }
     mNavigationBar.setProgressBar(true);
-    SquareUtils.getPicasso(this, listener)
+    largeImagepicasso
         .load(imageResult.getSampleUrl())
         .placeholder(ivDetailedCard.getDrawable())
         .into(ivDetailedCard, new Callback() {
@@ -215,7 +217,7 @@ public class DetailedActivity extends AppCompatActivity {
   @Override protected void onDestroy() {
     super.onDestroy();
     listener = null;
-    SquareUtils.getPicasso(this).cancelRequest(ivDetailedCard);
+    largeImagepicasso.cancelRequest(ivDetailedCard);
   }
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -223,6 +225,7 @@ public class DetailedActivity extends AppCompatActivity {
     StatusBarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(false).process();
     setContentView(R.layout.fragment_image_detailed_card);
     ButterKnife.bind(this);
+    largeImagepicasso = SquareUtils.getPicasso(this, listener);
     mNavigationBar.setTextColor(Color.WHITE);
     imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);
     SquareUtils.getPicasso(this)

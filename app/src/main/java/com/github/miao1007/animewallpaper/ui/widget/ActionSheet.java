@@ -1,16 +1,21 @@
 package com.github.miao1007.animewallpaper.ui.widget;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
 import com.github.miao1007.animewallpaper.ui.widget.blur.BlurDialog;
 import com.github.miao1007.animewallpaper.ui.widget.blur.BlurDrawable;
@@ -26,35 +31,31 @@ public class ActionSheet extends BlurDialog {
   static final String TAG = LogUtils.makeLogTag(ActionSheet.class);
   AdapterView.OnItemClickListener listener;
   List<String> tags;
+  @Bind(R.id.internal_actionsheet_title) TextView mInternalActionsheetTitle;
+  @Bind(R.id.internal_actionsheet_list) ListView listView;
+  @Bind(R.id.internal_actionsheet_holder) RelativeLayout mInternalActionsheetHolder;
+  @Bind(R.id.internal_sheet_cancel) TextView mInternalSheetCancel;
+  @Bind(R.id.internal_actionsheet_bg) LinearLayout mInternalActionsheetBg;
 
-  private int[] anim = { dialogHeightPx(), 0 };
-
-  public ActionSheet(Window window,
-      @Nullable AdapterView.OnItemClickListener listener, List<String> tags) {
+  public ActionSheet(Window window, @Nullable AdapterView.OnItemClickListener listener,
+      List<String> tags) {
     super(window, android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
     this.listener = listener;
     this.tags = tags;
   }
 
-  /**
-   * Load views from xml
-   */
-  @Override protected View inflateDialogView() {
-    Log.d(TAG, "inflateDialogView");
-    View actionsheet = getLayoutInflater().inflate(R.layout.internal_actionsheet, null, false);
-    final ListView listView = ((ListView) actionsheet.findViewById(R.id.internal_actionsheet_list));
+  @OnClick(R.id.internal_sheet_cancel) void internal_sheet_cancel() {
+    dismiss();
+  }
+
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.internal_actionsheet);
+    ButterKnife.bind(this);
     listView.setAdapter(new BlueAdapter(getContext(), android.R.layout.simple_list_item_1, tags));
-    TextView tv_title = ((TextView) actionsheet.findViewById(R.id.internal_actionsheet_title));
-    TextView tv_cancel = ((TextView) actionsheet.findViewById(R.id.internal_sheet_cancel));
     if (listener != null) {
       listView.setOnItemClickListener(listener);
     }
-    tv_cancel.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        ActionSheet.this.dismiss();
-      }
-    });
-    return actionsheet;
   }
 
   @Override protected int getWindowOffset() {

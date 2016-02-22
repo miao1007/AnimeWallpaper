@@ -1,17 +1,22 @@
 package com.github.miao1007.animewallpaper.ui.widget.blur;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import com.github.miao1007.animewallpaper.utils.LogUtils;
+import com.github.miao1007.animewallpaper.R;
 
 /**
  * Created by leon on 2/10/16.
  *
- * @see #onCreate(Bundle)
+ * lifecycle:
  *
- * @see #onStart()
+ * @see #Dialog
+ *
+ * @see #onCreate(Bundle) (setContentView here)
+ *
+ * @see #onStart() (setUp window)
  *
  * mWindowManager.addView(mDecor, l);
  *
@@ -19,15 +24,19 @@ import com.github.miao1007.animewallpaper.utils.LogUtils;
  *
  * mWindowManager.removeViewImmediate(mDecor);
  *
- * @see #onStop()
+ * @see #onStop() (clean work)
  *
+ *
+ * getWindow().getDecoView() will depent on window attrs
+ * findViewById(android.R.id.content) will depent on child xml
+ *
+ * do not use  getWindow().getAttributes().height(will return -2 defalut)
+ * use getWindow().getDecorView() instead
  */
 public abstract class BlurDialog extends Dialog {
 
-  static final String TAG = LogUtils.makeLogTag(BlurDialog.class.getSimpleName());
   protected Window blurredWindow;
-  private BlurDrawable drawable;
-  private View dialogView;
+  protected BlurDrawable drawable;
 
   public Window getBlurredWindow() {
     return blurredWindow;
@@ -36,7 +45,8 @@ public abstract class BlurDialog extends Dialog {
   public BlurDialog(Window blurredWindow, int themeResId) {
     super(blurredWindow.getDecorView().getContext(), themeResId);
     this.blurredWindow = blurredWindow;
-    this.drawable = new BlurDrawable(blurredWindow.getDecorView());
+    drawable = new BlurDrawable(blurredWindow.getDecorView());
+    onSetupBlur(drawable);
   }
 
   public BlurDialog(Window window) {
@@ -50,32 +60,30 @@ public abstract class BlurDialog extends Dialog {
    */
   @Override public void onStart() {
     super.onStart();
-    dialogView = inflateDialogView();
-    onSetupBlur(drawable);
-    drawable.setDrawOffset(0, getWindowOffset());
-    getWindow().setContentView(dialogView);
-    dialogView.setBackgroundDrawable(drawable);
     onSetWindowAttrs(getWindow());
+    //post is required or the w/h will be 0
+    getWindow().getDecorView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+      @Override
+      public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
+          int oldTop, int oldRight, int oldBottom) {
+        onSetupBlur(drawable);
+        getWindow().getDecorView().findViewById(Window.ID_ANDROID_CONTENT).setBackgroundDrawable(drawable);
+      }
+    });
   }
 
   /**
-   * Set height/width/dim/gravity etc.
+   * Set content's height/width/dim/gravity to DecoView(FullScreen).
    */
-  protected abstract void onSetWindowAttrs(Window window);
-
-  protected abstract void onSetupBlur(BlurDrawable drawable);
-
-  public void setEnableBlur(boolean enableBlur) {
-    drawable.setEnabled(enableBlur);
+  protected void onSetWindowAttrs(Window window) {
+    window.setBackgroundDrawableResource(android.R.color.transparent);
+    window.setDimAmount(0.7f);
   }
 
-  /**
-   * FrameLayout: android.R.id.content
-   * set/getContentView: your view defined in xml
-   */
-  private View getContentView() {
-    return findViewById(android.R.id.content);
+  protected void onSetupBlur(BlurDrawable drawable) {
+    drawable.setDrawOffset(0, getWindowOffset());
   }
+
 
   /**
    * do clean work when stop
@@ -89,11 +97,6 @@ public abstract class BlurDialog extends Dialog {
     }
   }
 
-
-  /**
-   * Load views from xml
-   */
-  protected abstract View inflateDialogView();
 
   /**
    * the offset between blurredView and dialog

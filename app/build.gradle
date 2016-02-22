@@ -50,19 +50,17 @@ dependencies {
   apt 'com.jakewharton:butterknife-compiler:8.0.0-SNAPSHOT'
   compile 'com.android.support:appcompat-v7:23.1.1'
   compile 'com.android.support:design:23.1.1'
-
+  compile 'com.android.support:cardview-v7:23.1.1'
   //config in proguard.pro
   compile 'com.squareup.picasso:picasso:2.5.3-SNAPSHOT'
   compile 'com.squareup.okhttp3:okhttp:3.1.1'
   compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
   compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
   compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
-
   //rxjava and it's proguard
   compile 'com.artemzin.rxjava:proguard-rules:1.1.0.0'
   compile 'io.reactivex:rxandroid:1.1.0'
   compile 'com.jakewharton.rxbinding:rxbinding:0.3.0'
-
   //no need proguard
   compile 'im.fir:fir-sdk:latest.integration@aar'
   compile 'com.github.chrisbanes.photoview:library:1.2.3'

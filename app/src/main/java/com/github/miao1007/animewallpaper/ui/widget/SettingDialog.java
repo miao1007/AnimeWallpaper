@@ -1,5 +1,6 @@
 package com.github.miao1007.animewallpaper.ui.widget;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -20,11 +21,11 @@ public class SettingDialog extends FullScreenBlurAlertDialog {
     super(window);
   }
 
-  @Override protected View inflateDialogView() {
-    View view = View.inflate(getContext(), R.layout.dialog_settings, null);
-
-    return view;
-  }
+  //@Override protected View inflateDialogView(LayoutInflater layoutInflater) {
+  //  View view = layoutInflater.inflate(R.layout.internal_fullscreen_dialog, null, false);
+  //
+  //  return view;
+  //}
 
 
   static class GridAdapter  extends BaseAdapter{
