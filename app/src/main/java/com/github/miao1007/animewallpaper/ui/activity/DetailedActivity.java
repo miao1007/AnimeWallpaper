@@ -16,6 +16,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -32,6 +33,7 @@ import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
 import com.github.miao1007.animewallpaper.ui.widget.ActionSheet;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
+import com.github.miao1007.animewallpaper.ui.widget.blur.BlurDrawable;
 import com.github.miao1007.animewallpaper.utils.FileUtils;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.SquareUtils;
@@ -107,11 +109,26 @@ public class DetailedActivity extends AppCompatActivity {
 
   @OnClick(R.id.detailed_tags) void tags() {
     final List<String> tags = Arrays.asList(imageResult.getTags().split(" "));
-    ActionSheet a = new ActionSheet(getWindow(), new AdapterView.OnItemClickListener() {
+    final ActionSheet a = new ActionSheet(getWindow(), new AdapterView.OnItemClickListener() {
       @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MainActivity.startRefreshActivity(DetailedActivity.this, tags.get(position));
       }
     }, tags);
+    final BlurDrawable drawable = new BlurDrawable(getWindow());
+
+    a.getWindow().getDecorView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+      @Override
+      public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
+          int oldTop, int oldRight, int oldBottom) {
+        drawable.setDrawOffset(0,
+            getWindow().getDecorView().getHeight() - a.getWindow().getDecorView().getHeight());
+        a.getWindow()
+            .getDecorView()
+            .findViewById(Window.ID_ANDROID_CONTENT)
+            .setBackgroundDrawable(drawable);
+        a.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+      }
+    });
     a.show();
   }
 
@@ -178,8 +195,7 @@ public class DetailedActivity extends AppCompatActivity {
       return;
     }
     mNavigationBar.setProgressBar(true);
-    largeImagepicasso
-        .load(imageResult.getSampleUrl())
+    largeImagepicasso.load(imageResult.getSampleUrl())
         .placeholder(ivDetailedCard.getDrawable())
         .into(ivDetailedCard, new Callback() {
           @Override public void onSuccess() {

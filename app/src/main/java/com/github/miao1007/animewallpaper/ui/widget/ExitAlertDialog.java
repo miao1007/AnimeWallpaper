@@ -1,23 +1,18 @@
 package com.github.miao1007.animewallpaper.ui.widget;
 
-import android.graphics.Color;
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.widget.LinearLayout;
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.ui.widget.blur.BlurDialog;
-import com.github.miao1007.animewallpaper.ui.widget.blur.BlurDrawable;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
-import com.github.miao1007.animewallpaper.utils.StatusBarUtils;
 
 /**
  * Created by leon on 2/19/16.
  */
-public class ExitAlertDialog extends BlurDialog {
+public class ExitAlertDialog extends Dialog {
 
   static final String TAG = LogUtils.makeLogTag(ExitAlertDialog.class);
 
@@ -32,29 +27,10 @@ public class ExitAlertDialog extends BlurDialog {
     dismiss();
   }
 
-  public ExitAlertDialog(Window window, View.OnClickListener okListener) {
-    super(window);
+  public ExitAlertDialog(Context context, View.OnClickListener okListener) {
+    super(context,android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
     this.okListener = okListener;
-  }
-
-  @Override protected void onSetupBlur(BlurDrawable drawable) {
-    super.onSetupBlur(drawable);
-    drawable.setCornerRadius(
-        getContext().getResources().getDimension(R.dimen.internal_searchbar_radius));
-    drawable.setBlurRadius(12);
-    drawable.setDownsampleFactor(8);
-    drawable.setOverlayColor(Color.argb(200, 0xff, 0xff, 0xff));
-    drawable.setDrawOffset(
-        (blurredWindow.getDecorView().getWidth() - getWindow().getDecorView().getWidth()) / 2, (
-            blurredWindow.getDecorView().getHeight() - getWindow().getDecorView().getHeight()
-                + StatusBarUtils.getStatusBarOffsetPx(getContext())) / 2);
-  }
-
-  @Override protected void onSetWindowAttrs(Window window) {
-    super.onSetWindowAttrs(window);
-    window.setWindowAnimations(R.style.AlphaDialogAnimation);
-    //window.getAttributes().
-
+    getWindow().setWindowAnimations(R.style.iosalertdialog);
   }
 
   @Override protected void onCreate(Bundle savedInstanceState) {

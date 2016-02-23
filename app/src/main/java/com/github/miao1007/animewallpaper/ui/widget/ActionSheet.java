@@ -1,5 +1,6 @@
 package com.github.miao1007.animewallpaper.ui.widget;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,8 +18,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.ui.widget.blur.BlurDialog;
-import com.github.miao1007.animewallpaper.ui.widget.blur.BlurDrawable;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
 import java.util.List;
 
@@ -26,7 +25,7 @@ import java.util.List;
  * Created by leon on 1/27/16.
  * ActionSheet with blur
  */
-public class ActionSheet extends BlurDialog {
+public class ActionSheet extends Dialog {
 
   static final String TAG = LogUtils.makeLogTag(ActionSheet.class);
   AdapterView.OnItemClickListener listener;
@@ -39,7 +38,7 @@ public class ActionSheet extends BlurDialog {
 
   public ActionSheet(Window window, @Nullable AdapterView.OnItemClickListener listener,
       List<String> tags) {
-    super(window, android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
+    super(window.getContext(), android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
     this.listener = listener;
     this.tags = tags;
   }
@@ -56,26 +55,16 @@ public class ActionSheet extends BlurDialog {
     if (listener != null) {
       listView.setOnItemClickListener(listener);
     }
-  }
-
-  @Override protected int getWindowOffset() {
-    return blurredWindow.getDecorView().getHeight() - dialogHeightPx();
-  }
-
-  protected int dialogHeightPx() {
-    return (int) getContext().getResources().getDimension(R.dimen.internal_actionsheet_height);
-  }
-
-  @Override protected void onSetWindowAttrs(Window w) {
+    Window w = getWindow();
     w.setBackgroundDrawableResource(android.R.color.transparent);
-    w.setWindowAnimations(R.style.AlphaDialogAnimation);
+    w.setWindowAnimations(R.style.ActionsheetAnimation);
     w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, dialogHeightPx());
     w.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
     w.setDimAmount(0.5f);
   }
 
-  @Override protected void onSetupBlur(BlurDrawable drawable) {
-
+  protected int dialogHeightPx() {
+    return (int) getContext().getResources().getDimension(R.dimen.internal_actionsheet_height);
   }
 
   /**

@@ -1,28 +1,28 @@
 package com.github.miao1007.animewallpaper.ui.widget.blur;
 
 import android.app.Dialog;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import com.github.miao1007.animewallpaper.R;
 
 /**
  * Created by leon on 2/10/16.
  *
  * lifecycle:
  *
- * @see #Dialog
+ * @see #Dialog (setUp window inside)
  *
- * @see #onCreate(Bundle) (setContentView here)
+ * @see #onCreate(Bundle) (you can call setContentView here)
  *
- * @see #onStart() (setUp window)
+ * @see #onStart()
  *
- * mWindowManager.addView(mDecor, l);
+ * @see #show()
+ *
+ * - mWindowManager.addView(mDecor, l);
  *
  * @see #dismiss()
  *
- * mWindowManager.removeViewImmediate(mDecor);
+ * - mWindowManager.removeViewImmediate(mDecor);
  *
  * @see #onStop() (clean work)
  *
@@ -46,7 +46,6 @@ public abstract class BlurDialog extends Dialog {
     super(blurredWindow.getDecorView().getContext(), themeResId);
     this.blurredWindow = blurredWindow;
     drawable = new BlurDrawable(blurredWindow.getDecorView());
-    onSetupBlur(drawable);
   }
 
   public BlurDialog(Window window) {
@@ -81,7 +80,7 @@ public abstract class BlurDialog extends Dialog {
   }
 
   protected void onSetupBlur(BlurDrawable drawable) {
-    drawable.setDrawOffset(0, getWindowOffset());
+
   }
 
 

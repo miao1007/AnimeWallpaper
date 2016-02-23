@@ -10,7 +10,7 @@
 
 
   <!-- For dialog Animation -->
-  <style name="AlphaDialogAnimation">
+  <style name="iosalertdialog">
     <item name="android:windowEnterAnimation">@anim/scale_in</item>
     <item name="android:windowExitAnimation">@android:anim/fade_out</item>
   </style>

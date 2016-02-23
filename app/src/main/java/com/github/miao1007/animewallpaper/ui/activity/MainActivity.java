@@ -1,19 +1,16 @@
 package com.github.miao1007.animewallpaper.ui.activity;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -25,6 +22,7 @@ import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
 import com.github.miao1007.animewallpaper.ui.adapter.BaseAdapter;
 import com.github.miao1007.animewallpaper.ui.adapter.CardAdapter;
+import com.github.miao1007.animewallpaper.ui.widget.ExitAlertDialog;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
 import com.github.miao1007.animewallpaper.ui.widget.SettingDialog;
@@ -236,37 +234,27 @@ public class MainActivity extends AppCompatActivity
    * 加载渲染引擎比较耗时，但是把引擎单例话，非常不好管理
    */
   @Override public void onBackPressed() {
-    AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(R.string.confirm_exit)
-        .setMessage("Message")
-        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-          @Override public void onClick(DialogInterface dialog, int which) {
-            finish();
-          }
-        })
-        .setNegativeButton(android.R.string.cancel, null)
-        .setOnCancelListener(new DialogInterface.OnCancelListener() {
-          @Override public void onCancel(DialogInterface dialog) {
-            drawable.setCornerRadius(0);
-            drawable.setDrawOffset(0, 0);
-          }
-        });
-    final Dialog dialog = builder.create();
-    dialog.getWindow().setWindowAnimations(R.style.AlphaDialogAnimation);
-    dialog.getWindow().getDecorView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-      @Override
-      public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
-          int oldTop, int oldRight, int oldBottom) {
+    final ExitAlertDialog dialog = new ExitAlertDialog(this, new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        finish();
+      }
+    });
+    dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+      @Override public void onCancel(DialogInterface dialog) {
+        drawable.setCornerRadius(0);
+        drawable.setDrawOffset(0, 0);
+      }
+    });
+    dialog.getWindow().getDecorView().post(new Runnable() {
+      @Override public void run() {
         drawable.setCornerRadius(getResources().getDimension(R.dimen.internal_searchbar_radius));
         drawable.setDrawOffset(
             (getWindow().getDecorView().getWidth() - dialog.getWindow().getDecorView().getWidth())
                 / 2,
             (getWindow().getDecorView().getHeight() - dialog.getWindow().getDecorView().getHeight()
-                + StatusBarUtils.getStatusBarOffsetPx(getApplicationContext())) / 2);
-        dialog.getWindow()
-            .getDecorView()
-            .findViewById(Window.ID_ANDROID_CONTENT)
-            .setBackgroundDrawable(drawable);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                + StatusBarUtils.getStatusBarOffsetPx(getApplicationContext())) / 2/*Gravity.Center contains statusbar*/);
+        //equals to dialog.getWindow().geDecoView.setBackgroundDrawable(drawable);
+        dialog.getWindow().setBackgroundDrawable(drawable);
       }
     });
     dialog.show();
