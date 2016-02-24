@@ -1,8 +1,10 @@
 package com.github.miao1007.animewallpaper.ui.activity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
@@ -25,7 +27,6 @@ import com.github.miao1007.animewallpaper.ui.adapter.CardAdapter;
 import com.github.miao1007.animewallpaper.ui.widget.ExitAlertDialog;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
-import com.github.miao1007.animewallpaper.ui.widget.SettingDialog;
 import com.github.miao1007.animewallpaper.ui.widget.blur.BlurDrawable;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.SquareUtils;
@@ -73,17 +74,16 @@ public class MainActivity extends AppCompatActivity
   boolean in = true;
 
   @OnClick(R.id.iv_github) void settings(View v) {
-    //String url = "http://github.com/miao1007/AnimeWallpaper";
-    //Intent i = new Intent(Intent.ACTION_VIEW);
-    //i.setData(Uri.parse(url));
-    //try {
-    //  startActivity(i);
-    //  //some device don't have a browser
-    //} catch (ActivityNotFoundException e) {
-    //  Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-    //}
-    //in = !in;
-    new SettingDialog(getWindow()).show();
+    String url = "http://github.com/miao1007/AnimeWallpaper";
+    Intent i = new Intent(Intent.ACTION_VIEW);
+    i.setData(Uri.parse(url));
+    try {
+      startActivity(i);
+      //some device don't have a browser
+    } catch (ActivityNotFoundException e) {
+      Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+    in = !in;
   }
 
   @OnClick(R.id.iv_search) void iv_search(View v) {
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   /**
-   * 加载渲染引擎比较耗时，但是把引擎单例话，非常不好管理
+   * reuse drawable
    */
   @Override public void onBackPressed() {
     final ExitAlertDialog dialog = new ExitAlertDialog(this, new View.OnClickListener() {
