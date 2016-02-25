@@ -1,5 +1,6 @@
 package com.github.miao1007.animewallpaper.ui.adapter;
 
+import android.support.annotation.IntRange;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -68,7 +69,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
   }
 
   public interface OnItemClickListener {
-    void onItemClick(View v, int position);
+    void onItemClick(View v, @IntRange(from = 0) int position);
   }
 
   public interface OnLoadMoreListener {
@@ -76,14 +77,18 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
   }
 
   //holder has a strong reference to host
+
+  /**
+   * see {@link <a href="https://youtu.be/imsr8NrIAMs?t=2163"></a>}
+   */
   public static class BaseViewHolder extends RecyclerView.ViewHolder {
 
     public BaseViewHolder(View itemView) {
       super(itemView);
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View itemView) {
-          if (onItemClickListener != null) {
-            onItemClickListener.onItemClick(itemView, getPosition());
+          if (getAdapterPosition() != RecyclerView.NO_POSITION && onItemClickListener != null) {
+            onItemClickListener.onItemClick(itemView, getAdapterPosition());
           }
         }
       });

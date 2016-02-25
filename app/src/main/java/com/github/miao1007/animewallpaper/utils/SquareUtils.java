@@ -2,19 +2,22 @@ package com.github.miao1007.animewallpaper.utils;
 
 import android.content.Context;
 import android.support.annotation.IntRange;
+import android.support.annotation.StringRes;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 import com.github.miao1007.animewallpaper.support.GlobalContext;
-import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
+import com.github.miao1007.animewallpaper.support.api.konachan.DanbooruAPI;
 import com.github.miao1007.animewallpaper.utils.network.HttpLoggingInterceptor;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.IOException;
 import okhttp3.Cache;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
@@ -22,6 +25,7 @@ import okio.BufferedSource;
 import okio.ForwardingSource;
 import okio.Okio;
 import okio.Source;
+import retrofit2.BaseUrl;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -37,8 +41,6 @@ public abstract class SquareUtils {
   static private Picasso picasso;
 
   static private OkHttpClient client;
-
-  static private Retrofit retrofit;
 
   /**
    * Not singleton
@@ -70,7 +72,7 @@ public abstract class SquareUtils {
     if (client == null) {
       final File cacheDir = GlobalContext.getInstance().getExternalCacheDir();
       client = new OkHttpClient.Builder().addNetworkInterceptor(getLogger())
-          //.addInterceptor(ImageRepo.CDN)
+          //.addInterceptor(DanbooruAPI.CDN)
           .cache(new Cache(new File(cacheDir, "okhttp"), 60 * 1024 * 1024)).build();
     }
     return client;
@@ -150,16 +152,16 @@ public abstract class SquareUtils {
     }
   }
 
-
-  public static Retrofit getRetrofit() {
-    if (retrofit == null) {
-      synchronized (SquareUtils.class) {
-        retrofit = new Retrofit.Builder().baseUrl(ImageRepo.END_POINT_KONACHAN).client(getClient())
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-            .build();
-      }
-    }
-    return retrofit;
+  /**
+   * There is no need to let retrofit singleTop
+   * BuilderTime + DynamicProxyTime == 0.6ms
+   * @param url
+   * @return
+   */
+  public static Retrofit getRetrofit(String url) {
+   return new Retrofit.Builder().baseUrl(url).client(getClient())
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+        .build();
   }
 }

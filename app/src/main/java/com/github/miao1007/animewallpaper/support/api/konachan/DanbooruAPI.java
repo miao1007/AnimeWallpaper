@@ -14,14 +14,24 @@ import rx.Observable;
 
 /**
  * Created by leon on 4/14/15.
+ *
+ * konachan
+ *
+ * yande.re
+ *
+ * Moebooru offers API which is mostly compatible with Danbooru API (version 1.13.0) to make
+ * scripting easy. All you need is a way to GET and POST to URLs. The ability to parse XML or
+ * JSON responses is nice, but not critical. The simplicity of the API means you can write
+ * scripts using JavaScript, Perl, Python, Ruby, even shell languages like bash or tcsh.
+ *
+ * @link <a href="http://konachan.net/help/api">api help</a>
  */
-public interface ImageRepo {
+public interface DanbooruAPI {
 
   //qiniu CDN
-  String CDN_HOST = "7xq3s7.com1.z0.glb.clouddn.com";
-  String END_POINT_KONACHAN = "http://konachan.net";
-  String END_POINT = CDN_HOST;
-  String END_PONIT_YANDE = "https://yande.re/post.json/";
+  String KONACHAN = "http://konachan.net";
+  String YANDE = "https://yande.re";
+
   String TAGS = "tags";
   String LIMIT = "limit";
   String PAGE = "page";
@@ -33,7 +43,7 @@ public interface ImageRepo {
     @Override public Response intercept(Chain chain) throws IOException {
       Request originRequest = chain.request();
 
-      HttpUrl url = originRequest.url().newBuilder().host(CDN_HOST).build();
+      HttpUrl url = originRequest.url().newBuilder().host("7xq3s7.com1.z0.glb.clouddn.com").build();
 
       Request newReq = originRequest.newBuilder().url(url).build();
       return chain.proceed(newReq);

@@ -17,7 +17,7 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
+import com.github.miao1007.animewallpaper.support.api.konachan.DanbooruAPI;
 import com.github.miao1007.animewallpaper.support.api.konachan.Tag;
 import com.github.miao1007.animewallpaper.ui.widget.SearchBar;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
@@ -43,7 +43,7 @@ public class SearchActivity extends AppCompatActivity {
 
   @Bind(R.id.search_bar) SearchBar mSearchbar;
   @Bind(R.id.search_list) ListView mSearchListView;
-  ImageRepo repo = SquareUtils.getRetrofit().create(ImageRepo.class);
+  DanbooruAPI repo = SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
   @Bind(R.id.internal_search_progress) ProgressBar progressBar;
 
   @Override protected void onCreate(final Bundle savedInstanceState) {

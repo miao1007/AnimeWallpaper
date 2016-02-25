@@ -22,11 +22,13 @@ import android.view.Window;
 
 /**
  * Created by leon on 2/8/16.
- * port Blur from @link https://github.com/500px/500px-android-blur
+ * port Blur from  <a href="https://github.com/500px/500px-android-blur">500px-android-blur</a>
  *
  * Real time Blur
  * API 17 and above: use blur
- * API 17 lower: use  {@link #setOverlayColor(int color)}
+ *
+ * API 17 lower:
+ * @see #setColor(int)
  */
 public class BlurDrawable extends ColorDrawable {
 
@@ -43,19 +45,23 @@ public class BlurDrawable extends ColorDrawable {
   private float offsetX;
   private float offsetY;
 
-  private boolean enabled;
+  private static boolean enabled;
 
   private int mOverlayColor = Color.argb(200, 0xff, 0xff, 0xff);
 
   private float cornerRadius = 0;
   final Path path = new Path();
 
+  /**
+   * will only initial once when class loaded
+   */
+  static {
+    enabled = (Build.VERSION.SDK_INT >= 17);
+  }
+
   public BlurDrawable(@NonNull View mBlurredBgView) {
     this.mBlurredBgView = mBlurredBgView;
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-      enabled = false;
-    } else {
-      enabled = true;
+    if (enabled) {
       initializeRenderScript(mBlurredBgView.getContext());
     }
     setOverlayColor(mOverlayColor);
@@ -193,10 +199,7 @@ public class BlurDrawable extends ColorDrawable {
    * if your want to support more, use Support RenderScript Pack
    */
   public void setEnabled(boolean enabled) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-      enabled = false;
-    }
-    this.enabled = enabled;
+    BlurDrawable.enabled = enabled && (Build.VERSION.SDK_INT >= 17);
   }
 
   @TargetApi(17)

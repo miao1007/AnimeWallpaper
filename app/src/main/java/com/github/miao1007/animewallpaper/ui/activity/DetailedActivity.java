@@ -29,7 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
+import com.github.miao1007.animewallpaper.support.api.ImageAdapter;
 import com.github.miao1007.animewallpaper.ui.widget.ActionSheet;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
@@ -74,7 +74,7 @@ public class DetailedActivity extends AppCompatActivity {
   @Bind(R.id.image_holder) RelativeLayout mImageHolder;
   @Bind(R.id.root_detailed) FrameLayout mRootDetailed;
 
-  ImageResult imageResult;
+  ImageAdapter imageResult;
   boolean isPlaying = false;
   SquareUtils.ProgressListener listener = new SquareUtils.ProgressListener() {
     @Override public void update(@IntRange(from = 0, to = 100) final int percent) {
@@ -96,7 +96,7 @@ public class DetailedActivity extends AppCompatActivity {
     return intent.getParcelableExtra(EXTRA_POSITION);
   }
 
-  public static void startActivity(Context context, Position position, ImageResult parcelable) {
+  public static void startActivity(Context context, Position position, ImageAdapter parcelable) {
     Intent intent = new Intent(context, DetailedActivity.class);
     intent.putExtra(EXTRA_IMAGE, parcelable);
     intent.putExtra(EXTRA_POSITION, position);
@@ -195,12 +195,12 @@ public class DetailedActivity extends AppCompatActivity {
       return;
     }
     mNavigationBar.setProgressBar(true);
-    largeImagepicasso.load(imageResult.getSampleUrl())
+    largeImagepicasso.load(imageResult.getDownload_url())
         .placeholder(ivDetailedCard.getDrawable())
         .into(ivDetailedCard, new Callback() {
           @Override public void onSuccess() {
             mNavigationBar.setProgressBar(false);
-            final Request request = new Request.Builder().url(imageResult.getSampleUrl())
+            final Request request = new Request.Builder().url(imageResult.getDownload_url())
                 .cacheControl(CacheControl.FORCE_CACHE)
                 .get()
                 .build();
@@ -216,7 +216,7 @@ public class DetailedActivity extends AppCompatActivity {
                 .map(new Func1<Response, File>() {
                   @Override public File call(Response response) {
                     return FileUtils.saveBodytoFile(response.body(),
-                        Uri.parse(imageResult.getSampleUrl()).getLastPathSegment());
+                        Uri.parse(imageResult.getDownload_url()).getLastPathSegment());
                   }
                 })
                 .subscribeOn(Schedulers.io())
@@ -244,8 +244,7 @@ public class DetailedActivity extends AppCompatActivity {
     largeImagepicasso = SquareUtils.getPicasso(this, listener);
     mNavigationBar.setTextColor(Color.WHITE);
     imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);
-    SquareUtils.getPicasso(this)
-        .load(imageResult.getPreviewUrl())
+    SquareUtils.getPicasso(this).load(imageResult.getPrev_url())
         .into(ivDetailedCard, new Callback.EmptyCallback() {
           @Override public void onSuccess() {
             Observable.just(ivDetailedCard)

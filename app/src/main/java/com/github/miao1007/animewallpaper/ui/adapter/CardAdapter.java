@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
+import com.github.miao1007.animewallpaper.support.api.ImageAdapter;
 import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +17,13 @@ import java.util.List;
 /**
  * Created by leon on 6/30/15.
  */
-public class CardAdapter extends BaseAdapter<ImageResult> {
-
-  private final int VIEW_ITEM = 1;
+public class CardAdapter extends BaseAdapter<ImageAdapter> {
 
   public CardAdapter() {
-    super(new ArrayList<ImageResult>());
+    super(new ArrayList<ImageAdapter>());
   }
 
-  public CardAdapter(List<ImageResult> mDataset) {
+  public CardAdapter(List<ImageAdapter> mDataset) {
     super(mDataset);
   }
 
@@ -44,10 +42,8 @@ public class CardAdapter extends BaseAdapter<ImageResult> {
   @Override void onBindItemViewHolder(BaseViewHolder baseViewHolder, int position) {
     final MyViewHolder holder = (MyViewHolder) baseViewHolder;
     final Context context = holder.itemView.getContext();
-    ImageResult result = getData().get(position);
-    SquareUtils.getPicasso(context).load(result.getPreviewUrl())
+    SquareUtils.getPicasso(context).load(data.get(position).getPrev_url())
         .placeholder(R.drawable.place_holder)
-        //.transform(new BlurTransformation(getContext()))
         .into(holder.imageView);
   }
 

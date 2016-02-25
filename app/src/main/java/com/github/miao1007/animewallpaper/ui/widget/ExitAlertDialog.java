@@ -14,8 +14,6 @@ import com.github.miao1007.animewallpaper.utils.LogUtils;
  */
 public class ExitAlertDialog extends Dialog {
 
-  static final String TAG = LogUtils.makeLogTag(ExitAlertDialog.class);
-
   View.OnClickListener okListener;
 
   @OnClick(R.id.internal_alert_ok) void internal_alert_ok(View v) {

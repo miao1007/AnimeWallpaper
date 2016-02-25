@@ -20,7 +20,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.support.api.konachan.ImageRepo;
+import com.github.miao1007.animewallpaper.support.api.ImageAdapter;
+import com.github.miao1007.animewallpaper.support.api.konachan.DanbooruAPI;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
 import com.github.miao1007.animewallpaper.ui.adapter.BaseAdapter;
 import com.github.miao1007.animewallpaper.ui.adapter.CardAdapter;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity
   @Bind(R.id.rv_frag_card) RecyclerView mRvFragCard;
   BlurDrawable drawable;
   //void multiple dynamic proxy
-  ImageRepo repo = SquareUtils.getRetrofit().create(ImageRepo.class);
+  DanbooruAPI repo = SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
   @Bind(R.id.card_holder) FrameLayout mCardHolder;
   @Bind(R.id.card_error_page) RelativeLayout mCardErrorPage;
   //@Bind(R.id.search_bar) SearchBar mSearchBar;
@@ -83,7 +84,6 @@ public class MainActivity extends AppCompatActivity
     } catch (ActivityNotFoundException e) {
       Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
-    in = !in;
   }
 
   @OnClick(R.id.iv_search) void iv_search(View v) {
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity
     String tag = parseIntent(getIntent());
     if (tag != null) {
       query.clear();
-      query.put(ImageRepo.TAGS, tag + ImageRepo.TAG_SAFE);
+      query.put(DanbooruAPI.TAGS, tag + DanbooruAPI.TAG_SAFE);
     }
   }
 
@@ -153,9 +153,9 @@ public class MainActivity extends AppCompatActivity
     if (query == null) {
       query = new HashMap<>();
     }
-    if ((query.isEmpty()) || (!query.containsKey(ImageRepo.TAGS))) {
-      query.put(ImageRepo.TAGS, ImageRepo.TAG_SAFE);
-      query.put(ImageRepo.LIMIT, 10);
+    if ((query.isEmpty()) || (!query.containsKey(DanbooruAPI.TAGS))) {
+      query.put(DanbooruAPI.TAGS, DanbooruAPI.TAG_SAFE);
+      query.put(DanbooruAPI.LIMIT, 10);
     }
     repo.getImageList(query)
         .subscribeOn(Schedulers.io())
@@ -163,9 +163,12 @@ public class MainActivity extends AppCompatActivity
           @Override public Observable<ImageResult> call(List<ImageResult> imageResults) {
             return Observable.from(imageResults);
           }
-        })
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Subscriber<ImageResult>() {
+        }).map(new Func1<ImageResult, ImageAdapter>() {
+      @Override public ImageAdapter call(ImageResult result) {
+        return ImageAdapter.from(result);
+      }
+    })
+        .observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<ImageAdapter>() {
           @Override public void onCompleted() {
             if (mRvFragCard != null && mRvFragCard.getAdapter() != null) {
               mRvFragCard.getAdapter().notifyDataSetChanged();
@@ -194,18 +197,14 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
           }
 
-          @Override public void onNext(ImageResult imageResult) {
+      @Override public void onNext(ImageAdapter imageResult) {
             ((CardAdapter) mRvFragCard.getAdapter()).getData().add(imageResult);
           }
         });
   }
 
   @Override public void onItemClick(View v, int position) {
-    List<ImageResult> imageResult = ((CardAdapter) mRvFragCard.getAdapter()).getData();
-    if (imageResult == null || imageResult.isEmpty() || imageResult.get(position) == null) {
-      //mi ui bug
-      return;
-    }
+    List<ImageAdapter> imageResult = ((CardAdapter) mRvFragCard.getAdapter()).getData();
     DetailedActivity.startActivity(v.getContext(), Position.from(v), imageResult.get(position));
   }
 
@@ -219,7 +218,7 @@ public class MainActivity extends AppCompatActivity
 
   @Override public void loadMore(int page) {
     Log.d(TAG, "loadMore:" + query);
-    query.put(ImageRepo.PAGE, page);
+    query.put(DanbooruAPI.PAGE, page);
     loadPage(query);//这里多线程也要手动控制isLoadingMore
   }
 

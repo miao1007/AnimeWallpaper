@@ -3,6 +3,7 @@ package com.github.miao1007.animewallpaper.ui.widget;
 import android.content.Context;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -46,6 +47,12 @@ public class NavigationBar extends RelativeLayout {
   }
 
   public void setTitle(@NonNull CharSequence title) {
+    if (mNaviTitle != null) {
+      mNaviTitle.setText(title);
+    }
+  }
+
+  public void setTitle(@StringRes int title) {
     if (mNaviTitle != null) {
       mNaviTitle.setText(title);
     }
