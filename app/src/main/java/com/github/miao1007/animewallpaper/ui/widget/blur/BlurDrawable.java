@@ -6,9 +6,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -28,9 +30,9 @@ import android.view.Window;
  * API 17 and above: use blur
  *
  * API 17 lower:
- * @see #setColor(int)
+ * @see #setOverlayColor(int)
  */
-public class BlurDrawable extends ColorDrawable {
+public class BlurDrawable extends Drawable {
 
   private int mDownsampleFactor;
   private View mBlurredBgView;
@@ -51,13 +53,14 @@ public class BlurDrawable extends ColorDrawable {
 
   private float cornerRadius = 0;
   final Path path = new Path();
-
   /**
    * will only initial once when class loaded
    */
   static {
-    enabled = (Build.VERSION.SDK_INT >= 17);
+    enabled = (Build.VERSION.SDK_INT >= 19);
   }
+
+  RectF rectF = new RectF();
 
   public BlurDrawable(@NonNull View mBlurredBgView) {
     this.mBlurredBgView = mBlurredBgView;
@@ -114,7 +117,6 @@ public class BlurDrawable extends ColorDrawable {
    */
   public void setOverlayColor(@ColorInt int color) {
     mOverlayColor = color;
-    setColor(color);
   }
 
   @TargetApi(17) private void initializeRenderScript(Context context) {
@@ -216,17 +218,15 @@ public class BlurDrawable extends ColorDrawable {
 
     if (cornerRadius != 0){
       path.reset();
-      RectF rectF = new RectF(0,0,canvas.getWidth(),canvas.getHeight());
+      rectF.set(0, 0, canvas.getWidth(), canvas.getHeight());
       path.addRoundRect(rectF,cornerRadius, cornerRadius, Path.Direction.CCW);
       canvas.clipPath(path);
     }
-
-    if (!enabled) {
+    if (enabled) {
       //draw overlay color
-      super.draw(canvas);
-    } else {
       drawBlur(canvas);
     }
+    canvas.drawColor(mOverlayColor);
   }
 
   @TargetApi(17) private void drawBlur(Canvas canvas) {
@@ -255,7 +255,6 @@ public class BlurDrawable extends ColorDrawable {
       canvas.drawBitmap(mBlurredBitmap, 0, 0, null);
       canvas.restore();
     }
-    canvas.drawColor(mOverlayColor);
   }
 
   /**
@@ -265,5 +264,17 @@ public class BlurDrawable extends ColorDrawable {
   public void setDrawOffset(float x, float y) {
     this.offsetX = x;
     this.offsetY = y;
+  }
+
+  @Override public void setAlpha(int alpha) {
+
+  }
+
+  @Override public void setColorFilter(ColorFilter colorFilter) {
+
+  }
+
+  @Override public int getOpacity() {
+    return 0;
   }
 }

@@ -47,7 +47,7 @@ public class CardAdapter extends BaseAdapter<ImageAdapter> {
         .into(holder.imageView);
   }
 
-  public static class MyViewHolder extends BaseViewHolder {
+  public static class MyViewHolder extends BaseAdapter.BaseViewHolder {
 
     public @Bind(R.id.iv_card_preview) ImageView imageView;
 
