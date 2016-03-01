@@ -39,7 +39,7 @@ public class CardAdapter extends BaseAdapter<ImageAdapter> {
     return vh;
   }
 
-  @Override void onBindItemViewHolder(BaseViewHolder baseViewHolder, int position) {
+  @Override void onBindItemViewHolder(RecyclerView.ViewHolder baseViewHolder, int position) {
     final MyViewHolder holder = (MyViewHolder) baseViewHolder;
     final Context context = holder.itemView.getContext();
     SquareUtils.getPicasso(context).load(data.get(position).getPrev_url())
@@ -47,13 +47,23 @@ public class CardAdapter extends BaseAdapter<ImageAdapter> {
         .into(holder.imageView);
   }
 
-  public static class MyViewHolder extends BaseAdapter.BaseViewHolder {
+  /**
+   * see  <a href="https://youtu.be/imsr8NrIAMs?t=2163">Official Video</a>
+   */
+  public static class MyViewHolder extends RecyclerView.ViewHolder {
 
     public @Bind(R.id.iv_card_preview) ImageView imageView;
 
     public MyViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
+      itemView.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View itemView) {
+          if (getAdapterPosition() != RecyclerView.NO_POSITION && onItemClickListener != null) {
+            onItemClickListener.onItemClick(itemView, getAdapterPosition());
+          }
+        }
+      });
     }
-  }
+}
 }

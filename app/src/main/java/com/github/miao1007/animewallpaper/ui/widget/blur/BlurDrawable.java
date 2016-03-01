@@ -6,11 +6,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -30,9 +28,9 @@ import android.view.Window;
  * API 17 and above: use blur
  *
  * API 17 lower:
- * @see #setOverlayColor(int)
+ * @see #setColor(int)
  */
-public class BlurDrawable extends Drawable {
+public class BlurDrawable extends ColorDrawable {
 
   private int mDownsampleFactor;
   private View mBlurredBgView;
@@ -49,15 +47,16 @@ public class BlurDrawable extends Drawable {
 
   private static boolean enabled;
 
-  private int mOverlayColor = Color.argb(200, 0xff, 0xff, 0xff);
+  private int mOverlayColor = Color.argb(180, 0xff, 0xff, 0xff);
 
   private float cornerRadius = 0;
   final Path path = new Path();
+
   /**
    * will only initial once when class loaded
    */
   static {
-    enabled = (Build.VERSION.SDK_INT >= 19);
+    enabled = (Build.VERSION.SDK_INT >= 17);
   }
 
   RectF rectF = new RectF();
@@ -110,13 +109,12 @@ public class BlurDrawable extends Drawable {
     this.cornerRadius = radius;
   }
 
-
-
   /**
    * set both for blur and non-blur
    */
   public void setOverlayColor(@ColorInt int color) {
     mOverlayColor = color;
+    setColor(color);
   }
 
   @TargetApi(17) private void initializeRenderScript(Context context) {
@@ -223,23 +221,15 @@ public class BlurDrawable extends Drawable {
       canvas.clipPath(path);
     }
     if (enabled) {
-      //draw overlay color
       drawBlur(canvas);
     }
-    canvas.drawColor(mOverlayColor);
+    //draw overlayColor
+    super.draw(canvas);
+
   }
 
   @TargetApi(17) private void drawBlur(Canvas canvas) {
     if (prepare()) {
-      // If the background of the blurred view is a color drawable, we use it to clear
-      // the blurring canvas, which ensures that edges of the child views are blurred
-      // as well; otherwise we clear the blurring canvas with a transparent color.
-      if (mBlurredBgView.getBackground() != null
-          && mBlurredBgView.getBackground() instanceof ColorDrawable) {
-        mBitmapToBlur.eraseColor(((ColorDrawable) mBlurredBgView.getBackground()).getColor());
-      } else {
-        mBitmapToBlur.eraseColor(Color.TRANSPARENT);
-      }
       //在1920x1080中，只画一个大小为 136 x 244 的RecyclerView，这个View绘制了两次
       //类似于开发者选项中的多显示输出
       //将bitmaptoblur进行赋值
@@ -264,17 +254,5 @@ public class BlurDrawable extends Drawable {
   public void setDrawOffset(float x, float y) {
     this.offsetX = x;
     this.offsetY = y;
-  }
-
-  @Override public void setAlpha(int alpha) {
-
-  }
-
-  @Override public void setColorFilter(ColorFilter colorFilter) {
-
-  }
-
-  @Override public int getOpacity() {
-    return 0;
   }
 }

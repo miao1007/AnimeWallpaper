@@ -22,9 +22,9 @@
       android:layout_gravity="bottom" android:layout_height="46dp"
       android:id="@+id/linearLayout">
     <com.github.miao1007.animewallpaper.ui.widget.FontedTextView android:layout_width="0dp"
-        android:text="@android:string/ok"
+        android:text="@android:string/cancel"
         android:layout_weight="1"
-        android:id="@+id/internal_alert_ok"
+        android:id="@+id/internal_alert_cancel"
         android:textColor="@color/internal_search_blue"
         android:gravity="center"
         android:textSize="16sp"
@@ -34,9 +34,9 @@
         android:background="@color/divider"/>
 
     <com.github.miao1007.animewallpaper.ui.widget.FontedTextView android:layout_width="0dp"
-        android:text="@android:string/cancel"
+        android:text="@android:string/ok"
         android:layout_weight="1"
-        android:id="@+id/internal_alert_cancel"
+        android:id="@+id/internal_alert_ok"
         android:textColor="@color/internal_search_blue"
         android:gravity="center"
         android:textSize="16sp"

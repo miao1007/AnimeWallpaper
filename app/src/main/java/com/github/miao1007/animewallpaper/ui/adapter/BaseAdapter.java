@@ -13,7 +13,6 @@ import java.util.List;
  */
 public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
 
-  static final String TAG = LogUtils.makeLogTag(BaseViewHolder.class);
   public static OnItemClickListener onItemClickListener;
   public OnLoadMoreListener loadMoreListener;
   int page = 1;
@@ -56,13 +55,12 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
     //check for last item
     if ((position >= getItemCount() - 1)) {
       page++;
-      Log.d(TAG, "loadMore:" + page);
       loadMoreListener.loadMore(page);
     }
-    onBindItemViewHolder(((BaseViewHolder) holder), position);
+    onBindItemViewHolder(holder, position);
   }
 
-  abstract void onBindItemViewHolder(BaseViewHolder holder, int position);
+  abstract void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position);
 
   @Override public int getItemCount() {
     return data.size();
@@ -76,22 +74,4 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
     void loadMore(int page);
   }
 
-  //holder has a strong reference to host
-
-  /**
-   * see {@link <a href="https://youtu.be/imsr8NrIAMs?t=2163"></a>}
-   */
-  public static class BaseViewHolder extends RecyclerView.ViewHolder {
-
-    public BaseViewHolder(View itemView) {
-      super(itemView);
-      itemView.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View itemView) {
-          if (getAdapterPosition() != RecyclerView.NO_POSITION && onItemClickListener != null) {
-            onItemClickListener.onItemClick(itemView, getAdapterPosition());
-          }
-        }
-      });
-    }
-  }
 }

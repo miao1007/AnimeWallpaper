@@ -42,6 +42,7 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity
@@ -243,6 +244,8 @@ public class MainActivity extends AppCompatActivity
       @Override public void onCancel(DialogInterface dialog) {
         drawable.setCornerRadius(0);
         drawable.setDrawOffset(0, 0);
+        //restore dialog height to origin
+        drawable.setBounds(0,0,mNavigationBar.getWidth(),mNavigationBar.getHeight());
       }
     });
     dialog.getWindow().getDecorView().post(new Runnable() {
