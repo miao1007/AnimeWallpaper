@@ -22,7 +22,6 @@
   <RelativeLayout android:layout_width="match_parent"
       android:orientation="vertical"
       android:id="@+id/image_holder"
-      android:background="#a7aeaeae"
       android:layout_height="match_parent">
     <!--navigationbar 4x13 = 52-->
 
@@ -70,11 +69,12 @@
         android:adjustViewBounds="true" android:layout_below="@+id/navigation_bar"
         android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
 
-    <ProgressBar android:layout_width="200dp" android:layout_height="200dp"
-        android:layout_centerInParent="true"
+    <ProgressBar android:layout_width="match_parent" android:layout_height="20dp"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:indeterminate="false"
-        android:id="@+id/image_download_progress"/>
+        android:id="@+id/image_download_progress" android:layout_below="@+id/navigation_bar"
+        android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true" android:layout_alignParentEnd="true"/>
 
 
     <LinearLayout

@@ -3,6 +3,8 @@ package com.github.miao1007.animewallpaper.utils.picasso;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Build.VERSION;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -31,6 +33,8 @@ public class Blur {
             script.setInput(input);
             script.forEach(output);
             output.copyTo(bitmap);
+            Canvas canvas= new Canvas(bitmap);
+            canvas.drawColor(Color.argb(0x3f,0x00,0x00,0x00));
             return bitmap;
         }
 

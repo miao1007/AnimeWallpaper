@@ -47,7 +47,7 @@ public class BlurDrawable extends ColorDrawable {
 
   private static boolean enabled;
 
-  private int mOverlayColor = Color.argb(180, 0xAf, 0xaf, 0xaf);
+  private int mOverlayColor = Color.argb(180, 0xff, 0xff, 0xff);
 
   private float cornerRadius = 0;
   private final Path path = new Path();

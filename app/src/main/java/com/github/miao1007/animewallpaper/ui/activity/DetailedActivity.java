@@ -9,21 +9,21 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
+import android.support.annotation.Size;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,7 +39,6 @@ import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import com.github.miao1007.animewallpaper.utils.StatusBarUtils;
 import com.github.miao1007.animewallpaper.utils.WallpaperUtils;
-import com.github.miao1007.animewallpaper.utils.animation.AnimateUtils;
 import com.github.miao1007.animewallpaper.utils.picasso.Blur;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -71,7 +70,6 @@ public class DetailedActivity extends AppCompatActivity {
   @Bind(R.id.ll_detailed_downloads) LinearLayout mLlDetailedDownloads;
   @Bind(R.id.image_download_progress) ProgressBar mImageDownloadProgress;
   @Bind(R.id.image_share) ImageView mImageShare;
-  @Bind(R.id.image_holder) RelativeLayout mImageHolder;
 
   private ImageAdapter imageResult;
   private boolean isPlaying = false;
@@ -262,23 +260,12 @@ public class DetailedActivity extends AppCompatActivity {
                 .subscribe(new Action1<Bitmap>() {
                   @TargetApi(Build.VERSION_CODES.JELLY_BEAN) @Override
                   public void call(final Bitmap bitmap) {
-                    anim(getPosition(getIntent()), true, new Animator.AnimatorListener() {
-                      @Override public void onAnimationStart(Animator animation) {
+                    anim(getPosition(getIntent()), new BitmapDrawable(bitmap), true,
+                        new Runnable() {
+                          @Override public void run() {
 
-                      }
-
-                      @Override public void onAnimationEnd(Animator animation) {
-                        AnimateUtils.animateViewBitmap(ivDetailedCardBlur, bitmap);
-                      }
-
-                      @Override public void onAnimationCancel(Animator animation) {
-
-                      }
-
-                      @Override public void onAnimationRepeat(Animator animation) {
-
-                      }
-                    }, ivDetailedCard, mLlDetailedDownloads);
+                          }
+                        }, ivDetailedCard, mLlDetailedDownloads, ivDetailedCardBlur);
                   }
                 });
           }
@@ -288,8 +275,8 @@ public class DetailedActivity extends AppCompatActivity {
   /**
    * 动画封装，千万不要剁手改正负
    */
-  private void anim(final Position position, final boolean in,
-      final Animator.AnimatorListener listener, View... views) {
+  private void anim(final Position position, @Nullable Drawable drawable, final boolean in,
+      final Runnable runnable, @Size(value = 3) View... views) {
     if (isPlaying) {
       return;
     }
@@ -307,7 +294,10 @@ public class DetailedActivity extends AppCompatActivity {
     views[0].setPivotY(0);
     views[1].setPivotX(views[1].getWidth() / 2);
     views[1].setPivotY(0);
-
+    ImageView bg = ((ImageView) views[2]);
+    if (drawable != null) {
+      bg.setImageDrawable(drawable);
+    }
     Animator trans_Y =
         ObjectAnimator.ofFloat(views[0], View.TRANSLATION_Y, in ? y_img[0] : y_img[1],
             in ? y_img[1] : y_img[0]);
@@ -316,33 +306,30 @@ public class DetailedActivity extends AppCompatActivity {
     Animator scale_Y = ObjectAnimator.ofFloat(views[0], View.SCALE_Y, in ? s_img[0] : s_img[1],
         in ? s_img[1] : s_img[0]);
     Animator alpha_icn = ObjectAnimator.ofFloat(views[1], View.ALPHA, in ? 0f : 1f, in ? 1f : 0f);
+    Animator alpha_bg = ObjectAnimator.ofFloat(views[2], View.ALPHA, in ? 0f : 1f, in ? 1f : 0f);
 
     Animator trans_icn_Y =
         ObjectAnimator.ofFloat(views[1], View.TRANSLATION_Y, in ? y_icn[0] : y_icn[1],
             in ? y_icn[1] : y_icn[0]);
-
     AnimatorSet set = new AnimatorSet();
     set.playTogether(trans_Y, scale_X, scale_Y);
-    set.playTogether(trans_icn_Y, alpha_icn);
+    set.playTogether(trans_icn_Y, alpha_icn, alpha_bg);
     set.setDuration(300);
     set.addListener(new Animator.AnimatorListener() {
       @Override public void onAnimationStart(Animator animation) {
-        listener.onAnimationStart(animation);
         isPlaying = true;
       }
 
       @Override public void onAnimationEnd(Animator animation) {
-        listener.onAnimationEnd(animation);
         isPlaying = false;
+        runnable.run();
       }
 
       @Override public void onAnimationCancel(Animator animation) {
-        listener.onAnimationCancel(animation);
         isPlaying = false;
       }
 
       @Override public void onAnimationRepeat(Animator animation) {
-        listener.onAnimationRepeat(animation);
       }
     });
     set.setInterpolator(new AccelerateInterpolator());
@@ -351,23 +338,11 @@ public class DetailedActivity extends AppCompatActivity {
 
   @Override public void onBackPressed() {
 
-    anim(getPosition(getIntent()), false, new Animator.AnimatorListener() {
-      @Override public void onAnimationStart(Animator animation) {
-        AnimateUtils.animateViewBitmap(ivDetailedCardBlur, null);
-      }
-
-      @Override public void onAnimationEnd(Animator animation) {
+    anim(getPosition(getIntent()), null, false, new Runnable() {
+      @Override public void run() {
         DetailedActivity.super.onBackPressed();
         overridePendingTransition(0, 0);
       }
-
-      @Override public void onAnimationCancel(Animator animation) {
-
-      }
-
-      @Override public void onAnimationRepeat(Animator animation) {
-
-      }
-    }, ivDetailedCard, mLlDetailedDownloads);
+    }, ivDetailedCard, mLlDetailedDownloads, ivDetailedCardBlur);
   }
 }
