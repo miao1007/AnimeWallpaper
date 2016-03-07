@@ -59,7 +59,7 @@
     </com.github.miao1007.animewallpaper.ui.widget.NavigationBar>
 
 
-    <ImageView
+    <com.github.miao1007.animewallpaper.ui.widget.PieImageView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/iv_detailed_card"
         android:src="@drawable/place_holder"
@@ -68,13 +68,6 @@
         android:scaleType="centerCrop"
         android:adjustViewBounds="true" android:layout_below="@+id/navigation_bar"
         android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
-
-    <ProgressBar android:layout_width="match_parent" android:layout_height="20dp"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:indeterminate="false"
-        android:id="@+id/image_download_progress" android:layout_below="@+id/navigation_bar"
-        android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true" android:layout_alignParentEnd="true"/>
 
 
     <LinearLayout

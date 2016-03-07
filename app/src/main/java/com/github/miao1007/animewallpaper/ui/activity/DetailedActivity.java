@@ -32,6 +32,7 @@ import com.github.miao1007.animewallpaper.R;
 import com.github.miao1007.animewallpaper.support.api.ImageAdapter;
 import com.github.miao1007.animewallpaper.ui.widget.ActionSheet;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
+import com.github.miao1007.animewallpaper.ui.widget.PieImageView;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
 import com.github.miao1007.animewallpaper.ui.widget.blur.BlurDrawable;
 import com.github.miao1007.animewallpaper.utils.FileUtils;
@@ -64,11 +65,10 @@ public class DetailedActivity extends AppCompatActivity {
   private static final String EXTRA_IMAGE = "URL";
   private static final String EXTRA_POSITION = "EXTRA_POSITION";
 
-  @Bind(R.id.iv_detailed_card) ImageView ivDetailedCard;
+  @Bind(R.id.iv_detailed_card) PieImageView ivDetailedCard;
   @Bind(R.id.blur_bg) ImageView ivDetailedCardBlur;
   @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
   @Bind(R.id.ll_detailed_downloads) LinearLayout mLlDetailedDownloads;
-  @Bind(R.id.image_download_progress) ProgressBar mImageDownloadProgress;
   @Bind(R.id.image_share) ImageView mImageShare;
 
   private ImageAdapter imageResult;
@@ -77,12 +77,7 @@ public class DetailedActivity extends AppCompatActivity {
     @Override public void update(@IntRange(from = 0, to = 100) final int percent) {
       runOnUiThread(new Runnable() {
         @Override public void run() {
-          mImageDownloadProgress.setProgress(percent);
-          if (percent == 100) {
-            mImageDownloadProgress.setVisibility(View.GONE);
-          } else {
-            mImageDownloadProgress.setVisibility(View.VISIBLE);
-          }
+          ivDetailedCard.setProgress(percent);
         }
       });
     }
