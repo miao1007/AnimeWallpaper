@@ -8,7 +8,7 @@ import android.net.NetworkInfo;
 /**
  * Created by leon on 14/10/11.
  */
-public class NetworkUtils {
+class NetworkUtils {
 
   public static boolean isWifiAviliable(Context context) {
     ConnectivityManager con =

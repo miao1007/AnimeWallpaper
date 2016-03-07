@@ -13,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -42,26 +41,23 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
-import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity
     implements CardAdapter.OnItemClickListener, BaseAdapter.OnLoadMoreListener {
 
-  public static final String TAG = LogUtils.makeLogTag(MainActivity.class);
-  static final String EXTRA_MAP = "ext";
-  //@Bind(R.id.btn_retry_card) Button mButton;
-  //@Bind(R.id.pgb_loading_card) ContentLoadingProgressBar mProgressBar;
-  boolean isLoadingMore;
+  private static final String TAG = LogUtils.makeLogTag(MainActivity.class);
+  private static final String EXTRA_MAP = "ext";
+  //void multiple dynamic proxy
+  private final DanbooruAPI repo =
+      SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
   @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
   @Bind(R.id.rv_frag_card) RecyclerView mRvFragCard;
-  BlurDrawable drawable;
-  //void multiple dynamic proxy
-  DanbooruAPI repo = SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
+  private final Map<String, Object> query = new HashMap<>(4);
+  private boolean isLoadingMore;
   @Bind(R.id.card_holder) FrameLayout mCardHolder;
   @Bind(R.id.card_error_page) RelativeLayout mCardErrorPage;
-  //@Bind(R.id.search_bar) SearchBar mSearchBar;
-  private Map<String, Object> query = new HashMap<>(4);
+  private BlurDrawable drawable;
 
   public static void startRefreshActivity(Context context, String query) {
     Intent intent = new Intent(context, MainActivity.class);
@@ -70,7 +66,7 @@ public class MainActivity extends AppCompatActivity
     context.startActivity(intent);
   }
 
-  static String parseIntent(Intent intent) {
+  private static String parseIntent(Intent intent) {
     return intent.getStringExtra(EXTRA_MAP);
   }
 
@@ -145,7 +141,7 @@ public class MainActivity extends AppCompatActivity
     onRefresh();
   }
 
-  void loadPage(Map<String, Object> query) {
+  private void loadPage(Map<String, Object> query) {
     if (isLoadingMore) {
       return;
     }
@@ -211,7 +207,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   //swipe layout refresh callback
-  public void onRefresh() {
+  private void onRefresh() {
     Log.d(TAG, "onRefresh:query = " + query);
     ((CardAdapter) mRvFragCard.getAdapter()).getData().clear();
     mRvFragCard.getAdapter().notifyDataSetChanged();

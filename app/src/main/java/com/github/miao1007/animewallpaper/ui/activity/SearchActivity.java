@@ -41,10 +41,10 @@ public class SearchActivity extends AppCompatActivity {
 
   static final String TAG = LogUtils.makeLogTag(SearchActivity.class);
 
-  @Bind(R.id.search_bar) SearchBar mSearchbar;
-  @Bind(R.id.search_list) ListView mSearchListView;
-  DanbooruAPI repo = SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
-  @Bind(R.id.internal_search_progress) ProgressBar progressBar;
+  @Bind(R.id.search_bar)  SearchBar mSearchbar;
+  @Bind(R.id.search_list)  ListView mSearchListView;
+  private final DanbooruAPI repo = SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
+  @Bind(R.id.internal_search_progress)  ProgressBar progressBar;
 
   @Override protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -149,8 +149,8 @@ public class SearchActivity extends AppCompatActivity {
 
   static class ResultAdapter extends BaseAdapter {
 
-    Context context;
-    List<Tag> tags;
+    final Context context;
+    final List<Tag> tags;
 
     public ResultAdapter(Context context, List<Tag> tags) {
       this.context = context;
@@ -170,14 +170,24 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {
-      //if (convertView == null) {
-      //  convertView =
-      //      LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, null, false);
-      //}
-      convertView =
-          LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, null, false);
-      ((TextView) convertView).setText(tags.get(position).getName());
+      final ViewHolder holder;
+
+      if (convertView == null) {
+        holder = new ViewHolder();
+        convertView =
+            LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, null, false);
+        holder.textView = ((TextView) convertView.findViewById(android.R.id.text1));
+        convertView.setTag(holder);
+      } else {
+        holder = (ViewHolder) convertView.getTag();
+      }
+      holder.textView.setText(tags.get(position).getName());
       return convertView;
+    }
+
+    static final class ViewHolder {
+
+      TextView textView;
     }
   }
 }

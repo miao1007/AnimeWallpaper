@@ -2,7 +2,6 @@
 <resources>
 
   <string name="app_name">AnimeWallpaper</string>
-  <string name="action_settings">设置</string>
 
 
   <string name="confirm_exit">确认退出?</string>

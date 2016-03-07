@@ -9,11 +9,11 @@ import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
  */
 public class ImageAdapter implements Parcelable {
 
-  String prev_url;
-  String download_url;
-  String tags;
+  private String prev_url;
+  private String download_url;
+  private String tags;
 
-  public ImageAdapter(String prev_url, String download_url, String tags) {
+  private ImageAdapter(String prev_url, String download_url, String tags) {
     this.prev_url = prev_url;
     this.download_url = download_url;
     this.tags = tags;
@@ -61,7 +61,7 @@ public class ImageAdapter implements Parcelable {
     return new ImageAdapter(result.getPreviewUrl(),result.getSampleUrl(),result.getTags());
   }
 
-  protected ImageAdapter(Parcel in) {
+  private ImageAdapter(Parcel in) {
     this.prev_url = in.readString();
     this.download_url = in.readString();
     this.tags = in.readString();

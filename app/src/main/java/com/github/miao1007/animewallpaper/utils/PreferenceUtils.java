@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 /**
  * Created by leon on 1/14/15.
  */
-public class PreferenceUtils {
+class PreferenceUtils {
 
   static String TAG = LogUtils.makeLogTag(PreferenceUtils.class);
 
@@ -18,7 +18,7 @@ public class PreferenceUtils {
 
   public static void setPrefString(Context context, final String key, final String value) {
     final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-    settings.edit().putString(key, value).commit();
+    settings.edit().putString(key, value).apply();
   }
 
   public static boolean getPrefBoolean(Context context, final String key,
@@ -33,12 +33,12 @@ public class PreferenceUtils {
 
   public static void setPrefBoolean(Context context, final String key, final boolean value) {
     final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-    settings.edit().putBoolean(key, value).commit();
+    settings.edit().putBoolean(key, value).apply();
   }
 
   public static void setPrefInt(Context context, final String key, final int value) {
     final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-    settings.edit().putInt(key, value).commit();
+    settings.edit().putInt(key, value).apply();
   }
 
   public static int getPrefInt(Context context, final String key, final int defaultValue) {
@@ -48,7 +48,7 @@ public class PreferenceUtils {
 
   public static void setPrefFloat(Context context, final String key, final float value) {
     final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-    settings.edit().putFloat(key, value).commit();
+    settings.edit().putFloat(key, value).apply();
   }
 
   public static float getPrefFloat(Context context, final String key, final float defaultValue) {
@@ -58,7 +58,7 @@ public class PreferenceUtils {
 
   public static void setSettingLong(Context context, final String key, final long value) {
     final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-    settings.edit().putLong(key, value).commit();
+    settings.edit().putLong(key, value).apply();
   }
 
   public static long getPrefLong(Context context, final String key, final long defaultValue) {
@@ -69,6 +69,6 @@ public class PreferenceUtils {
   public static void clearPreference(Context context, final SharedPreferences p) {
     final SharedPreferences.Editor editor = p.edit();
     editor.clear();
-    editor.commit();
+    editor.apply();
   }
 }

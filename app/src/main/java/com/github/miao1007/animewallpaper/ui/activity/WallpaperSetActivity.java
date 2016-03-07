@@ -25,11 +25,11 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class WallpaperSetActivity extends AppCompatActivity {
 
-  static final String TAG = LogUtils.makeLogTag(WallpaperSetActivity.class);
-  @Bind(R.id.iv_photo) ImageView mIvPhoto;
+  private static final String TAG = LogUtils.makeLogTag(WallpaperSetActivity.class);
+  @Bind(R.id.iv_photo)  ImageView mIvPhoto;
   @Bind(R.id.photoview_iv_setwallpaper) ImageView mPhotoviewIvSetwallpaper;
-  Uri imageUri;
-  PhotoViewAttacher mAttacher;
+  private Uri imageUri;
+  private PhotoViewAttacher mAttacher;
 
   @OnClick(R.id.photoview_iv_setwallpaper) void photoview_iv_setwallpaper(ImageView view) {
     //BitmapDrawable drawable = (BitmapDrawable) mIvPhoto.getDrawable();

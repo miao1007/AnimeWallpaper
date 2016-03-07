@@ -23,14 +23,14 @@ import com.github.miao1007.animewallpaper.R;
 public class SearchBar extends RelativeLayout {
 
   static final String TAG = "SearchBar";
-  boolean in = true;
+  private final boolean in = true;
   @Bind(R.id.internal_iv_search_icon) LinearLayout mInternalIvSearchIcon;
   @Bind(R.id.internal_rv_holder) RelativeLayout mInternalRvHolder;
   @Bind(R.id.internal_vs_cancel) ViewSwitcher mInternalVsCancel;
 
   @Bind(R.id.internal_iv_clear) ImageView mInternalIvClear;
-  float upDimen = 0f;
-  InputMethodManager imm;
+  private float upDimen = 0f;
+  private InputMethodManager imm;
 
   public EditText getEditTextSearch() {
     return mInternalEtSearch;
@@ -84,7 +84,7 @@ public class SearchBar extends RelativeLayout {
     });
   }
 
-  void init() {
+  private void init() {
     //insert first view into the Framlayout,, and return `root view`(this)
     inflate(getContext(), R.layout.internal_searchbar, this);
     ButterKnife.bind(this);

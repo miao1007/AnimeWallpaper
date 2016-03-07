@@ -42,10 +42,9 @@ public class ImageResult implements Parcelable {
   @Expose private int height;
   @SerializedName("is_held") @Expose private boolean isHeld;
   @SerializedName("frames_pending_string") @Expose private String framesPendingString;
-  @SerializedName("frames_pending") @Expose private List<Object> framesPending =
-      new ArrayList<Object>();
+  @SerializedName("frames_pending") @Expose private List<Object> framesPending = new ArrayList<>();
   @SerializedName("frames_string") @Expose private String framesString;
-  @Expose private List<Object> frames = new ArrayList<Object>();
+  @Expose private List<Object> frames = new ArrayList<>();
   @SerializedName("flag_detail") @Expose private Object flagDetail;
 
   public ImageResult() {

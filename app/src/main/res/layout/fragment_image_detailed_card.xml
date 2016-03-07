@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
@@ -12,7 +12,7 @@
 
   <ImageView
       xmlns:android="http://schemas.android.com/apk/res/android"
-      android:id="@+id/blur_bg" android:transitionName="iv_card_preview"
+      android:id="@+id/blur_bg"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:scaleType="centerCrop"
@@ -118,4 +118,4 @@
   </RelativeLayout>
 
 
-</FrameLayout>
+</merge>

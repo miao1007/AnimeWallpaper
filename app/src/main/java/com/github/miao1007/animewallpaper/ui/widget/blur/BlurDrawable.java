@@ -33,7 +33,7 @@ import android.view.Window;
 public class BlurDrawable extends ColorDrawable {
 
   private int mDownsampleFactor;
-  private View mBlurredBgView;
+  private final View mBlurredBgView;
   private int mBlurredViewWidth, mBlurredViewHeight;
   private boolean mDownsampleFactorChanged;
   private Bitmap mBitmapToBlur, mBlurredBitmap;
@@ -47,10 +47,10 @@ public class BlurDrawable extends ColorDrawable {
 
   private static boolean enabled;
 
-  private int mOverlayColor = Color.argb(180, 0xff, 0xff, 0xff);
+  private int mOverlayColor = Color.argb(180, 0xAf, 0xaf, 0xaf);
 
   private float cornerRadius = 0;
-  final Path path = new Path();
+  private final Path path = new Path();
 
   /**
    * will only initial once when class loaded
@@ -59,7 +59,7 @@ public class BlurDrawable extends ColorDrawable {
     enabled = (Build.VERSION.SDK_INT >= 17);
   }
 
-  RectF rectF = new RectF();
+  private final RectF rectF = new RectF();
 
   public BlurDrawable(@NonNull View mBlurredBgView) {
     this.mBlurredBgView = mBlurredBgView;
@@ -88,14 +88,14 @@ public class BlurDrawable extends ColorDrawable {
     this(blurredWindow.getDecorView());
   }
 
-  @TargetApi(17) public void setBlurRadius(@IntRange(from = 0, to = 25) int radius) {
+  @TargetApi(17) private void setBlurRadius(@IntRange(from = 0, to = 25) int radius) {
     if (!enabled) {
       return;
     }
     mBlurScript.setRadius(radius);
   }
 
-  @TargetApi(17) public void setDownsampleFactor(@IntRange(from = 0) int factor) {
+  @TargetApi(17) public void setDownSampleFactor(@IntRange(from = 0) int factor) {
     if (!enabled) {
       return;
     }
@@ -112,7 +112,7 @@ public class BlurDrawable extends ColorDrawable {
   /**
    * set both for blur and non-blur
    */
-  public void setOverlayColor(@ColorInt int color) {
+  private void setOverlayColor(@ColorInt int color) {
     mOverlayColor = color;
     setColor(color);
   }
@@ -123,13 +123,13 @@ public class BlurDrawable extends ColorDrawable {
     //设置blur半径, iOS中默认为12px
     setBlurRadius(8);
     //图片缩放等级，缩放越大越节约性能，理论要在100px^2以内
-    setDownsampleFactor(8);
+    setDownSampleFactor(8);
   }
 
   /**
    * 相当于一个单例的初始化
    */
-  protected boolean prepare() {
+  private boolean prepare() {
     //assume a 1080 x 1920 RecyclerView
     final int width = mBlurredBgView.getWidth();
     final int height = mBlurredBgView.getHeight();
@@ -179,8 +179,7 @@ public class BlurDrawable extends ColorDrawable {
    * 渲染任务，可以在16ms完成，可以调用多核
    * 将mBitmapToBlur渲染为mBlurredBitmap输出
    */
-  @TargetApi(17)
-  protected void blur(Bitmap mBitmapToBlur, Bitmap mBlurredBitmap) {
+  @TargetApi(17) private void blur(Bitmap mBitmapToBlur, Bitmap mBlurredBitmap) {
     if (!enabled) {
       return;
     }

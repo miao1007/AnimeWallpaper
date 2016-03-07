@@ -28,10 +28,10 @@ import java.util.List;
 public class ActionSheet extends Dialog {
 
   static final String TAG = LogUtils.makeLogTag(ActionSheet.class);
-  AdapterView.OnItemClickListener listener;
-  List<String> tags;
+  private final AdapterView.OnItemClickListener listener;
+  private final List<String> tags;
   @Bind(R.id.internal_actionsheet_title) TextView mInternalActionsheetTitle;
-  @Bind(R.id.internal_actionsheet_list) ListView listView;
+  @Bind(R.id.internal_actionsheet_list)  ListView listView;
   @Bind(R.id.internal_actionsheet_holder) RelativeLayout mInternalActionsheetHolder;
   @Bind(R.id.internal_sheet_cancel) TextView mInternalSheetCancel;
   @Bind(R.id.internal_actionsheet_bg) LinearLayout mInternalActionsheetBg;
@@ -51,7 +51,7 @@ public class ActionSheet extends Dialog {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.internal_actionsheet);
     ButterKnife.bind(this);
-    listView.setAdapter(new BlueAdapter(getContext(), android.R.layout.simple_list_item_1, tags));
+    listView.setAdapter(new BlueAdapter(getContext(), tags));
     if (listener != null) {
       listView.setOnItemClickListener(listener);
     }
@@ -63,25 +63,21 @@ public class ActionSheet extends Dialog {
     w.setDimAmount(0.5f);
   }
 
-  protected int dialogHeightPx() {
+  private int dialogHeightPx() {
     return (int) getContext().getResources().getDimension(R.dimen.internal_actionsheet_height);
   }
 
   /**
    * adapter for tags in ActionSheet
    */
-  static class BlueAdapter extends ArrayAdapter {
+  static class BlueAdapter extends ArrayAdapter<String> {
 
     public BlueAdapter(Context context, int resource) {
       super(context, resource);
     }
 
-    public BlueAdapter(Context context, int resource, List<String> objects) {
-      super(context, resource, objects);
-    }
-
-    public BlueAdapter(Context context, int resource, Object[] objects) {
-      super(context, resource, objects);
+    public BlueAdapter(Context context, List<String> objects) {
+      super(context, android.R.layout.simple_list_item_1, objects);
     }
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {

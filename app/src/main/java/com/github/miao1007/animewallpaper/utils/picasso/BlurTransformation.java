@@ -4,11 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import com.squareup.picasso.Transformation;
 
-public class BlurTransformation implements Transformation {
+class BlurTransformation implements Transformation {
 
-    Context context;
+    private final Context context;
 
-    final int BLUR_RADIUS = 5;
+    private final int BLUR_RADIUS = 5;
 
     public BlurTransformation(Context context) {
         this.context = context;

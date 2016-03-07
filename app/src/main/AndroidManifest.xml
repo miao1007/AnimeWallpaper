@@ -56,7 +56,10 @@
     </service>
 
     <activity android:name=".ui.activity.SearchActivity" android:theme="@style/DetailedTheme">
+
     </activity>
+
+
   </application>
 
 </manifest>

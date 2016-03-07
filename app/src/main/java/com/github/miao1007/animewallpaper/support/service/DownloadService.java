@@ -17,7 +17,7 @@ import okio.Okio;
 
 public class DownloadService extends Service {
 
-  static final String EXTRA_URL = "url";
+  private static final String EXTRA_URL = "url";
 
   public DownloadService() {
 

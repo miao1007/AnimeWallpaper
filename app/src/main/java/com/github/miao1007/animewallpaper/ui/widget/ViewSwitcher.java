@@ -28,10 +28,10 @@ public class ViewSwitcher extends FrameLayout {
   static final String TAG = "ViewSwitcher";
 
   boolean s = false;
-  float reserved;
-  ObjectAnimator animator_hide;
-  ObjectAnimator animator_show;
-  AnimatorSet set;
+  private float reserved;
+  private ObjectAnimator animator_hide;
+  private ObjectAnimator animator_show;
+  private AnimatorSet set;
 
   public ViewSwitcher(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
@@ -60,7 +60,7 @@ public class ViewSwitcher extends FrameLayout {
     this(context, attrs, 0);
   }
 
-  public void showCancel(boolean in) {
+  private void showCancel(boolean in) {
 
     if (getChildCount() != 2) {
       throw new IllegalStateException("Switch can only have two child views");

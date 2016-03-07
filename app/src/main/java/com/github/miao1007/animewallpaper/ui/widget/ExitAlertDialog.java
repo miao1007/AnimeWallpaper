@@ -7,14 +7,13 @@ import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.utils.LogUtils;
 
 /**
  * Created by leon on 2/19/16.
  */
 public class ExitAlertDialog extends Dialog {
 
-  View.OnClickListener okListener;
+  private final View.OnClickListener okListener;
 
   @OnClick(R.id.internal_alert_ok) void internal_alert_ok(View v) {
     dismiss();

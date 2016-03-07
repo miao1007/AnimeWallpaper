@@ -20,11 +20,11 @@ import java.lang.reflect.Method;
  */
 public final class StatusBarUtils {
 
-  boolean lightStatusBar;
+  private final boolean lightStatusBar;
   //透明且背景不占用控件的statusbar，这里估且叫做沉浸
-  boolean transparentStatusBar;
-  Window window;
-  View actionBarView;
+  private final boolean transparentStatusBar;
+  private final Window window;
+  private final View actionBarView;
 
   private StatusBarUtils(Window window, boolean lightStatusBar, boolean transparentStatusBar,
       View actionBarView) {
@@ -84,7 +84,7 @@ public final class StatusBarUtils {
     return result;
   }
 
-  public void processActionBar(final View v) {
+  private void processActionBar(final View v) {
     if (v == null || !transparentStatusBar || isLessKitkat()) {
       return;
     }
@@ -101,12 +101,12 @@ public final class StatusBarUtils {
   /**
    * 调用私有API处理颜色
    */
-  public void processPrivateAPI() {
+  private void processPrivateAPI() {
     processFlyMe(lightStatusBar);
     processMIUI(lightStatusBar);
   }
 
-  public void process() {
+  private void process() {
     int current = Build.VERSION.SDK_INT;
     //处理4.4沉浸
     if (current == Build.VERSION_CODES.KITKAT) {
@@ -124,7 +124,7 @@ public final class StatusBarUtils {
   /**
    * 处理4.4沉浸
    */
-  @TargetApi(Build.VERSION_CODES.KITKAT) void processKitkat() {
+  @TargetApi(Build.VERSION_CODES.KITKAT) private void processKitkat() {
     WindowManager.LayoutParams winParams = window.getAttributes();
     final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
     if (transparentStatusBar) {
@@ -139,7 +139,7 @@ public final class StatusBarUtils {
    * 改变小米的状态栏字体颜色为黑色, 要求MIUI6以上
    * Tested on: MIUIV7 5.0 Redmi-Note3
    */
-  void processMIUI(boolean lightStatusBar) {
+  private void processMIUI(boolean lightStatusBar) {
     Class<? extends Window> clazz = window.getClass();
     try {
       int darkModeFlag;
@@ -179,7 +179,10 @@ public final class StatusBarUtils {
    * Lollipop可以设置为沉浸，不能设置字体颜色(所以白色背景会很丑)
    * M(API23)可以设定
    */
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP) void processLollipopAbove() {
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP) private void processLollipopAbove() {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+      return;
+    }
     int flag = window.getDecorView().getSystemUiVisibility();
     if (lightStatusBar) {
       /**

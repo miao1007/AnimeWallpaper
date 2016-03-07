@@ -13,7 +13,7 @@ import com.squareup.picasso.Transformation;
  * Original Code: https://gist.github.com/julianshen/5829333
  */
 
-public class CircleTransformation implements Transformation {
+class CircleTransformation implements Transformation {
 
     private final int BORDER_COLOR = Color.WHITE;
     private final int BORDER_RADIUS = 5;

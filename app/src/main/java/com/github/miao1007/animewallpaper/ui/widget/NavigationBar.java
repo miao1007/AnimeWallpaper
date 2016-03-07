@@ -78,7 +78,7 @@ public class NavigationBar extends RelativeLayout {
     setFitTranslucent(true);
   }
 
-  public void setFitTranslucent(final boolean translucent) {
+  private void setFitTranslucent(final boolean translucent) {
     post(new Runnable() {
       @Override public void run() {
         if (StatusBarUtils.isLessKitkat() || !translucent) {

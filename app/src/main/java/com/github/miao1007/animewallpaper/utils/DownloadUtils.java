@@ -16,9 +16,9 @@ import android.widget.Toast;
  * Created by leon on 2/16/15.
  * Download update apk with SystemService.
  */
-public class DownloadUtils {
+class DownloadUtils {
 
-  public static final String MINETYPE_APPLCATION = "application/vnd.android.package-archive";
+  private static final String MINETYPE_APPLCATION = "application/vnd.android.package-archive";
 
   @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
   public static long DownloadApkWithProgress(Context context, String url) {

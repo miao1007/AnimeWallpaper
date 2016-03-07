@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class FontedTextView extends TextView {
 
   private static final String CUSTOM_FONT_PATH = "fonts/System San Francisco Display Regular.ttf";
-  Typeface lobster;
+  private final Typeface lobster;
 
   public FontedTextView(Context context) {
     this(context, null);

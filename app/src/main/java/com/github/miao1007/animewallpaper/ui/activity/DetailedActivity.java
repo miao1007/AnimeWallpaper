@@ -72,11 +72,10 @@ public class DetailedActivity extends AppCompatActivity {
   @Bind(R.id.image_download_progress) ProgressBar mImageDownloadProgress;
   @Bind(R.id.image_share) ImageView mImageShare;
   @Bind(R.id.image_holder) RelativeLayout mImageHolder;
-  @Bind(R.id.root_detailed) FrameLayout mRootDetailed;
 
-  ImageAdapter imageResult;
-  boolean isPlaying = false;
-  SquareUtils.ProgressListener listener = new SquareUtils.ProgressListener() {
+  private ImageAdapter imageResult;
+  private boolean isPlaying = false;
+  private SquareUtils.ProgressListener listener = new SquareUtils.ProgressListener() {
     @Override public void update(@IntRange(from = 0, to = 100) final int percent) {
       runOnUiThread(new Runnable() {
         @Override public void run() {
@@ -90,9 +89,9 @@ public class DetailedActivity extends AppCompatActivity {
       });
     }
   };
-  Picasso largeImagepicasso;
+  private Picasso largeImagepicasso;
 
-  public static Position getPosition(Intent intent) {
+  private static Position getPosition(Intent intent) {
     return intent.getParcelableExtra(EXTRA_POSITION);
   }
 
@@ -189,7 +188,7 @@ public class DetailedActivity extends AppCompatActivity {
     });
   }
 
-  void downloadViaPicasso(final Subscriber<File> subscriber) {
+  private void downloadViaPicasso(final Subscriber<File> subscriber) {
     if (mNavigationBar.getProgress()) {
       //debounce
       return;
@@ -289,8 +288,8 @@ public class DetailedActivity extends AppCompatActivity {
   /**
    * 动画封装，千万不要剁手改正负
    */
-  void anim(final Position position, final boolean in, final Animator.AnimatorListener listener,
-      View... views) {
+  private void anim(final Position position, final boolean in,
+      final Animator.AnimatorListener listener, View... views) {
     if (isPlaying) {
       return;
     }
@@ -303,7 +302,6 @@ public class DetailedActivity extends AppCompatActivity {
     float[] s_img = { 1f, delta };
 
     float[] y_icn = { views[1].getHeight() * 4, 0 };
-    float[] s_icn = { 3f, 1f };
 
     views[0].setPivotX(views[0].getWidth() / 2);
     views[0].setPivotY(0);

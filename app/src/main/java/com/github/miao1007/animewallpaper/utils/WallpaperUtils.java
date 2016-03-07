@@ -22,7 +22,7 @@ import java.io.IOException;
 
   private static final String TAG = "WallpaperUtils";
 
-  Activity context;
+  private final Activity context;
 
   private WallpaperUtils(Activity context) {
     this.context = context;

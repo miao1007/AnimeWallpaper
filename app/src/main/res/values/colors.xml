@@ -3,21 +3,14 @@
 
   <color name="primary">#FFFFFF</color>
   <color name="primary_dark">#B6B6B6</color>
-  <color name="primary_light">#FFFFFF</color>
   <color name="accent">#03A9F4</color>
   <color name="primary_text">#212121</color>
   <color name="secondary_text">#727272</color>
   <color name="icons">#FFFFFF</color>
   <color name="divider">#B6B6B6</color>
 
-  <color name="trans_black_bg">#22000000</color>
-
 
   <color name="ios_internal_blue">#007aff</color>
-  <color name="ios_internal_red">#ff3b30</color>
-  <color name="ios_internal_bg">#eeeef4</color>
-
-
 
 
   <!--<color name="primary">#2196F3</color>-->

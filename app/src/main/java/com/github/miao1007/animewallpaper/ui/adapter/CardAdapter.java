@@ -31,7 +31,7 @@ public class CardAdapter extends BaseAdapter<ImageAdapter> {
     return onCreateItemViewHolder(parent, viewType);
   }
 
-  public RecyclerView.ViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
+  private RecyclerView.ViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
     RecyclerView.ViewHolder vh;
     View v =
         LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_sample, parent, false);

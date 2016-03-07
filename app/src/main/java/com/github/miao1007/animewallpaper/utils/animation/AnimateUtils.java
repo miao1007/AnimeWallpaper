@@ -17,7 +17,7 @@ import android.widget.ImageView;
  */
 public class AnimateUtils {
 
-  public static final int ANIM_DORITION = 400;
+  private static final int ANIM_DORITION = 400;
 
   public static void animateViewColor(final View view, int toColor) {
 

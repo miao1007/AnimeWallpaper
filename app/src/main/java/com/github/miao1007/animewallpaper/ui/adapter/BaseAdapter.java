@@ -2,10 +2,8 @@ package com.github.miao1007.animewallpaper.ui.adapter;
 
 import android.support.annotation.IntRange;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import com.github.miao1007.animewallpaper.utils.LogUtils;
 import java.util.List;
 
 /**
@@ -13,12 +11,12 @@ import java.util.List;
  */
 public abstract class BaseAdapter<T> extends RecyclerView.Adapter {
 
-  public static OnItemClickListener onItemClickListener;
-  public OnLoadMoreListener loadMoreListener;
-  int page = 1;
+  static OnItemClickListener onItemClickListener;
+  private OnLoadMoreListener loadMoreListener;
+  private int page = 1;
   List<T> data;
 
-  public BaseAdapter(List<T> data) {
+  BaseAdapter(List<T> data) {
     this.data = data;
   }
 

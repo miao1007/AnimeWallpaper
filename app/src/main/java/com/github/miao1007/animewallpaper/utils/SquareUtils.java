@@ -2,22 +2,18 @@ package com.github.miao1007.animewallpaper.utils;
 
 import android.content.Context;
 import android.support.annotation.IntRange;
-import android.support.annotation.StringRes;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 import com.github.miao1007.animewallpaper.support.GlobalContext;
-import com.github.miao1007.animewallpaper.support.api.konachan.DanbooruAPI;
 import com.github.miao1007.animewallpaper.utils.network.HttpLoggingInterceptor;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.IOException;
 import okhttp3.Cache;
-import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
@@ -25,7 +21,6 @@ import okio.BufferedSource;
 import okio.ForwardingSource;
 import okio.Okio;
 import okio.Source;
-import retrofit2.BaseUrl;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -45,7 +40,7 @@ public abstract class SquareUtils {
   /**
    * Not singleton
    */
-  static public OkHttpClient getProgressBarClient(final ProgressListener listener) {
+  private static OkHttpClient getProgressBarClient(final ProgressListener listener) {
     return getClient().newBuilder()
         .addNetworkInterceptor(new Interceptor() {
       @Override public Response intercept(Chain chain) throws IOException {
@@ -57,7 +52,7 @@ public abstract class SquareUtils {
     }).build();
   }
 
-  static public Interceptor getLogger() {
+  private static Interceptor getLogger() {
     HttpLoggingInterceptor loggingInterceptor =
         new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
           @Override public void log(String message) {

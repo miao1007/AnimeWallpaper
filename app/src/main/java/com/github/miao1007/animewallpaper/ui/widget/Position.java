@@ -2,9 +2,7 @@ package com.github.miao1007.animewallpaper.ui.widget;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
-import java.util.Arrays;
 
 /**
  * Created by leon on 1/19/16.
@@ -22,17 +20,17 @@ public class Position implements Parcelable {
       return new Position[size];
     }
   };
-  public int left;
-  public int right;
+  private int left;
+  private int right;
   public int top;
-  public int bottom;
+  private int bottom;
   public int width;
   public int height;
 
   public Position() {
   }
 
-  public Position(int left, int right, int top, int bottom, int width, int height) {
+  private Position(int left, int right, int top, int bottom, int width, int height) {
     this.left = left;
     this.right = right;
     this.top = top;
@@ -41,7 +39,7 @@ public class Position implements Parcelable {
     this.height = height;
   }
 
-  protected Position(Parcel in) {
+  private Position(Parcel in) {
     this.left = in.readInt();
     this.right = in.readInt();
     this.top = in.readInt();

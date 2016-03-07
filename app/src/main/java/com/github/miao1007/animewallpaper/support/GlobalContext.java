@@ -1,7 +1,6 @@
 package com.github.miao1007.animewallpaper.support;
 
 import android.app.Application;
-import android.os.Build;
 import im.fir.sdk.FIR;
 
 /**
@@ -10,7 +9,7 @@ import im.fir.sdk.FIR;
 public class GlobalContext extends Application {
 
 
-  public static GlobalContext instance = null;
+  private static GlobalContext instance = null;
 
 
   @Override public void onCreate() {
