@@ -18,7 +18,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.utils.LogUtils;
 import java.util.List;
 
 /**
@@ -27,7 +26,6 @@ import java.util.List;
  */
 public class ActionSheet extends Dialog {
 
-  static final String TAG = LogUtils.makeLogTag(ActionSheet.class);
   private final AdapterView.OnItemClickListener listener;
   private final List<String> tags;
   @Bind(R.id.internal_actionsheet_title) TextView mInternalActionsheetTitle;
@@ -71,10 +69,6 @@ public class ActionSheet extends Dialog {
    * adapter for tags in ActionSheet
    */
   static class BlueAdapter extends ArrayAdapter<String> {
-
-    public BlueAdapter(Context context, int resource) {
-      super(context, resource);
-    }
 
     public BlueAdapter(Context context, List<String> objects) {
       super(context, android.R.layout.simple_list_item_1, objects);
