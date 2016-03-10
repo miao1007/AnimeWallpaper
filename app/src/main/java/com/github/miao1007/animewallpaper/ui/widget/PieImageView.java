@@ -70,6 +70,6 @@ public class PieImageView extends ImageView {
       float mAngle = mProgress * 360f / MAX_PROGRESS;
       canvas.drawArc(mBound, 270, mAngle, true, mArcPaint);
       canvas.drawCircle(mBound.centerX(), mBound.centerY(), mBound.height() / 2, mCirclePaint);
-    }
+  }
   }
 }

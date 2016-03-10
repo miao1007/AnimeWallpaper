@@ -37,12 +37,21 @@ public abstract class SquareUtils {
 
   static private OkHttpClient client;
 
+  static public synchronized OkHttpClient getClient() {
+    if (client == null) {
+      final File cacheDir = GlobalContext.getInstance().getExternalCacheDir();
+      client = new OkHttpClient.Builder().addNetworkInterceptor(getLogger())
+          .cache(new Cache(new File(cacheDir, "okhttp"), 60 * 1024 * 1024))
+          .build();
+    }
+    return client;
+  }
+
   /**
    * Not singleton
    */
   private static OkHttpClient getProgressBarClient(final ProgressListener listener) {
-    return getClient().newBuilder()
-        .addNetworkInterceptor(new Interceptor() {
+    return getClient().newBuilder().addNetworkInterceptor(new Interceptor() {
       @Override public Response intercept(Chain chain) throws IOException {
         Response originalResponse = chain.proceed(chain.request());
         return originalResponse.newBuilder()
@@ -63,15 +72,6 @@ public abstract class SquareUtils {
     return loggingInterceptor;
   }
 
-  static public synchronized OkHttpClient getClient() {
-    if (client == null) {
-      final File cacheDir = GlobalContext.getInstance().getExternalCacheDir();
-      client = new OkHttpClient.Builder().addNetworkInterceptor(getLogger())
-          //.addInterceptor(DanbooruAPI.CDN)
-          .cache(new Cache(new File(cacheDir, "okhttp"), 60 * 1024 * 1024)).build();
-    }
-    return client;
-  }
 
   /**
    * Singleton Picasso shared cache with OkH ttp/Retrofit
@@ -91,10 +91,9 @@ public abstract class SquareUtils {
    * Download Big Image only, Not singleton but shared cache
    */
   static public Picasso getPicasso(Context context, ProgressListener listener) {
-
-    return new Picasso.Builder(context).downloader(
-        new OkHttp3Downloader(getProgressBarClient(listener)))
-        .loggingEnabled(true)
+    OkHttpClient client = getProgressBarClient(listener);
+    OkHttp3Downloader downloader = new OkHttp3Downloader(client);
+    return new Picasso.Builder(context).downloader(downloader)
         .memoryCache(com.squareup.picasso.Cache.NONE)
         .build();
   }
@@ -148,7 +147,7 @@ public abstract class SquareUtils {
   }
 
   /**
-   * There is no need to let retrofit singleTop
+   * There is no need to let retrofit singleton
    * BuilderTime + DynamicProxyTime == 0.6ms
    * @param url
    * @return

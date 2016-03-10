@@ -231,6 +231,8 @@ public class MainActivity extends AppCompatActivity
    * reuse drawable
    */
   @Override public void onBackPressed() {
+    mRvFragCard.stopScroll();
+
     final ExitAlertDialog dialog = new ExitAlertDialog(this, new View.OnClickListener() {
       @Override public void onClick(View v) {
         finish();
@@ -242,6 +244,12 @@ public class MainActivity extends AppCompatActivity
         drawable.setDrawOffset(0, 0);
         //restore dialog height to origin
         drawable.setBounds(0,0,mNavigationBar.getWidth(),mNavigationBar.getHeight());
+      }
+    });
+    dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+      @Override public void onShow(DialogInterface dialog) {
+        //void random bug on screen
+        //mRvFragCard.stopNestedScroll();
       }
     });
     dialog.getWindow().getDecorView().post(new Runnable() {
