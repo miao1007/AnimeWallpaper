@@ -78,14 +78,15 @@ public class MainActivity extends AppCompatActivity
 
   @OnClick(R.id.iv_history) void settings(View v) {
     final File file = new File(FileUtils.EXT_STORAGE);
-    final ActionSheet a = new HistoryActionSheet(getWindow(), new AdapterView.OnItemClickListener() {
-      @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        final Intent shareIntent = new Intent(Intent.ACTION_VIEW);
-        shareIntent.setDataAndType(Uri.fromFile(file.listFiles()[position]), "image/*");
-        startActivity(Intent.createChooser(shareIntent, getString(R.string.view_image_by)));
-      }
-    }, file);
-
+    final ActionSheet a =
+        new HistoryActionSheet(getWindow(), new AdapterView.OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            final Intent shareIntent = new Intent(Intent.ACTION_VIEW);
+            shareIntent.setDataAndType(Uri.fromFile(file.listFiles()[position]), "image/*");
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.view_image_by)));
+          }
+        }, file);
 
     a.getWindow().getDecorView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
       @Override

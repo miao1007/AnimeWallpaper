@@ -1,17 +1,13 @@
 package com.github.miao1007.animewallpaper.ui.widget;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,7 +17,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
-import java.util.List;
 
 /**
  * Created by leon on 1/27/16.
@@ -31,10 +26,7 @@ public abstract class ActionSheet extends Dialog {
 
   private final AdapterView.OnItemClickListener listener;
   @Bind(R.id.internal_actionsheet_title) TextView mInternalActionsheetTitle;
-  @Bind(R.id.internal_actionsheet_list)  ListView listView;
-  @Bind(R.id.internal_actionsheet_holder) RelativeLayout mInternalActionsheetHolder;
-  @Bind(R.id.internal_sheet_cancel) TextView mInternalSheetCancel;
-  @Bind(R.id.internal_actionsheet_bg) LinearLayout mInternalActionsheetBg;
+  @Bind(R.id.internal_actionsheet_list) ListView listView;
 
   public ActionSheet(Window window, @Nullable AdapterView.OnItemClickListener listener) {
     super(window.getContext(), android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
@@ -66,10 +58,7 @@ public abstract class ActionSheet extends Dialog {
     return (int) getContext().getResources().getDimension(R.dimen.internal_actionsheet_height);
   }
 
-  @StringRes
-  abstract public int getTitle();
+  @StringRes abstract public int getTitle();
 
   abstract public BaseAdapter getAdapter();
-
-
 }

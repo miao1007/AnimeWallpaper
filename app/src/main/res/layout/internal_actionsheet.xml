@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--360-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="@dimen/internal_actionsheet_height"
@@ -6,48 +8,37 @@
     android:id="@+id/internal_actionsheet_bg"
     android:layout_width="match_parent">
 
-  <!--300-->
-  <RelativeLayout
-      android:layout_marginTop="8dp"
-      android:id="@+id/internal_actionsheet_holder"
-      android:orientation="vertical"
-      android:clickable="true"
-      android:layout_width="match_parent"
-      android:layout_height="292dp">
+  <!--48-->
+  <TextView android:layout_width="match_parent"
+      android:layout_marginTop="4dp"
+      android:layout_marginBottom="4dp"
+      android:layout_height="40dp"
+      android:text="@string/searching_for_relevant_tags"
+      android:id="@+id/internal_actionsheet_title"
+      android:maxLines="1"
+      android:textColor="@color/internal_search_grey"
+      android:textSize="18sp"
+      android:gravity="center"/>
 
-    <TextView android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text="@string/searching_for_relevant_tags"
-        android:id="@+id/internal_actionsheet_title"
-        android:maxLines="1"
-        android:textColor="@color/internal_search_grey"
-        android:layout_alignParentTop="true"
-        android:textSize="18sp"
-        android:gravity="center_vertical"
-        android:layout_centerHorizontal="true"/>
+  <!--256-->
+  <ListView android:layout_width="match_parent"
+      android:layout_marginLeft="4dp"
+      android:layout_marginRight="4dp"
+      tools:listitem="@android:layout/simple_list_item_1"
+      android:divider="#b9b9b9"
+      android:dividerHeight="1dp"
+      android:id="@+id/internal_actionsheet_list"
+      android:layout_height="256dp"/>
 
-
-    <ListView android:layout_width="match_parent"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        tools:listitem="@android:layout/simple_list_item_1"
-        android:divider="#b9b9b9"
-        android:dividerHeight="1dp"
-        android:id="@+id/internal_actionsheet_list"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/internal_actionsheet_title"
-        android:layout_centerHorizontal="true"/>
-
-  </RelativeLayout>
-
-  <!--60-->
+  <!--56-->
   <TextView
-      android:layout_margin="8dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
       android:id="@+id/internal_sheet_cancel"
       android:visibility="visible"
       android:text="@android:string/cancel"
       android:layout_width="match_parent"
-      android:layout_height="44dp"
+      android:layout_height="40dp"
       android:gravity="center"
       android:clickable="true"
       android:textColor="@color/ios_internal_blue"
