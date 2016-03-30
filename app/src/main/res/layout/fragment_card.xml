@@ -52,9 +52,9 @@
         android:layout_height="?attr/actionBarSize"/>
 
     <ImageView
-        android:src="@drawable/github_96" android:layout_alignParentRight="true"
-        android:padding="12dp"
-        android:id="@+id/iv_github"
+        android:src="@drawable/history_100" android:layout_alignParentRight="true"
+        android:padding="16dp"
+        android:id="@+id/iv_history"
         android:scaleType="fitXY"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"/>

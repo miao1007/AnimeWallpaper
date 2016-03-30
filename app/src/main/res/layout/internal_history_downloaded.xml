@@ -6,14 +6,16 @@
     android:id="@+id/internal_actionsheet_bg"
     android:layout_width="match_parent">
 
-  <!--300-->
+  <!--280-->
   <RelativeLayout
+      android:layout_marginLeft="8dp"
       android:layout_marginTop="8dp"
       android:id="@+id/internal_actionsheet_holder"
+      android:layout_marginRight="8dp"
       android:orientation="vertical"
       android:clickable="true"
       android:layout_width="match_parent"
-      android:layout_height="292dp">
+      android:layout_height="280dp">
 
     <TextView android:layout_width="wrap_content"
         android:layout_height="40dp"
@@ -28,8 +30,6 @@
 
 
     <ListView android:layout_width="match_parent"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
         tools:listitem="@android:layout/simple_list_item_1"
         android:divider="#b9b9b9"
         android:dividerHeight="1dp"
@@ -40,14 +40,14 @@
 
   </RelativeLayout>
 
-  <!--60-->
+  <!--80dp-->
   <TextView
-      android:layout_margin="8dp"
+      android:layout_margin="16dp"
       android:id="@+id/internal_sheet_cancel"
       android:visibility="visible"
       android:text="@android:string/cancel"
       android:layout_width="match_parent"
-      android:layout_height="44dp"
+      android:layout_height="48dp"
       android:gravity="center"
       android:clickable="true"
       android:textColor="@color/ios_internal_blue"

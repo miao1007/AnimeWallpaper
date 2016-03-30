@@ -8,6 +8,8 @@
   <string name="time_out">Connection time out, please check network</string>
   <string name="retry">Retry</string>
   <string name="searching_for_relevant_tags">Relevant tags</string>
+  <string name="history">History</string>
+
   <string name="start_download_image">Starting preview large image</string>
   <string name="share_image">Share image using</string>
   <string name="view_image_by">View image using</string>

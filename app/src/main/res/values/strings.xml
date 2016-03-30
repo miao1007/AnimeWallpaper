@@ -8,6 +8,7 @@
   <string name="time_out">连接超时，请检查网络</string>
   <string name="retry">重试</string>
   <string name="searching_for_relevant_tags">壁纸的相关Tag</string>
+  <string name="history">壁纸下载历史</string>
   <string name="start_download_image">开始下载完整图片…</string>
   <string name="share_image">分享图片</string>
   <string name="view_image_by">查看图片</string>

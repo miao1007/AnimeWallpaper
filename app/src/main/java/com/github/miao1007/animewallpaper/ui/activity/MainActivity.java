@@ -1,6 +1,5 @@
 package com.github.miao1007.animewallpaper.ui.activity;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -25,14 +26,18 @@ import com.github.miao1007.animewallpaper.support.api.konachan.DanbooruAPI;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
 import com.github.miao1007.animewallpaper.ui.adapter.BaseAdapter;
 import com.github.miao1007.animewallpaper.ui.adapter.CardAdapter;
+import com.github.miao1007.animewallpaper.ui.widget.ActionSheet;
 import com.github.miao1007.animewallpaper.ui.widget.ExitAlertDialog;
+import com.github.miao1007.animewallpaper.ui.widget.HistoryActionSheet;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
 import com.github.miao1007.animewallpaper.ui.widget.blur.BlurDrawable;
+import com.github.miao1007.animewallpaper.utils.FileUtils;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import com.github.miao1007.animewallpaper.utils.StatusBarUtils;
 import com.squareup.picasso.Picasso;
+import java.io.File;
 import java.net.SocketException;
 import java.util.HashMap;
 import java.util.List;
@@ -51,12 +56,13 @@ public class MainActivity extends AppCompatActivity
   //void multiple dynamic proxy
   private final DanbooruAPI repo =
       SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
+  private final Map<String, Object> query = new HashMap<>(4);
   @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
   @Bind(R.id.rv_frag_card) RecyclerView mRvFragCard;
-  private final Map<String, Object> query = new HashMap<>(4);
-  private boolean isLoadingMore;
   @Bind(R.id.card_holder) FrameLayout mCardHolder;
   @Bind(R.id.card_error_page) RelativeLayout mCardErrorPage;
+  boolean in = true;
+  private boolean isLoadingMore;
   private BlurDrawable drawable;
 
   public static void startRefreshActivity(Context context, String query) {
@@ -70,18 +76,31 @@ public class MainActivity extends AppCompatActivity
     return intent.getStringExtra(EXTRA_MAP);
   }
 
-  boolean in = true;
+  @OnClick(R.id.iv_history) void settings(View v) {
+    final File file = new File(FileUtils.EXT_STORAGE);
+    final ActionSheet a = new HistoryActionSheet(getWindow(), new AdapterView.OnItemClickListener() {
+      @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final Intent shareIntent = new Intent(Intent.ACTION_VIEW);
+        shareIntent.setDataAndType(Uri.fromFile(file.listFiles()[position]), "image/*");
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.view_image_by)));
+      }
+    }, file);
 
-  @OnClick(R.id.iv_github) void settings(View v) {
-    String url = "http://github.com/miao1007/AnimeWallpaper";
-    Intent i = new Intent(Intent.ACTION_VIEW);
-    i.setData(Uri.parse(url));
-    try {
-      startActivity(i);
-      //some device don't have a browser
-    } catch (ActivityNotFoundException e) {
-      Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-    }
+
+    a.getWindow().getDecorView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+      @Override
+      public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
+          int oldTop, int oldRight, int oldBottom) {
+        drawable.setDrawOffset(0,
+            getWindow().getDecorView().getHeight() - a.getWindow().getDecorView().getHeight());
+        a.getWindow()
+            .getDecorView()
+            .findViewById(Window.ID_ANDROID_CONTENT)
+            .setBackgroundDrawable(drawable);
+        a.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+      }
+    });
+    a.show();
   }
 
   @OnClick(R.id.iv_search) void iv_search(View v) {
@@ -161,12 +180,14 @@ public class MainActivity extends AppCompatActivity
           @Override public Observable<ImageResult> call(List<ImageResult> imageResults) {
             return Observable.from(imageResults);
           }
-        }).map(new Func1<ImageResult, ImageAdapter>() {
-      @Override public ImageAdapter call(ImageResult result) {
-        return ImageAdapter.from(result);
-      }
-    })
-        .observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<ImageAdapter>() {
+        })
+        .map(new Func1<ImageResult, ImageAdapter>() {
+          @Override public ImageAdapter call(ImageResult result) {
+            return ImageAdapter.from(result);
+          }
+        })
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Subscriber<ImageAdapter>() {
           @Override public void onCompleted() {
             if (mRvFragCard != null && mRvFragCard.getAdapter() != null) {
               mRvFragCard.getAdapter().notifyDataSetChanged();
@@ -195,7 +216,7 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
           }
 
-      @Override public void onNext(ImageAdapter imageResult) {
+          @Override public void onNext(ImageAdapter imageResult) {
             ((CardAdapter) mRvFragCard.getAdapter()).getData().add(imageResult);
           }
         });
@@ -243,7 +264,7 @@ public class MainActivity extends AppCompatActivity
         drawable.setCornerRadius(0);
         drawable.setDrawOffset(0, 0);
         //restore dialog height to origin
-        drawable.setBounds(0,0,mNavigationBar.getWidth(),mNavigationBar.getHeight());
+        drawable.setBounds(0, 0, mNavigationBar.getWidth(), mNavigationBar.getHeight());
       }
     });
     dialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -265,7 +286,6 @@ public class MainActivity extends AppCompatActivity
       }
     });
     dialog.show();
-
   }
 }
 

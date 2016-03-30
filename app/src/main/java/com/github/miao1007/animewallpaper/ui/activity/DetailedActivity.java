@@ -33,6 +33,7 @@ import com.github.miao1007.animewallpaper.ui.widget.ActionSheet;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.PieImageView;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
+import com.github.miao1007.animewallpaper.ui.widget.TagsActionSheet;
 import com.github.miao1007.animewallpaper.ui.widget.blur.BlurDrawable;
 import com.github.miao1007.animewallpaper.utils.FileUtils;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
@@ -100,7 +101,7 @@ public class DetailedActivity extends AppCompatActivity {
 
   @OnClick(R.id.detailed_tags) void tags() {
     final List<String> tags = Arrays.asList(imageResult.getTags().split(" "));
-    final ActionSheet a = new ActionSheet(getWindow(), new AdapterView.OnItemClickListener() {
+    final ActionSheet a = new TagsActionSheet(getWindow(), new AdapterView.OnItemClickListener() {
       @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MainActivity.startRefreshActivity(DetailedActivity.this, tags.get(position));
       }

@@ -18,14 +18,15 @@ import okio.Okio;
  */
 @WorkerThread public final class FileUtils {
 
+  public static String EXT_STORAGE = Environment.getExternalStorageDirectory().getPath()
+      + File.separator
+      + GlobalContext.getInstance().getString(R.string.app_name)
+      + File.separator;
+
   /**
    * Save bitmap to /sdcard/$(name)
    */
   @CheckResult @Nullable public static File saveBodytoFile(ResponseBody body, String name) {
-    String EXT_STORAGE = Environment.getExternalStorageDirectory().getPath()
-        + File.separator
-        + GlobalContext.getInstance().getString(R.string.app_name)
-        + File.separator;
     final File wallpaper = new File(EXT_STORAGE, name);
     final FileSystem fileSystem = FileSystem.SYSTEM;
     try {
