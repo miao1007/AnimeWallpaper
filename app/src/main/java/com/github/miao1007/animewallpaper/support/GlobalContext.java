@@ -8,14 +8,15 @@ import im.fir.sdk.FIR;
  */
 public class GlobalContext extends Application {
 
-
   private static GlobalContext instance = null;
-
 
   @Override public void onCreate() {
     super.onCreate();
     instance = this;
-    FIR.init(this);
+  }
+
+  static public void startThirdFrameWork(){
+    FIR.init(instance);
   }
 
   public static GlobalContext getInstance(){
