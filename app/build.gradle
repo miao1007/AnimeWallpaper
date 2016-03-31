@@ -44,9 +44,12 @@ android {
 }
 
 ext{
-  v_support = '23.2.0'
+  v_support = '23.2.1'
   v_butter = '8.0.0-SNAPSHOT'
-  v_retrofit = '2.0.0-beta4'
+  v_okhttp = '3.2.0'
+  v_retrofit = '2.0.1'
+  v_picasso = '2.5.3-SNAPSHOT'
+  v_rxbinding = '0.4.0'
 }
 
 dependencies {
@@ -57,15 +60,16 @@ dependencies {
   compile "com.android.support:appcompat-v7:$v_support"
   compile "com.android.support:design:$v_support"
   //config in proguard.pro
-  compile 'com.squareup.picasso:picasso:2.5.3-SNAPSHOT'
-  compile 'com.squareup.okhttp3:okhttp:3.1.1'
+  compile "com.squareup.picasso:picasso:$v_picasso"
+  compile "com.squareup.okhttp3:okhttp:$v_okhttp"
+  compile "com.squareup.okhttp3:logging-interceptor:$v_okhttp"
   compile "com.squareup.retrofit2:retrofit:$v_retrofit"
   compile "com.squareup.retrofit2:adapter-rxjava:$v_retrofit"
   compile "com.squareup.retrofit2:converter-gson:$v_retrofit"
   //rxjava and it's proguard
   compile 'com.artemzin.rxjava:proguard-rules:1.1.0.0'
   compile 'io.reactivex:rxandroid:1.1.0'
-  compile 'com.jakewharton.rxbinding:rxbinding:0.3.0'
+  compile "com.jakewharton.rxbinding:rxbinding:$v_rxbinding"
   //no need proguard
   compile 'im.fir:fir-sdk:latest.integration@aar'
   compile 'com.github.chrisbanes.photoview:library:1.2.3'

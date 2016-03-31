@@ -14,6 +14,7 @@
   <string name="view_image_by">查看图片</string>
   <string name="set_wallpaper_compat">兼容模式</string>
   <string name="please_try_proxy">请尝试使用代理进行连接</string>
+  <string name="server_err_response">服务器返回数据错误</string>
 
 
 </resources>

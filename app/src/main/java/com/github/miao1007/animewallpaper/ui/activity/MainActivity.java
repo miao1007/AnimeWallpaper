@@ -36,6 +36,7 @@ import com.github.miao1007.animewallpaper.utils.FileUtils;
 import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import com.github.miao1007.animewallpaper.utils.StatusBarUtils;
+import com.google.gson.stream.MalformedJsonException;
 import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.net.SocketException;
@@ -87,20 +88,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(Intent.createChooser(shareIntent, getString(R.string.view_image_by)));
           }
         }, file);
-
-    a.getWindow().getDecorView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-      @Override
-      public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
-          int oldTop, int oldRight, int oldBottom) {
-        drawable.setDrawOffset(0,
-            getWindow().getDecorView().getHeight() - a.getWindow().getDecorView().getHeight());
-        a.getWindow()
-            .getDecorView()
-            .findViewById(Window.ID_ANDROID_CONTENT)
-            .setBackgroundDrawable(drawable);
-        a.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-      }
-    });
+    a.setDrawable(drawable);
     a.show();
   }
 
@@ -208,6 +196,12 @@ public class MainActivity extends AppCompatActivity
             isLoadingMore = false;
             mRvFragCard.setVisibility(View.GONE);
             mCardErrorPage.setVisibility(View.VISIBLE);
+            //fix bugs on chinaNet
+            if (e instanceof MalformedJsonException) {
+              Toast.makeText(MainActivity.this, R.string.server_err_response, Toast.LENGTH_SHORT)
+                  .show();
+              return;
+            }
             //fix bugs on gfw
             if (e instanceof SocketException) {
               Toast.makeText(MainActivity.this, R.string.please_try_proxy, Toast.LENGTH_SHORT)

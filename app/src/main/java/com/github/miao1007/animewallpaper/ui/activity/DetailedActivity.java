@@ -18,7 +18,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -70,6 +69,7 @@ public class DetailedActivity extends AppCompatActivity {
   @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
   @Bind(R.id.ll_detailed_downloads) LinearLayout mLlDetailedDownloads;
   @Bind(R.id.image_share) ImageView mImageShare;
+  BlurDrawable drawable;
 
   private ImageAdapter imageResult;
   private boolean isPlaying = false;
@@ -106,21 +106,8 @@ public class DetailedActivity extends AppCompatActivity {
         MainActivity.startRefreshActivity(DetailedActivity.this, tags.get(position));
       }
     }, tags);
-    final BlurDrawable drawable = new BlurDrawable(getWindow());
-
-    a.getWindow().getDecorView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-      @Override
-      public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
-          int oldTop, int oldRight, int oldBottom) {
-        drawable.setDrawOffset(0,
-            getWindow().getDecorView().getHeight() - a.getWindow().getDecorView().getHeight());
-        a.getWindow()
-            .getDecorView()
-            .findViewById(Window.ID_ANDROID_CONTENT)
-            .setBackgroundDrawable(drawable);
-        a.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-      }
-    });
+    drawable = new BlurDrawable(getWindow());
+    a.setDrawable(drawable);
     a.show();
   }
 
@@ -224,6 +211,9 @@ public class DetailedActivity extends AppCompatActivity {
 
   @Override protected void onDestroy() {
     super.onDestroy();
+    if (drawable != null) {
+      drawable.onDestroy();
+    }
     listener = null;
     largeImagepicasso.cancelRequest(ivDetailedCard);
   }
@@ -236,7 +226,8 @@ public class DetailedActivity extends AppCompatActivity {
     largeImagepicasso = SquareUtils.getPicasso(this, listener);
     mNavigationBar.setTextColor(Color.WHITE);
     imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);
-    SquareUtils.getPicasso(this).load(imageResult.getPrev_url())
+    SquareUtils.getPicasso(this)
+        .load(imageResult.getPrev_url())
         .into(ivDetailedCard, new Callback.EmptyCallback() {
           @Override public void onSuccess() {
             Observable.just(ivDetailedCard)

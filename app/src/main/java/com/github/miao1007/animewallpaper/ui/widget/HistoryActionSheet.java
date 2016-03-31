@@ -19,12 +19,12 @@ import java.io.File;
  */
 public class HistoryActionSheet extends ActionSheet {
 
-  File file;
+  private File[] files;
 
   public HistoryActionSheet(Window window, @Nullable AdapterView.OnItemClickListener listener,
       File file) {
     super(window, listener);
-    this.file = file;
+    files = file.listFiles();
   }
 
   @Override public int getTitle() {
@@ -38,11 +38,14 @@ public class HistoryActionSheet extends ActionSheet {
   class ImgAdapter extends BaseAdapter {
 
     @Override public int getCount() {
-      return file.listFiles().length;
+      if (files == null || files.length == 0) {
+        return 0;
+      }
+      return files.length;
     }
 
     @Override public Object getItem(int position) {
-      return file.listFiles()[position];
+      return files[position];
     }
 
     @Override public long getItemId(int position) {
@@ -52,21 +55,18 @@ public class HistoryActionSheet extends ActionSheet {
     @Override public View getView(int position, View convertView, ViewGroup parent) {
       ImageView view = new ImageView(getContext());
       view.setAdjustViewBounds(true);
-      SquareUtils.getPicasso(getContext())
-          .load(file.listFiles()[position])
-          .transform(new Transformation() {
-            @Override public Bitmap transform(Bitmap source) {
-              Bitmap bitmap = ThumbnailUtils.extractThumbnail(source,source.getWidth()/4,source.getWidth()/4);
-              source.recycle();
-              return bitmap;
-            }
+      SquareUtils.getPicasso(getContext()).load(files[position]).transform(new Transformation() {
+        @Override public Bitmap transform(Bitmap source) {
+          Bitmap bitmap =
+              ThumbnailUtils.extractThumbnail(source, source.getWidth() / 4, source.getWidth() / 4);
+          source.recycle();
+          return bitmap;
+        }
 
-            @Override public String key() {
-              return "ThumbnailUtils";
-            }
-          })
-          .config(Bitmap.Config.RGB_565)
-          .into(view);
+        @Override public String key() {
+          return "ThumbnailUtils";
+        }
+      }).config(Bitmap.Config.RGB_565).into(view);
       return view;
     }
 

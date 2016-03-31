@@ -84,6 +84,20 @@ public final class StatusBarUtils {
     return result;
   }
 
+  @IntRange(from = 0, to = 75) public static int getNavigationBarOffsetPx(Context context) {
+    if (isLessKitkat()) {
+      return 0;
+    }
+    Context appContext = context.getApplicationContext();
+    int result = 0;
+    int resourceId =
+        appContext.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+    if (resourceId > 0) {
+      result = appContext.getResources().getDimensionPixelSize(resourceId);
+    }
+    return result;
+  }
+
   private void processActionBar(final View v) {
     if (v == null || !transparentStatusBar || isLessKitkat()) {
       return;

@@ -15,6 +15,7 @@
   <string name="view_image_by">View image using</string>
   <string name="set_wallpaper_compat">Compat Mode</string>
   <string name="please_try_proxy">Please try to use proxy</string>
+  <string name="server_err_response">Server response error</string>
 
 
 </resources>
