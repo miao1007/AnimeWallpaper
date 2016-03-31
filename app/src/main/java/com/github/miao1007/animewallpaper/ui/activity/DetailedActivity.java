@@ -220,9 +220,13 @@ public class DetailedActivity extends AppCompatActivity {
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    StatusBarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(false).process();
     setContentView(R.layout.fragment_image_detailed_card);
     ButterKnife.bind(this);
+    StatusBarUtils.from(this)
+        .setTransparentStatusbar(true)
+        .setActionbarView(mNavigationBar)
+        .setLightStatusBar(false)
+        .process();
     largeImagepicasso = SquareUtils.getPicasso(this, listener);
     mNavigationBar.setTextColor(Color.WHITE);
     imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);

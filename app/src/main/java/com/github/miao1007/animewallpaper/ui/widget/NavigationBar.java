@@ -1,5 +1,6 @@
 package com.github.miao1007.animewallpaper.ui.widget;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.utils.StatusBarUtils;
 
 /**
  * Created by leon on 1/18/16.
@@ -73,25 +73,20 @@ public class NavigationBar extends RelativeLayout {
     ButterKnife.bind(this);
   }
 
-  @Override protected void onFinishInflate() {
-    super.onFinishInflate();
-    setFitTranslucent(true);
-  }
-
-  private void setFitTranslucent(final boolean translucent) {
-    post(new Runnable() {
-      @Override public void run() {
-        if (StatusBarUtils.isLessKitkat() || !translucent) {
-          return;
-        }
-        int height = StatusBarUtils.getStatusBarOffsetPx(getContext());
-        setPadding(getPaddingLeft(), height + getPaddingTop(), getPaddingRight(),
-            getPaddingBottom());
-        getLayoutParams().height += height;
-      }
-    });
-  }
-
+  //
+  //private void setFitTranslucent(final boolean translucent) {
+  //  post(new Runnable() {
+  //    @Override public void run() {
+  //      if (StatusBarUtils.isLessKitkat() || !translucent) {
+  //        return;
+  //      }
+  //      int height = StatusBarUtils.getStatusBarOffsetPx(getContext());
+  //      setPadding(getPaddingLeft(), height + getPaddingTop(), getPaddingRight(),
+  //          getPaddingBottom());
+  //      getLayoutParams().height += height;
+  //    }
+  //  });
+  //}
 }
 
 

@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -21,6 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
+import com.github.miao1007.animewallpaper.support.GlobalContext;
 import com.github.miao1007.animewallpaper.support.api.ImageAdapter;
 import com.github.miao1007.animewallpaper.support.api.konachan.DanbooruAPI;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
@@ -54,15 +54,13 @@ public class MainActivity extends AppCompatActivity
 
   private static final String TAG = LogUtils.makeLogTag(MainActivity.class);
   private static final String EXTRA_MAP = "ext";
-  //void multiple dynamic proxy
-  private final DanbooruAPI repo =
-      SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
   private final Map<String, Object> query = new HashMap<>(4);
   @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
   @Bind(R.id.rv_frag_card) RecyclerView mRvFragCard;
   @Bind(R.id.card_holder) FrameLayout mCardHolder;
   @Bind(R.id.card_error_page) RelativeLayout mCardErrorPage;
-  boolean in = true;
+  //void multiple dynamic proxy
+  private DanbooruAPI repo;
   private boolean isLoadingMore;
   private BlurDrawable drawable;
 
@@ -104,18 +102,18 @@ public class MainActivity extends AppCompatActivity
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    StatusBarUtils.from(this).setTransparentStatusbar(true).setLightStatusBar(true).process();
     setContentView(R.layout.fragment_card);
     ButterKnife.bind(this);
+    StatusBarUtils.from(this)
+        .setLightStatusBar(true)
+        .setTransparentStatusbar(true)
+        .setActionbarView(mNavigationBar)
+        .process();
     setUpList();
-    String tag = parseIntent(getIntent());
-    if (tag != null) {
-      query.clear();
-      query.put(DanbooruAPI.TAGS, tag + DanbooruAPI.TAG_SAFE);
-    }
   }
 
   private void setUpList() {
+
     CardAdapter mAdapter = new CardAdapter();
     mAdapter.setLoadMoreListener(this);
     mAdapter.setItemClickListener(this);
@@ -144,9 +142,24 @@ public class MainActivity extends AppCompatActivity
         ViewCompat.postInvalidateOnAnimation(mNavigationBar);
       }
     });
-    drawable = new BlurDrawable(mRvFragCard);
+    drawable = new BlurDrawable(mCardHolder);
     mNavigationBar.setBackgroundDrawable(drawable);
-    onRefresh();
+
+    String tag = parseIntent(getIntent());
+    if (tag != null) {
+      query.clear();
+      query.put(DanbooruAPI.TAGS, tag + DanbooruAPI.TAG_SAFE);
+    }
+    getWindow().getDecorView().post(new Runnable() {
+      @Override public void run() {
+        //100ms
+        GlobalContext.startThirdFrameWork();
+        //40ms
+        repo = SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
+        //120ms
+        onRefresh();
+      }
+    });
   }
 
   private void loadPage(Map<String, Object> query) {
