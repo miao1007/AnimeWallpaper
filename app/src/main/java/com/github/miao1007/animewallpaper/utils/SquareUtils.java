@@ -11,6 +11,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.IOException;
 import okhttp3.Cache;
+import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -32,9 +33,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public abstract class SquareUtils {
 
   static final String TAG = "SquareUtils";
-
+  static Dispatcher dispatcher;
   static private Picasso picasso;
-
   static private OkHttpClient client;
 
   static public synchronized OkHttpClient getClient() {
@@ -42,6 +42,7 @@ public abstract class SquareUtils {
       final File cacheDir = GlobalContext.getInstance().getExternalCacheDir();
       client = new OkHttpClient.Builder().addNetworkInterceptor(getLogger())
           .cache(new Cache(new File(cacheDir, "okhttp"), 60 * 1024 * 1024))
+          .dispatcher(getDispatcher())
           .build();
     }
     return client;
@@ -72,7 +73,6 @@ public abstract class SquareUtils {
     return loggingInterceptor;
   }
 
-
   /**
    * Singleton Picasso shared cache with OkH ttp/Retrofit
    */
@@ -80,8 +80,8 @@ public abstract class SquareUtils {
 
     if (picasso == null) {
       synchronized (SquareUtils.class) {
-        picasso = new Picasso.Builder(context).downloader(new OkHttp3Downloader(getClient()))
-            .build();
+        picasso =
+            new Picasso.Builder(context).downloader(new OkHttp3Downloader(getClient())).build();
       }
     }
     return picasso;
@@ -96,6 +96,25 @@ public abstract class SquareUtils {
     return new Picasso.Builder(context).downloader(downloader)
         .memoryCache(com.squareup.picasso.Cache.NONE)
         .build();
+  }
+
+  /**
+   * There is no need to let retrofit singleton
+   * BuilderTime + DynamicProxyTime == 0.6ms
+   */
+  public static Retrofit getRetrofit(String url) {
+    return new Retrofit.Builder().baseUrl(url)
+        .client(getClient())
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+        .build();
+  }
+
+  public static synchronized Dispatcher getDispatcher() {
+    if (dispatcher == null) {
+      dispatcher = new Dispatcher();
+    }
+    return dispatcher;
   }
 
   public interface ProgressListener {
@@ -132,6 +151,7 @@ public abstract class SquareUtils {
 
       return new ForwardingSource(source) {
         long totalBytesRead = 0L;
+
         @Override public long read(Buffer sink, long byteCount) throws IOException {
           long bytesRead = super.read(sink, byteCount);
           // read() returns the number of bytes read, or -1 if this source is exhausted.
@@ -144,18 +164,5 @@ public abstract class SquareUtils {
         }
       };
     }
-  }
-
-  /**
-   * There is no need to let retrofit singleton
-   * BuilderTime + DynamicProxyTime == 0.6ms
-   * @param url
-   * @return
-   */
-  public static Retrofit getRetrofit(String url) {
-   return new Retrofit.Builder().baseUrl(url).client(getClient())
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-        .build();
   }
 }

@@ -24,7 +24,7 @@ import okio.Okio;
       + File.separator;
 
   /**
-   * Save bitmap to /sdcard/$(name)
+   * Save bitmap to /sdcard/${name}
    */
   @CheckResult @Nullable public static File saveBodytoFile(ResponseBody body, String name) {
     final File wallpaper = new File(EXT_STORAGE, name);

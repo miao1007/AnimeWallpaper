@@ -3,19 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-  <!--<com.github.miao1007.animewallpaper.ui.widget.SearchBar android:layout_width="match_parent"-->
-  <!--app:layout_scrollFlags="scroll|snap"-->
-  <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-  <!--android:id="@+id/search_bar"-->
-  <!--app:sb_float_height="?attr/actionBarSize"-->
-  <!--android:layout_height="?attr/actionBarSize">-->
-
-  <!--</com.github.miao1007.animewallpaper.ui.widget.SearchBar>-->
-
   <!--RecyclerView-->
   <FrameLayout android:layout_width="match_parent"
       android:id="@+id/card_holder"
+      android:background="?attr/colorPrimary"
       android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
@@ -60,36 +51,5 @@
         android:layout_height="?attr/actionBarSize"/>
   </com.github.miao1007.animewallpaper.ui.widget.NavigationBar>
 
-  <!---->
-  <!--&lt;!&ndash;framelayout&ndash;&gt;-->
-  <!--<android.support.design.widget.CoordinatorLayout-->
-  <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-  <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-  <!--xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"-->
-  <!--android:layout_height="match_parent">-->
-
-  <!--&lt;!&ndash;RecyclerView&ndash;&gt;-->
-  <!--<android.support.v7.widget.RecyclerView-->
-  <!--android:id="@+id/rv_frag_card"-->
-  <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
-  <!--tools:listitem="@layout/list_item_sample"-->
-  <!--android:layout_width="match_parent"-->
-  <!--android:layout_height="match_parent"/>-->
-
-  <!--&lt;!&ndash;内部放可以自动滚动的线性布局，并添加flag&ndash;&gt;-->
-  <!--<android.support.design.widget.AppBarLayout-->
-  <!--android:id="@+id/appBarLayout"-->
-  <!--android:layout_width="match_parent"-->
-  <!--android:layout_height="wrap_content">-->
-  <!--&lt;!&ndash;you MUST set background before adding elevation&ndash;&gt;-->
-  <!--<com.github.miao1007.animewallpaper.ui.widget.SearchBar android:layout_width="match_parent"-->
-  <!--app:layout_scrollFlags="scroll|snap"-->
-  <!--android:clipChildren="false"-->
-  <!--android:clipToPadding="false"-->
-  <!--android:layout_height="54dp"/>-->
-  <!--</android.support.design.widget.AppBarLayout>-->
-
-
-  <!--</android.support.design.widget.CoordinatorLayout>-->
 </merge>
 

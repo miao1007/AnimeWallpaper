@@ -14,14 +14,18 @@
   </style>
 
 
+  <!-- Base application theme. -->
+  <style name="ColdStartTheme" parent="iOSTheme">
+    <item name="android:windowBackground">@drawable/cold_start_bg</item>
+  </style>
 
 
   <!-- Base application theme. -->
-  <style name="AppTheme" parent="iOSTheme">
+  <style name="MainTheme" parent="ColdStartTheme">
 
   </style>
 
-  <style name="DetailedTheme" parent="AppTheme">
+  <style name="DetailedTheme" parent="MainTheme">
     <!--背景透明-->
     <item name="android:windowIsTranslucent">true</item>
     <item name="android:windowBackground">@android:color/transparent</item>
@@ -30,7 +34,7 @@
   </style>
 
 
-  <style name="Settings" parent="AppTheme">
+  <style name="Settings" parent="MainTheme">
     <item name="android:windowAnimationStyle">@android:anim/slide_in_left</item>
 
   </style>

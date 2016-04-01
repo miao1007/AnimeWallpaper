@@ -143,6 +143,7 @@ public class MainActivity extends AppCompatActivity
       }
     });
     drawable = new BlurDrawable(mCardHolder);
+
     mNavigationBar.setBackgroundDrawable(drawable);
 
     String tag = parseIntent(getIntent());
@@ -150,14 +151,21 @@ public class MainActivity extends AppCompatActivity
       query.clear();
       query.put(DanbooruAPI.TAGS, tag + DanbooruAPI.TAG_SAFE);
     }
-    getWindow().getDecorView().post(new Runnable() {
+    Log.d(TAG, "onEnque: " + System.currentTimeMillis());
+
+    SquareUtils.getDispatcher().executorService().execute(new Runnable() {
       @Override public void run() {
-        //100ms
+        Log.d(TAG, "run: " + System.currentTimeMillis());
+        //42ms
         GlobalContext.startThirdFrameWork();
-        //40ms
-        repo = SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
         //120ms
-        onRefresh();
+        repo = SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
+        runOnUiThread(new Runnable() {
+          @Override public void run() {
+            //40ms
+            onRefresh();
+          }
+        });
       }
     });
   }
@@ -219,9 +227,7 @@ public class MainActivity extends AppCompatActivity
             if (e instanceof SocketException) {
               Toast.makeText(MainActivity.this, R.string.please_try_proxy, Toast.LENGTH_SHORT)
                   .show();
-              return;
             }
-            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
           }
 
           @Override public void onNext(ImageAdapter imageResult) {

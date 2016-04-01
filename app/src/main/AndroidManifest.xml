@@ -18,13 +18,15 @@
   <application
       android:name=".support.GlobalContext"
       android:icon="@mipmap/ic_launcher"
-      android:label="@string/app_name"
-      android:theme="@style/AppTheme">
+      android:theme="@style/iOSTheme"
+      android:label="@string/app_name">
 
-    <meta-data android:value="141640f581df6968db968b2abc9f503b" android:name="BUG_HD_SDK_GENERAL_KEY" />
+    <meta-data android:value="141640f581df6968db968b2abc9f503b"
+        android:name="BUG_HD_SDK_GENERAL_KEY"/>
 
     <activity
         android:name=".ui.activity.MainActivity"
+        android:theme="@style/MainTheme"
         android:label="@string/app_name">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
