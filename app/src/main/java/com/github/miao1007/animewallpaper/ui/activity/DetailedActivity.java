@@ -198,7 +198,7 @@ public class DetailedActivity extends AppCompatActivity {
                         Uri.parse(imageResult.getDownload_url()).getLastPathSegment());
                   }
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(SquareUtils.getRxWorkerScheduler())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
           }

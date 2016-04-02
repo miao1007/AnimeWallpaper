@@ -6,12 +6,13 @@
 
   <item android:gravity="top">
     <shape android:shape="rectangle">
-      <solid android:color="#c8ececec"/>
+      <solid android:color="#ececec"/>
     </shape>
   </item>
 
+  <!--81 = 25 + 56-->
   <item
-      android:top="75dp"
+      android:top="81dp"
       android:gravity="top">
     <shape android:shape="rectangle">
       <solid android:color="@color/primary"/>

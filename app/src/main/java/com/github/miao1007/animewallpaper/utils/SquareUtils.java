@@ -25,6 +25,8 @@ import okio.Source;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Scheduler;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by leon on 1/26/16.
@@ -36,6 +38,14 @@ public abstract class SquareUtils {
   static Dispatcher dispatcher;
   static private Picasso picasso;
   static private OkHttpClient client;
+  static private Scheduler scheduler;
+
+  static public synchronized Scheduler getRxWorkerScheduler() {
+    if (scheduler == null) {
+      scheduler = Schedulers.from(getDispatcher().executorService());
+    }
+    return scheduler;
+  }
 
   static public synchronized OkHttpClient getClient() {
     if (client == null) {

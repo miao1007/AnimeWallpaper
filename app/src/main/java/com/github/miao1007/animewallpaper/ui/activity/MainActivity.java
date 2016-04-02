@@ -164,6 +164,8 @@ public class MainActivity extends AppCompatActivity
           @Override public void run() {
             //40ms
             onRefresh();
+            Log.d(TAG, "run: height = " + mNavigationBar.getHeight());
+
           }
         });
       }
@@ -185,7 +187,7 @@ public class MainActivity extends AppCompatActivity
       query.put(DanbooruAPI.LIMIT, 10);
     }
     repo.getImageList(query)
-        .subscribeOn(Schedulers.io())
+        .subscribeOn(SquareUtils.getRxWorkerScheduler())
         .flatMap(new Func1<List<ImageResult>, Observable<ImageResult>>() {
           @Override public Observable<ImageResult> call(List<ImageResult> imageResults) {
             return Observable.from(imageResults);
