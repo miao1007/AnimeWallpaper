@@ -21,8 +21,8 @@ Feature
 
 ####2. iOS design implementation for Android
 
-1. Toolbar with translucent statusbar for kitkat above
-2. Realtime Blur(Dialog/ActionSheet/ListView)
+1. Toolbar with translucent statusbar for Kitkat device above
+2. Realtime blur on Android(Dialog/ActionSheet/ListView)
 3. Search/Indicator(Progressbar)/Translation animation
 
 ####3. A practice with latest library
