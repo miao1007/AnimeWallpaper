@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,7 +49,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity
     implements CardAdapter.OnItemClickListener, BaseAdapter.OnLoadMoreListener {
@@ -101,6 +102,21 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+    SquareUtils.getDispatcher().executorService().execute(new Runnable() {
+      @WorkerThread @Override public void run() {
+        //42ms
+        GlobalContext.startThirdFrameWork();
+        //120ms
+        repo = SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
+        runOnUiThread(new Runnable() {
+          @Override public void run() {
+            //40ms
+            onRefresh();
+          }
+        });
+      }
+    });
     super.onCreate(savedInstanceState);
     setContentView(R.layout.fragment_card);
     ButterKnife.bind(this);
@@ -151,25 +167,6 @@ public class MainActivity extends AppCompatActivity
       query.clear();
       query.put(DanbooruAPI.TAGS, tag + DanbooruAPI.TAG_SAFE);
     }
-    Log.d(TAG, "onEnque: " + System.currentTimeMillis());
-
-    SquareUtils.getDispatcher().executorService().execute(new Runnable() {
-      @Override public void run() {
-        Log.d(TAG, "run: " + System.currentTimeMillis());
-        //42ms
-        GlobalContext.startThirdFrameWork();
-        //120ms
-        repo = SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
-        runOnUiThread(new Runnable() {
-          @Override public void run() {
-            //40ms
-            onRefresh();
-            Log.d(TAG, "run: height = " + mNavigationBar.getHeight());
-
-          }
-        });
-      }
-    });
   }
 
   private void loadPage(Map<String, Object> query) {
@@ -244,7 +241,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   //swipe layout refresh callback
-  private void onRefresh() {
+  @MainThread private void onRefresh() {
     Log.d(TAG, "onRefresh:query = " + query);
     ((CardAdapter) mRvFragCard.getAdapter()).getData().clear();
     mRvFragCard.getAdapter().notifyDataSetChanged();

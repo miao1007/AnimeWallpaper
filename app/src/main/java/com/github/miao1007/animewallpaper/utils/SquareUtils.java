@@ -40,6 +40,10 @@ public abstract class SquareUtils {
   static private OkHttpClient client;
   static private Scheduler scheduler;
 
+  private SquareUtils() {
+    throw new AssertionError("Utils can't be an instance!");
+  }
+
   static public synchronized Scheduler getRxWorkerScheduler() {
     if (scheduler == null) {
       scheduler = Schedulers.from(getDispatcher().executorService());

@@ -127,7 +127,7 @@ public final class StatusBarUtils {
     //处理4.4~5.0沉浸
     if (current >= Build.VERSION_CODES.KITKAT && current < Build.VERSION_CODES.M){
       processKitkat();
-    } else if (current > Build.VERSION_CODES.M){
+    } else if (current >= Build.VERSION_CODES.M){
       processM();
     }
   }
