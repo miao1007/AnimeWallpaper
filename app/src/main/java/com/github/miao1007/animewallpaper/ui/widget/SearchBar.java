@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
@@ -24,19 +24,14 @@ public class SearchBar extends RelativeLayout {
 
   static final String TAG = "SearchBar";
   private final boolean in = true;
-  @Bind(R.id.internal_iv_search_icon) LinearLayout mInternalIvSearchIcon;
-  @Bind(R.id.internal_rv_holder) RelativeLayout mInternalRvHolder;
-  @Bind(R.id.internal_vs_cancel) ViewSwitcher mInternalVsCancel;
+  @BindView(R.id.internal_iv_search_icon) LinearLayout mInternalIvSearchIcon;
+  @BindView(R.id.internal_rv_holder) RelativeLayout mInternalRvHolder;
+  @BindView(R.id.internal_vs_cancel) ViewSwitcher mInternalVsCancel;
 
-  @Bind(R.id.internal_iv_clear) ImageView mInternalIvClear;
+  @BindView(R.id.internal_iv_clear) ImageView mInternalIvClear;
+  @BindView(R.id.internal_et_search) EditText mInternalEtSearch;
   private float upDimen = 0f;
   private InputMethodManager imm;
-
-  public EditText getEditTextSearch() {
-    return mInternalEtSearch;
-  }
-
-  @Bind(R.id.internal_et_search) EditText mInternalEtSearch;
 
   public SearchBar(Context context) {
     this(context, null);
@@ -55,6 +50,10 @@ public class SearchBar extends RelativeLayout {
       ta.recycle();
     }
     init();
+  }
+
+  public EditText getEditTextSearch() {
+    return mInternalEtSearch;
   }
 
   @OnClick(R.id.internal_iv_clear) void clearText() {
@@ -118,7 +117,6 @@ public class SearchBar extends RelativeLayout {
       imm.hideSoftInputFromWindow(mInternalEtSearch.getWindowToken(), 0);
     }
   }
-
 
   public boolean isClosed() {
     return in;

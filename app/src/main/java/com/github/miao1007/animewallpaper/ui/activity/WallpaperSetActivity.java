@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
@@ -26,8 +26,8 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class WallpaperSetActivity extends AppCompatActivity {
 
   private static final String TAG = LogUtils.makeLogTag(WallpaperSetActivity.class);
-  @Bind(R.id.iv_photo)  ImageView mIvPhoto;
-  @Bind(R.id.photoview_iv_setwallpaper) ImageView mPhotoviewIvSetwallpaper;
+  @BindView(R.id.iv_photo) ImageView mIvPhoto;
+  @BindView(R.id.photoview_iv_setwallpaper) ImageView mPhotoviewIvSetwallpaper;
   private Uri imageUri;
   private PhotoViewAttacher mAttacher;
 
@@ -92,6 +92,6 @@ public class WallpaperSetActivity extends AppCompatActivity {
 
   @Override public void finish() {
     super.finish();
-    overridePendingTransition(0,android.R.anim.slide_in_left);
+    overridePendingTransition(0, android.R.anim.slide_in_left);
   }
 }

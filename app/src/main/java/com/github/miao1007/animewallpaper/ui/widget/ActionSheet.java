@@ -2,6 +2,8 @@ package com.github.miao1007.animewallpaper.ui.widget;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -11,11 +13,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
@@ -28,18 +28,20 @@ import com.github.miao1007.animewallpaper.utils.StatusBarUtils;
  */
 public abstract class ActionSheet extends Dialog {
 
-  private BlurDrawable drawable;
   private final AdapterView.OnItemClickListener listener;
-  @Bind(R.id.internal_actionsheet_title) TextView mInternalActionsheetTitle;
-  @Bind(R.id.internal_actionsheet_list) ListView listView;
-
-  public void setDrawable(BlurDrawable drawable) {
-    this.drawable = drawable;
-  }
+  @BindView(R.id.internal_actionsheet_title) TextView mInternalActionsheetTitle;
+  @BindView(R.id.internal_actionsheet_list) ListView listView;
+  private BlurDrawable drawable;
+  //some device(Huawei honor) does not support android.R.color.transparnet
+  private static ColorDrawable TRANSPARENT = new ColorDrawable(Color.TRANSPARENT);
 
   public ActionSheet(Window window, @Nullable AdapterView.OnItemClickListener listener) {
     super(window.getContext(), android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
     this.listener = listener;
+  }
+
+  public void setDrawable(BlurDrawable drawable) {
+    this.drawable = drawable;
   }
 
   @OnClick(R.id.internal_sheet_cancel) void internal_sheet_cancel() {
@@ -56,13 +58,13 @@ public abstract class ActionSheet extends Dialog {
     }
     Window w = getWindow();
     mInternalActionsheetTitle.setText(getTitle());
-    w.setBackgroundDrawableResource(android.R.color.transparent);
+    w.setBackgroundDrawable(TRANSPARENT);
     w.setWindowAnimations(R.style.ActionsheetAnimation);
     w.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, dialogHeightPx());
     w.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
     w.setDimAmount(0.5f);
 
-    if (drawable == null){
+    if (drawable == null) {
       return;
     }
     getWindow().getDecorView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -72,11 +74,10 @@ public abstract class ActionSheet extends Dialog {
         drawable.setDrawOffset(0, drawable.getmBlurredBgView().getHeight()
             - getWindow().getDecorView().getHeight()
             - StatusBarUtils.getNavigationBarOffsetPx(getWindow().getContext()));
-        getWindow()
-            .getDecorView()
+        getWindow().getDecorView()
             .findViewById(Window.ID_ANDROID_CONTENT)
             .setBackgroundDrawable(drawable);
-        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        getWindow().setBackgroundDrawable(TRANSPARENT);
       }
     });
     setOnCancelListener(new DialogInterface.OnCancelListener() {

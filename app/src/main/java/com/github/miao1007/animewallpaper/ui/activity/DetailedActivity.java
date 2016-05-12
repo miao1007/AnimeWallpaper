@@ -23,7 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
@@ -64,11 +64,11 @@ public class DetailedActivity extends AppCompatActivity {
   private static final String EXTRA_IMAGE = "URL";
   private static final String EXTRA_POSITION = "EXTRA_POSITION";
 
-  @Bind(R.id.iv_detailed_card) PieImageView ivDetailedCard;
-  @Bind(R.id.blur_bg) ImageView ivDetailedCardBlur;
-  @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
-  @Bind(R.id.ll_detailed_downloads) LinearLayout mLlDetailedDownloads;
-  @Bind(R.id.image_share) ImageView mImageShare;
+  @BindView(R.id.iv_detailed_card) PieImageView ivDetailedCard;
+  @BindView(R.id.blur_bg) ImageView ivDetailedCardBlur;
+  @BindView(R.id.navigation_bar) NavigationBar mNavigationBar;
+  @BindView(R.id.ll_detailed_downloads) LinearLayout mLlDetailedDownloads;
+  @BindView(R.id.image_share) ImageView mImageShare;
   BlurDrawable drawable;
 
   private ImageAdapter imageResult;
@@ -279,6 +279,8 @@ public class DetailedActivity extends AppCompatActivity {
     float[] s_img = { 1f, delta };
 
     float[] y_icn = { views[1].getHeight() * 4, 0 };
+
+
 
     views[0].setPivotX(views[0].getWidth() / 2);
     views[0].setPivotY(0);

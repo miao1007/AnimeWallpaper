@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.github.miao1007.animewallpaper.R;
 import com.github.miao1007.animewallpaper.support.api.konachan.DanbooruAPI;
@@ -40,11 +40,11 @@ import rx.schedulers.Schedulers;
 public class SearchActivity extends AppCompatActivity {
 
   static final String TAG = LogUtils.makeLogTag(SearchActivity.class);
-
-  @Bind(R.id.search_bar)  SearchBar mSearchbar;
-  @Bind(R.id.search_list)  ListView mSearchListView;
-  private final DanbooruAPI repo = SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
-  @Bind(R.id.internal_search_progress)  ProgressBar progressBar;
+  private final DanbooruAPI repo =
+      SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
+  @BindView(R.id.search_bar) SearchBar mSearchbar;
+  @BindView(R.id.search_list) ListView mSearchListView;
+  @BindView(R.id.internal_search_progress) ProgressBar progressBar;
 
   @Override protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.github.miao1007.animewallpaper.R;
 import com.github.miao1007.animewallpaper.support.api.ImageAdapter;
@@ -42,7 +42,8 @@ public class CardAdapter extends BaseAdapter<ImageAdapter> {
   @Override void onBindItemViewHolder(RecyclerView.ViewHolder baseViewHolder, int position) {
     final MyViewHolder holder = (MyViewHolder) baseViewHolder;
     final Context context = holder.itemView.getContext();
-    SquareUtils.getPicasso(context).load(data.get(position).getPrev_url())
+    SquareUtils.getPicasso(context)
+        .load(data.get(position).getPrev_url())
         .placeholder(R.drawable.place_holder)
         .into(holder.imageView);
   }
@@ -52,7 +53,7 @@ public class CardAdapter extends BaseAdapter<ImageAdapter> {
    */
   public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-    public @Bind(R.id.iv_card_preview) ImageView imageView;
+    public @BindView(R.id.iv_card_preview) ImageView imageView;
 
     public MyViewHolder(View itemView) {
       super(itemView);
@@ -65,5 +66,5 @@ public class CardAdapter extends BaseAdapter<ImageAdapter> {
         }
       });
     }
-}
+  }
 }

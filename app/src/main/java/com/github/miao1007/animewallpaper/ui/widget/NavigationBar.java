@@ -1,6 +1,5 @@
 package com.github.miao1007.animewallpaper.ui.widget;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -10,7 +9,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.github.miao1007.animewallpaper.R;
 
@@ -20,8 +19,8 @@ import com.github.miao1007.animewallpaper.R;
  */
 public class NavigationBar extends RelativeLayout {
 
-  @Bind(R.id.internal_navi_title) TextView mNaviTitle;
-  @Bind(R.id.internal_navi_progress) ProgressBar mProgress;
+  @BindView(R.id.internal_navi_title) TextView mNaviTitle;
+  @BindView(R.id.internal_navi_progress) ProgressBar mProgress;
 
   public NavigationBar(Context context) {
     this(context, null, 0);

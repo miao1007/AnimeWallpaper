@@ -18,7 +18,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
@@ -42,6 +42,7 @@ import com.google.gson.stream.MalformedJsonException;
 import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,10 +57,10 @@ public class MainActivity extends AppCompatActivity
   private static final String TAG = LogUtils.makeLogTag(MainActivity.class);
   private static final String EXTRA_MAP = "ext";
   private final Map<String, Object> query = new HashMap<>(4);
-  @Bind(R.id.navigation_bar) NavigationBar mNavigationBar;
-  @Bind(R.id.rv_frag_card) RecyclerView mRvFragCard;
-  @Bind(R.id.card_holder) FrameLayout mCardHolder;
-  @Bind(R.id.card_error_page) RelativeLayout mCardErrorPage;
+  @BindView(R.id.navigation_bar) NavigationBar mNavigationBar;
+  @BindView(R.id.rv_frag_card) RecyclerView mRvFragCard;
+  @BindView(R.id.card_holder) FrameLayout mCardHolder;
+  @BindView(R.id.card_error_page) RelativeLayout mCardErrorPage;
   //void multiple dynamic proxy
   private DanbooruAPI repo;
   private boolean isLoadingMore;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity
 
   public static void startRefreshActivity(Context context, String query) {
     Intent intent = new Intent(context, MainActivity.class);
+    //destroy caller activity and this activity and recreate a new activity
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     intent.putExtra(EXTRA_MAP, query);
     context.startActivity(intent);
@@ -222,8 +224,9 @@ public class MainActivity extends AppCompatActivity
                   .show();
               return;
             }
+
             //fix bugs on gfw
-            if (e instanceof SocketException) {
+            if (e instanceof SocketException | e instanceof UnknownHostException) {
               Toast.makeText(MainActivity.this, R.string.please_try_proxy, Toast.LENGTH_SHORT)
                   .show();
             }
@@ -256,9 +259,11 @@ public class MainActivity extends AppCompatActivity
 
   @Override protected void onDestroy() {
     super.onDestroy();
-    if (drawable != null) {
-      drawable.onDestroy();
-    }
+    Log.d(TAG,"onDestroy");
+    // FIXME: 5/12/16 Calling RS with no Context active.
+    //if (drawable != null) {
+    //  drawable.onDestroy();
+    //}
   }
 
   /**
