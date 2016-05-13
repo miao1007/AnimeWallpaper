@@ -7,13 +7,21 @@ import android.util.Log;
 import com.github.miao1007.animewallpaper.support.GlobalContext;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
+import im.fir.sdk.FIR;
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.List;
 import okhttp3.Cache;
 import okhttp3.Dispatcher;
+import okhttp3.Dns;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -34,32 +42,99 @@ import rx.schedulers.Schedulers;
  */
 public abstract class SquareUtils {
 
-  static final String TAG = "SquareUtils";
   static Dispatcher dispatcher;
   static private Picasso picasso;
   static private OkHttpClient client;
+  static private OkHttpClient httpDnsclient;
+
   static private Scheduler scheduler;
+
+
+static Dns HTTP_DNS =  new Dns(){
+  @Override public List<InetAddress> lookup(String hostname) throws UnknownHostException {
+    if (hostname == null) throw new UnknownHostException("hostname == null");
+    HttpUrl httpUrl = new HttpUrl.Builder().scheme("http")
+        .host("119.29.29.29")
+        .addPathSegment("d")
+        .addQueryParameter("dn", hostname)
+        .build();
+    Request dnsRequest = new Request.Builder().url(httpUrl).get().build();
+    try {
+      String s = getHTTPDnsClient().newCall(dnsRequest).execute().body().string();
+      //free server may down, will return loopback ip address
+      if (!s.matches("\\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b")) {
+        return Dns.SYSTEM.lookup(hostname);
+      }
+      return Arrays.asList(InetAddress.getAllByName(s));
+    } catch (IOException e) {
+      FIR.sendCrashManually(e);
+      return Dns.SYSTEM.lookup(hostname);
+    }
+  }
+};
 
   private SquareUtils() {
     throw new AssertionError("Utils can't be an instance!");
   }
 
-  static public synchronized Scheduler getRxWorkerScheduler() {
+  public static synchronized Dispatcher getDispatcher() {
+    if (dispatcher == null) {
+      dispatcher = new Dispatcher();
+    }
+    return dispatcher;
+  }
+
+  public static synchronized Scheduler getRxWorkerScheduler() {
     if (scheduler == null) {
       scheduler = Schedulers.from(getDispatcher().executorService());
     }
     return scheduler;
   }
 
-  static public synchronized OkHttpClient getClient() {
-    if (client == null) {
-      final File cacheDir = GlobalContext.getInstance().getExternalCacheDir();
-      client = new OkHttpClient.Builder().addNetworkInterceptor(getLogger())
-          .cache(new Cache(new File(cacheDir, "okhttp"), 60 * 1024 * 1024))
-          .dispatcher(getDispatcher())
-          .build();
-    }
-    return client;
+  /**
+   * OkHttp client for httpDNS, shared Executor
+   */
+static public synchronized OkHttpClient getHTTPDnsClient() {
+  if (httpDnsclient == null) {
+    final File cacheDir = GlobalContext.getInstance().getExternalCacheDir();
+    httpDnsclient = new OkHttpClient.Builder().dispatcher(getDispatcher())
+        .addNetworkInterceptor(getLogger())
+        .addNetworkInterceptor(new Interceptor() {
+          @Override public Response intercept(Chain chain) throws IOException {
+            Response originalResponse = chain.proceed(chain.request());
+            return originalResponse.newBuilder()
+                //dns default cache time
+                .header("Cache-Control", "max-age=600, only-if-cached, max-stale=0").build();
+          }
+        })
+        .cache(new Cache(new File(cacheDir, "httpdns"), 5 * 1024 * 1024))
+        .build();
+  }
+  return httpDnsclient;
+}
+
+
+static public synchronized OkHttpClient getClient() {
+  if (client == null) {
+    final File cacheDir = GlobalContext.getInstance().getExternalCacheDir();
+    client = new OkHttpClient.Builder().addNetworkInterceptor(getLogger())
+        .cache(new Cache(new File(cacheDir, "okhttp"), 60 * 1024 * 1024))
+        .dispatcher(getDispatcher())
+        .dns(HTTP_DNS)
+        .build();
+  }
+  return client;
+}
+
+  private static Interceptor getLogger() {
+    HttpLoggingInterceptor loggingInterceptor =
+        new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+          @Override public void log(String message) {
+            Log.d("okhttp", message);
+          }
+        });
+    loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+    return loggingInterceptor;
   }
 
   /**
@@ -74,17 +149,6 @@ public abstract class SquareUtils {
             .build();
       }
     }).build();
-  }
-
-  private static Interceptor getLogger() {
-    HttpLoggingInterceptor loggingInterceptor =
-        new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-          @Override public void log(String message) {
-            Log.d("okhttp", message);
-          }
-        });
-    loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
-    return loggingInterceptor;
   }
 
   /**
@@ -122,13 +186,6 @@ public abstract class SquareUtils {
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
         .build();
-  }
-
-  public static synchronized Dispatcher getDispatcher() {
-    if (dispatcher == null) {
-      dispatcher = new Dispatcher();
-    }
-    return dispatcher;
   }
 
   public interface ProgressListener {
