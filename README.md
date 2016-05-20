@@ -38,3 +38,6 @@ License
 Developed By
 -------------
 Leon - miao1007@gmail.com
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/miao1007/animewallpaper/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
