@@ -8,7 +8,7 @@ import android.net.NetworkInfo;
 /**
  * Created by leon on 14/10/11.
  */
-class NetworkUtils {
+public class NetworkUtils {
 
   public static boolean isWifiAviliable(Context context) {
     ConnectivityManager con =
@@ -17,7 +17,7 @@ class NetworkUtils {
     return activeNetworkInfo != null;
   }
 
-  public boolean isNetworkAvailable(Context context) {
+  public static boolean isNetworkAvailable(Context context) {
     ConnectivityManager connectivityManager =
         (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
     NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();

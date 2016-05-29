@@ -224,6 +224,7 @@ public class DetailedActivity extends AppCompatActivity {
     ButterKnife.bind(this);
     StatusBarUtils.from(this)
         .setTransparentStatusbar(true)
+        .setTransparentNavigationbar(true)
         .setActionbarView(mNavigationBar)
         .setLightStatusBar(false)
         .process();
@@ -279,8 +280,6 @@ public class DetailedActivity extends AppCompatActivity {
     float[] s_img = { 1f, delta };
 
     float[] y_icn = { views[1].getHeight() * 4, 0 };
-
-
 
     views[0].setPivotX(views[0].getWidth() / 2);
     views[0].setPivotY(0);

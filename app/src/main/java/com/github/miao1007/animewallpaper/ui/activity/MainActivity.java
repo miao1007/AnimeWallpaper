@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity
     StatusBarUtils.from(this)
         .setLightStatusBar(true)
         .setTransparentStatusbar(true)
+        .setTransparentNavigationbar(true)
         .setActionbarView(mNavigationBar)
         .process();
     setUpList();

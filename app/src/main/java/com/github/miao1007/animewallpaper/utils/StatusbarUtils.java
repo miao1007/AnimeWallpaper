@@ -23,15 +23,17 @@ public final class StatusBarUtils {
   private final boolean lightStatusBar;
   //透明且背景不占用控件的statusbar，这里估且叫做沉浸
   private final boolean transparentStatusBar;
+  private final boolean transparentNavigationbar;
   private final Window window;
   private final View actionBarView;
   private final int current = Build.VERSION.SDK_INT;
 
   private StatusBarUtils(Window window, boolean lightStatusBar, boolean transparentStatusBar,
-      View actionBarView) {
+      boolean transparentNavigationbar, View actionBarView) {
     this.lightStatusBar = lightStatusBar;
     this.transparentStatusBar = transparentStatusBar;
     this.window = window;
+    this.transparentNavigationbar = transparentNavigationbar;
     this.actionBarView = actionBarView;
   }
 
@@ -125,9 +127,9 @@ public final class StatusBarUtils {
     processActionBar(actionBarView);
 
     //处理4.4~5.0沉浸
-    if (current >= Build.VERSION_CODES.KITKAT && current < Build.VERSION_CODES.M){
+    if (current >= Build.VERSION_CODES.KITKAT && current < Build.VERSION_CODES.M) {
       processKitkat();
-    } else if (current >= Build.VERSION_CODES.M){
+    } else if (current >= Build.VERSION_CODES.M) {
       processM();
     }
   }
@@ -196,6 +198,10 @@ public final class StatusBarUtils {
       flag |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
       window.setStatusBarColor(Color.TRANSPARENT);
     }
+    if (transparentNavigationbar) {
+      flag |= (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+      window.setNavigationBarColor(Color.TRANSPARENT);
+    }
     window.getDecorView().setSystemUiVisibility(flag);
   }
 
@@ -203,6 +209,7 @@ public final class StatusBarUtils {
     private Window window;
     private boolean lightStatusBar = false;
     private boolean transparentStatusbar = false;
+    private boolean transparentNavigationbar = false;
     private View actionBarView;
 
     public Builder setActionbarView(@Nullable View actionbarView) {
@@ -235,8 +242,14 @@ public final class StatusBarUtils {
       return this;
     }
 
+    public Builder setTransparentNavigationbar(boolean transparentNavigationbar) {
+      this.transparentNavigationbar = transparentNavigationbar;
+      return this;
+    }
+
     public void process() {
-      new StatusBarUtils(window, lightStatusBar, transparentStatusbar, actionBarView).process();
+      new StatusBarUtils(window, lightStatusBar, transparentStatusbar, transparentNavigationbar,
+          actionBarView).process();
     }
   }
 }

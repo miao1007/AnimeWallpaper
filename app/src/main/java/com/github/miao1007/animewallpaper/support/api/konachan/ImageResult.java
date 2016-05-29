@@ -639,4 +639,6 @@ public class ImageResult implements Parcelable {
       return new ImageResult[size];
     }
   };
+
+
 }
