@@ -39,16 +39,6 @@ public interface DanbooruAPI {
 
   String TAG_SAFE = " rating:s";
 
-  Interceptor CDN = new Interceptor() {
-    @Override public Response intercept(Chain chain) throws IOException {
-      Request originRequest = chain.request();
-
-      HttpUrl url = originRequest.url().newBuilder().host("7xq3s7.com1.z0.glb.clouddn.com").build();
-
-      Request newReq = originRequest.newBuilder().url(url).build();
-      return chain.proceed(newReq);
-    }
-  };
 
   //@Header("")
   @GET("post.json") Observable<List<ImageResult>> getImageList(@QueryMap Map<String, Object> query);

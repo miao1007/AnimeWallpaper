@@ -40,6 +40,7 @@ import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import com.github.miao1007.animewallpaper.utils.StatusBarUtils;
 import com.google.gson.stream.MalformedJsonException;
 import com.squareup.picasso.Picasso;
+import im.fir.sdk.FIR;
 import java.io.File;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -111,12 +112,6 @@ public class MainActivity extends AppCompatActivity
         GlobalContext.startThirdFrameWork();
         //120ms
         repo = SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
-        runOnUiThread(new Runnable() {
-          @Override public void run() {
-            //40ms
-            onRefresh();
-          }
-        });
       }
     });
     super.onCreate(savedInstanceState);
@@ -129,6 +124,7 @@ public class MainActivity extends AppCompatActivity
         .setActionbarView(mNavigationBar)
         .process();
     setUpList();
+    onRefresh();
   }
 
   private void setUpList() {
@@ -230,6 +226,8 @@ public class MainActivity extends AppCompatActivity
             if (e instanceof SocketException | e instanceof UnknownHostException) {
               Toast.makeText(MainActivity.this, R.string.please_try_proxy, Toast.LENGTH_SHORT)
                   .show();
+              FIR.addCustomizeValue("proxy","err");
+              FIR.sendCrashManually(e);
             }
           }
 

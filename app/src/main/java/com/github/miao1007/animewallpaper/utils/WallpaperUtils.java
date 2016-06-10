@@ -1,7 +1,6 @@
 package com.github.miao1007.animewallpaper.utils;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -12,6 +11,7 @@ import android.os.Build;
 import android.support.annotation.RequiresPermission;
 import android.support.annotation.UiThread;
 import android.widget.Toast;
+import com.github.miao1007.animewallpaper.R;
 import java.io.File;
 import java.io.IOException;
 
@@ -22,14 +22,8 @@ import java.io.IOException;
 
   private static final String TAG = "WallpaperUtils";
 
-  private final Activity context;
-
-  private WallpaperUtils(Activity context) {
-    this.context = context;
-  }
-
-  public static WallpaperUtils from(Activity activity) {
-    return new WallpaperUtils(activity);
+  private WallpaperUtils() {
+    throw new IllegalStateException("Can't be a instance");
   }
 
   //public static void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -47,8 +41,9 @@ import java.io.IOException;
     WallpaperManager wm = WallpaperManager.getInstance(context);
     try {
       wm.setBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));
-    } catch (IOException e) {
+    } catch (IOException | OutOfMemoryError e) {
       Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+      previewImage(context, file);
     }
   }
 
@@ -66,8 +61,15 @@ import java.io.IOException;
     }
   }
 
+  public static void previewImage(Context context, File file) {
+    final Intent shareIntent = new Intent(Intent.ACTION_VIEW);
+    shareIntent.setDataAndType(Uri.fromFile(file), "image/*");
+    context.startActivity(
+        Intent.createChooser(shareIntent, context.getString(R.string.view_image_by)));
+  }
+
   @RequiresPermission(android.Manifest.permission.SET_WALLPAPER)
-  public void setWallpaper(File file) {
+  public static void setWallpaper(Context context, File file) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
       setWallpaperKitkat(context, file);
     } else {

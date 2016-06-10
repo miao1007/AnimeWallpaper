@@ -41,6 +41,7 @@ import com.github.miao1007.animewallpaper.utils.StatusBarUtils;
 import com.github.miao1007.animewallpaper.utils.WallpaperUtils;
 import com.github.miao1007.animewallpaper.utils.picasso.Blur;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.Arrays;
@@ -140,7 +141,7 @@ public class DetailedActivity extends AppCompatActivity {
       }
 
       @Override public void onNext(File file) {
-        WallpaperUtils.from(DetailedActivity.this).setWallpaper(file);
+        WallpaperUtils.setWallpaper(DetailedActivity.this, file);
       }
     });
   }
@@ -160,10 +161,7 @@ public class DetailedActivity extends AppCompatActivity {
       }
 
       @Override public void onNext(File file) {
-        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("image/*");
-        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_image)));
+        WallpaperUtils.previewImage(DetailedActivity.this, file);
       }
     });
   }
@@ -176,6 +174,8 @@ public class DetailedActivity extends AppCompatActivity {
     mNavigationBar.setProgressBar(true);
     largeImagepicasso.load(imageResult.getDownload_url())
         .placeholder(ivDetailedCard.getDrawable())
+        //fix oom
+        .config(Bitmap.Config.ARGB_4444)
         .into(ivDetailedCard, new Callback() {
           @Override public void onSuccess() {
             mNavigationBar.setProgressBar(false);
