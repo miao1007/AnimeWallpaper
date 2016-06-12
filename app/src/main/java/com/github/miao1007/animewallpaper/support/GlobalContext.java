@@ -1,6 +1,7 @@
 package com.github.miao1007.animewallpaper.support;
 
 import android.app.Application;
+import com.github.miao1007.animewallpaper.BuildConfig;
 import im.fir.sdk.FIR;
 
 /**
@@ -10,16 +11,17 @@ public class GlobalContext extends Application {
 
   private static GlobalContext instance = null;
 
+  static public void startThirdFrameWork() {
+    FIR.init(instance);
+    FIR.addCustomizeValue("DEBUG", BuildConfig.DEBUG + "");
+  }
+
+  public static GlobalContext getInstance() {
+    return instance;
+  }
+
   @Override public void onCreate() {
     super.onCreate();
     instance = this;
-  }
-
-  static public void startThirdFrameWork(){
-    FIR.init(instance);
-  }
-
-  public static GlobalContext getInstance(){
-    return instance;
   }
 }

@@ -112,9 +112,16 @@ public class MainActivity extends AppCompatActivity
         GlobalContext.startThirdFrameWork();
         //120ms
         repo = SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
+        runOnUiThread(new Runnable() {
+          @Override public void run() {
+            //using repo to load pages
+            onRefresh();
+          }
+        });
       }
     });
     super.onCreate(savedInstanceState);
+    //draw views using WMS
     setContentView(R.layout.fragment_card);
     ButterKnife.bind(this);
     StatusBarUtils.from(this)
@@ -124,7 +131,6 @@ public class MainActivity extends AppCompatActivity
         .setActionbarView(mNavigationBar)
         .process();
     setUpList();
-    onRefresh();
   }
 
   private void setUpList() {
@@ -226,7 +232,7 @@ public class MainActivity extends AppCompatActivity
             if (e instanceof SocketException | e instanceof UnknownHostException) {
               Toast.makeText(MainActivity.this, R.string.please_try_proxy, Toast.LENGTH_SHORT)
                   .show();
-              FIR.addCustomizeValue("proxy","err");
+              FIR.addCustomizeValue("proxy", "err");
               FIR.sendCrashManually(e);
             }
           }
@@ -258,7 +264,7 @@ public class MainActivity extends AppCompatActivity
 
   @Override protected void onDestroy() {
     super.onDestroy();
-    Log.d(TAG,"onDestroy");
+    Log.d(TAG, "onDestroy");
     // FIXME: 5/12/16 Calling RS with no Context active.
     //if (drawable != null) {
     //  drawable.onDestroy();
