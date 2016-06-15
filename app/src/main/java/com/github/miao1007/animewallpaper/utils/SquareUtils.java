@@ -15,9 +15,11 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.microedition.khronos.opengles.GL;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
+import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Dns;
 import okhttp3.HttpUrl;
@@ -69,7 +71,7 @@ public abstract class SquareUtils {
         }
         return Arrays.asList(InetAddress.getAllByName(s));
       } catch (IOException e) {
-        FIR.addCustomizeValue("httpdns", "err");
+        FIR.addCustomizeValue("httpdns", "err:" + dnsRequest.toString());
         FIR.sendCrashManually(e);
         return Dns.SYSTEM.lookup(hostname);
       }

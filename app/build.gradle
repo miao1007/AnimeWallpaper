@@ -43,11 +43,11 @@ android {
   }
 }
 
-ext{
-  v_support = '23.3.0'
+ext {
+  v_support = '23.4.0'
   v_butter = '8.0.1'
-  v_okhttp = '3.2.0'
-  v_retrofit = '2.0.1'
+  v_okhttp = '3.3.1'
+  v_retrofit = '2.0.2'
   v_picasso = '2.5.3-SNAPSHOT'
   v_rxbinding = '0.4.0'
 }
@@ -56,7 +56,6 @@ dependencies {
   compile fileTree(include: ['*.jar'], dir: 'libs')
   //with proguard in aar
   compile "com.jakewharton:butterknife:$v_butter"
-
   apt "com.jakewharton:butterknife-compiler:$v_butter"
   compile "com.android.support:appcompat-v7:$v_support"
   compile "com.android.support:design:$v_support"

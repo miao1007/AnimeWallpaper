@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity
             if (e instanceof SocketException | e instanceof UnknownHostException) {
               Toast.makeText(MainActivity.this, R.string.please_try_proxy, Toast.LENGTH_SHORT)
                   .show();
-              FIR.addCustomizeValue("proxy", "err");
+              FIR.addCustomizeValue("PROXY", "err");
               FIR.sendCrashManually(e);
             }
           }
