@@ -42,6 +42,7 @@ import com.google.gson.stream.MalformedJsonException;
 import com.squareup.picasso.Picasso;
 import im.fir.sdk.FIR;
 import java.io.File;
+import java.net.ConnectException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -229,10 +230,11 @@ public class MainActivity extends AppCompatActivity
             }
 
             //fix bugs on gfw
-            if (e instanceof SocketException | e instanceof UnknownHostException) {
+            //ConnectException << SocketException
+            if (e instanceof SocketException  | e instanceof UnknownHostException) {
               Toast.makeText(MainActivity.this, R.string.please_try_proxy, Toast.LENGTH_SHORT)
                   .show();
-              FIR.addCustomizeValue("PROXY", "err");
+              FIR.addCustomizeValue("SOCKET", "can't connect by xxx");
               FIR.sendCrashManually(e);
             }
           }

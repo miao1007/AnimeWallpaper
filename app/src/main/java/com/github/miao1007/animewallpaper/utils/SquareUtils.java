@@ -71,7 +71,7 @@ public abstract class SquareUtils {
         }
         return Arrays.asList(InetAddress.getAllByName(s));
       } catch (IOException e) {
-        FIR.addCustomizeValue("httpdns", "err:" + dnsRequest.toString());
+        FIR.addCustomizeValue("DNS", "err:" + dnsRequest.toString());
         FIR.sendCrashManually(e);
         return Dns.SYSTEM.lookup(hostname);
       }
