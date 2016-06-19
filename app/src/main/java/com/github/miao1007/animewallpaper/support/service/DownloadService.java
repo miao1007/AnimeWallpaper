@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.IBinder;
+import com.github.miao1007.animewallpaper.utils.FileUtils;
 import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +35,7 @@ public class DownloadService extends Service {
       }
 
       @Override public void onResponse(Call call, Response response) throws IOException {
+
         try {
           File file = new File(getExternalCacheDir(), Uri.parse(url).getLastPathSegment());
           BufferedSink sink = Okio.buffer(Okio.sink(file));

@@ -12,7 +12,11 @@ public class GlobalContext extends Application {
   private static GlobalContext instance = null;
 
   static public void startThirdFrameWork() {
-    FIR.init(instance);
+    /*
+    * 替换为你自己的key,本项目key不再公开
+    * see {@link <a href="http://bughd.com/doc/android">BUGHD</a>}
+    * */
+    FIR.init(instance,BuildConfig.BUG_HD_SDK_GENERAL_KEY);
     FIR.addCustomizeValue("DEBUG", BuildConfig.DEBUG + "");
   }
 

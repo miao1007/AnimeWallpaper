@@ -41,7 +41,6 @@ import com.github.miao1007.animewallpaper.utils.StatusBarUtils;
 import com.github.miao1007.animewallpaper.utils.WallpaperUtils;
 import com.github.miao1007.animewallpaper.utils.picasso.Blur;
 import com.squareup.picasso.Callback;
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.Arrays;
@@ -194,7 +193,7 @@ public class DetailedActivity extends AppCompatActivity {
             })
                 .map(new Func1<Response, File>() {
                   @Override public File call(Response response) {
-                    return FileUtils.saveBodytoFile(response.body(),
+                    return FileUtils.saveBodytoExtStorage(response.body(),
                         Uri.parse(imageResult.getDownload_url()).getLastPathSegment());
                   }
                 })

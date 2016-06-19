@@ -21,8 +21,6 @@
       android:theme="@style/iOSTheme"
       android:label="@string/app_name">
 
-    <meta-data android:value="141640f581df6968db968b2abc9f503b"
-        android:name="BUG_HD_SDK_GENERAL_KEY"/>
 
     <activity
         android:name=".ui.activity.MainActivity"

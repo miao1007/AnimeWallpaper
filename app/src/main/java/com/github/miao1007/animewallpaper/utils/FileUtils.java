@@ -1,5 +1,6 @@
 package com.github.miao1007.animewallpaper.utils;
 
+import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.CheckResult;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import com.github.miao1007.animewallpaper.R;
 import com.github.miao1007.animewallpaper.support.GlobalContext;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import okhttp3.ResponseBody;
 import okhttp3.internal.io.FileSystem;
 import okio.BufferedSink;
@@ -23,10 +25,12 @@ import okio.Okio;
       + GlobalContext.getInstance().getString(R.string.app_name)
       + File.separator;
 
+
+
   /**
    * Save bitmap to /sdcard/${name}
    */
-  @CheckResult @Nullable public static File saveBodytoFile(ResponseBody body, String name) {
+  @CheckResult @Nullable public static File saveBodytoExtStorage(ResponseBody body, String name) {
     final File wallpaper = new File(EXT_STORAGE, name);
     final FileSystem fileSystem = FileSystem.SYSTEM;
     try {

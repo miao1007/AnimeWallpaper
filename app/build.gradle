@@ -12,6 +12,7 @@ android {
     targetSdkVersion 22
     versionCode 16
     versionName "1.2.6"
+    buildConfigField("String", "BUG_HD_SDK_GENERAL_KEY", BUG_HD_SDK_GENERAL_KEY)
   }
 
   buildTypes {
