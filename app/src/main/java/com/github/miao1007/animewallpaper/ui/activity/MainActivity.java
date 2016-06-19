@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity
 
     SquareUtils.getDispatcher().executorService().execute(new Runnable() {
       @WorkerThread @Override public void run() {
-        //42ms
+        //116ms
         GlobalContext.startThirdFrameWork();
         //120ms
         repo = SquareUtils.getRetrofit(DanbooruAPI.KONACHAN).create(DanbooruAPI.class);
