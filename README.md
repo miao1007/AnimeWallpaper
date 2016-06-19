@@ -35,6 +35,38 @@ Feature
 
 see [iOS UIView for Android](github_best_ios.md)
 
+
+
+
+Getting started
+--------
+
+1. clone the project
+
+```
+get clone https://github.com/miao1007/AnimeWallpaper.git --depth=1
+```
+
+2. remove or change your own key in [GlobalContext.java](https://github.com/miao1007/AnimeWallpaper/blob/master/app/src/main/java/com/github/miao1007/animewallpaper/support/GlobalContext.java)
+
+```
+public class GlobalContext extends Application {
+
+  static public void startThirdFrameWork() {
+    /*
+    * TODO: replace the key
+    * see {@link <a href="http://bughd.com/doc/android">BUGHD</a>}
+    * */
+    FIR.init(instance,BuildConfig.BUG_HD_SDK_GENERAL_KEY);
+    FIR.addCustomizeValue("DEBUG", BuildConfig.DEBUG + "");
+  }
+
+  .....
+}
+```
+
+3. build the project
+
 License
 ---------
 1. Icon: [Creative Commons Attribution-NoDerivs 3.0 Unported](https://icons8.com/license/)
@@ -44,5 +76,4 @@ Developed By
 -------------
 Leon - miao1007@gmail.com
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/miao1007/animewallpaper/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
