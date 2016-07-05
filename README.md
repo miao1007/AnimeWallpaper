@@ -4,6 +4,15 @@ AnimeWallpaper
 Download high quality pictures from Konachan.net.
 
 
+![Blur](blur.gif)
+
+![Search](search.gif)
+
+
+AppStore
+--------
+[Wandoujia](http://www.wandoujia.com/apps/com.github.miao1007.animewallpaper)
+
 
 
 Build Environment
@@ -44,7 +53,7 @@ Getting started
 1. clone the project
 
   ```
-  get clone https://github.com/miao1007/AnimeWallpaper.git --depth=1
+  git clone https://github.com/miao1007/AnimeWallpaper.git --depth=1
   ```
 
 2. remove or change your own key in [GlobalContext.java](https://github.com/miao1007/AnimeWallpaper/blob/master/app/src/main/java/com/github/miao1007/animewallpaper/support/GlobalContext.java)

@@ -5,7 +5,6 @@ import android.support.annotation.IntRange;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 import com.github.miao1007.animewallpaper.support.GlobalContext;
-import com.github.miao1007.animewallpaper.utils.network.NetworkUtils;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import im.fir.sdk.FIR;
@@ -15,11 +14,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import javax.microedition.khronos.opengles.GL;
 import okhttp3.Cache;
-import okhttp3.CacheControl;
-import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Dns;
 import okhttp3.HttpUrl;
@@ -47,13 +42,10 @@ import rx.schedulers.Schedulers;
  */
 public abstract class SquareUtils {
 
-  static final String TAG = LogUtils.makeLogTag(SquareUtils.class);
   static Dispatcher dispatcher;
   static private Picasso picasso;
   static private OkHttpClient client;
   static private OkHttpClient httpDnsclient;
-  static private HttpLoggingInterceptor loggingInterceptor;
-
   static Dns HTTP_DNS = new Dns() {
     @Override public List<InetAddress> lookup(String hostname) throws UnknownHostException {
       if (hostname == null) throw new UnknownHostException("hostname == null");
@@ -77,6 +69,7 @@ public abstract class SquareUtils {
       }
     }
   };
+  static private HttpLoggingInterceptor loggingInterceptor;
   static private Scheduler scheduler;
 
   private SquareUtils() {
@@ -113,9 +106,7 @@ public abstract class SquareUtils {
                   //dns default cache time
                   .header("Cache-Control", "max-age=600").build();
             }
-          })
-          .cache(new Cache(new File(cacheDir, "httpdns"), 5 * 1024 * 1024))
-          .build();
+          }).cache(new Cache(new File(cacheDir, "httpdns"), 5 * 1024 * 1024)).build();
     }
     return httpDnsclient;
   }
@@ -138,7 +129,7 @@ public abstract class SquareUtils {
     if (loggingInterceptor == null) {
       loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
         @Override public void log(String message) {
-          System.out.println("okhttp: " + message);
+          Log.d("okhttp", message);
         }
       }).setLevel(HttpLoggingInterceptor.Level.HEADERS);
     }
