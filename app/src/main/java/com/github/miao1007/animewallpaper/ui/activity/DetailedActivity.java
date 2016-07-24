@@ -27,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.support.api.ImageAdapter;
+import com.github.miao1007.animewallpaper.support.api.ImageVO;
 import com.github.miao1007.animewallpaper.ui.widget.ActionSheet;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.PieImageView;
@@ -43,8 +43,6 @@ import com.github.miao1007.animewallpaper.utils.picasso.Blur;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 import okhttp3.CacheControl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -71,7 +69,8 @@ public class DetailedActivity extends AppCompatActivity {
   @BindView(R.id.image_share) ImageView mImageShare;
   BlurDrawable drawable;
 
-  private ImageAdapter imageResult;
+  private ImageVO imageResult;
+
   private boolean isPlaying = false;
   private SquareUtils.ProgressListener listener = new SquareUtils.ProgressListener() {
     @Override public void update(@IntRange(from = 0, to = 100) final int percent) {
@@ -88,7 +87,7 @@ public class DetailedActivity extends AppCompatActivity {
     return intent.getParcelableExtra(EXTRA_POSITION);
   }
 
-  public static void startActivity(Context context, Position position, ImageAdapter parcelable) {
+  public static void startActivity(Context context, Position position, ImageVO parcelable) {
     Intent intent = new Intent(context, DetailedActivity.class);
     intent.putExtra(EXTRA_IMAGE, parcelable);
     intent.putExtra(EXTRA_POSITION, position);
@@ -100,12 +99,12 @@ public class DetailedActivity extends AppCompatActivity {
   }
 
   @OnClick(R.id.detailed_tags) void tags() {
-    final List<String> tags = Arrays.asList(imageResult.getTags().split(" "));
     final ActionSheet a = new TagsActionSheet(getWindow(), new AdapterView.OnItemClickListener() {
       @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        MainActivity.startRefreshActivity(DetailedActivity.this, tags.get(position));
+        MainActivity.startRefreshActivity(DetailedActivity.this,
+            imageResult.getTags().get(position));
       }
-    }, tags);
+    }, imageResult.getTags());
     drawable = new BlurDrawable(getWindow());
     a.setDrawable(drawable);
     a.show();
@@ -171,41 +170,39 @@ public class DetailedActivity extends AppCompatActivity {
       return;
     }
     mNavigationBar.setProgressBar(true);
-    largeImagepicasso.load(imageResult.getDownload_url())
-        .placeholder(ivDetailedCard.getDrawable())
+    largeImagepicasso.load(imageResult.getDownload_url()).placeholder(ivDetailedCard.getDrawable())
         //fix oom
-        .config(Bitmap.Config.ARGB_4444)
-        .into(ivDetailedCard, new Callback() {
-          @Override public void onSuccess() {
-            mNavigationBar.setProgressBar(false);
-            final Request request = new Request.Builder().url(imageResult.getDownload_url())
-                .cacheControl(CacheControl.FORCE_CACHE)
-                .get()
-                .build();
-            Observable.create(new Observable.OnSubscribe<Response>() {
-              @Override public void call(final Subscriber<? super Response> subscriber) {
-                try {
-                  subscriber.onNext(SquareUtils.getClient().newCall(request).execute());
-                } catch (Exception e) {
-                  subscriber.onError(e);
-                }
+        .config(Bitmap.Config.ARGB_4444).into(ivDetailedCard, new Callback() {
+      @Override public void onSuccess() {
+        mNavigationBar.setProgressBar(false);
+        final Request request = new Request.Builder().url(imageResult.getDownload_url())
+            .cacheControl(CacheControl.FORCE_CACHE)
+            .get()
+            .build();
+        Observable.create(new Observable.OnSubscribe<Response>() {
+          @Override public void call(final Subscriber<? super Response> subscriber) {
+            try {
+              subscriber.onNext(SquareUtils.getClient().newCall(request).execute());
+            } catch (Exception e) {
+              subscriber.onError(e);
+            }
+          }
+        })
+            .map(new Func1<Response, File>() {
+              @Override public File call(Response response) {
+                return FileUtils.saveBodytoExtStorage(response.body(),
+                    Uri.parse(imageResult.getDownload_url()).getLastPathSegment());
               }
             })
-                .map(new Func1<Response, File>() {
-                  @Override public File call(Response response) {
-                    return FileUtils.saveBodytoExtStorage(response.body(),
-                        Uri.parse(imageResult.getDownload_url()).getLastPathSegment());
-                  }
-                })
-                .subscribeOn(SquareUtils.getRxWorkerScheduler())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
-          }
+            .subscribeOn(SquareUtils.getRxWorkerScheduler())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(subscriber);
+      }
 
-          @Override public void onError() {
-            mNavigationBar.setProgressBar(false);
-          }
-        });
+      @Override public void onError() {
+        mNavigationBar.setProgressBar(false);
+      }
+    });
   }
 
   @Override protected void onDestroy() {
@@ -231,7 +228,7 @@ public class DetailedActivity extends AppCompatActivity {
     mNavigationBar.setTextColor(Color.WHITE);
     imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);
     SquareUtils.getPicasso(this)
-        .load(imageResult.getPrev_url())
+        .load(imageResult.getPrevurl())
         .into(ivDetailedCard, new Callback.EmptyCallback() {
           @Override public void onSuccess() {
             Observable.just(ivDetailedCard)

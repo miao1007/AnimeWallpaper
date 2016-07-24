@@ -1,12 +1,8 @@
 package com.github.miao1007.animewallpaper.support.api.konachan;
 
-import java.io.IOException;
+import com.github.miao1007.animewallpaper.support.api.ImageVO;
 import java.util.List;
 import java.util.Map;
-import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -38,7 +34,6 @@ public interface DanbooruAPI {
   String RATING = "rating";
 
   String TAG_SAFE = " rating:s";
-
 
   //@Header("")
   @GET("post.json") Observable<List<ImageResult>> getImageList(@QueryMap Map<String, Object> query);

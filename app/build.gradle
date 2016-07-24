@@ -74,4 +74,5 @@ dependencies {
   //no need proguard
   compile 'im.fir:fir-sdk:latest.integration@aar'
   compile 'com.github.chrisbanes.photoview:library:1.2.3'
+
 }

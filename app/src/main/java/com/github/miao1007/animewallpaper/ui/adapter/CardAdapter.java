@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.github.miao1007.animewallpaper.R;
-import com.github.miao1007.animewallpaper.support.api.ImageAdapter;
+import com.github.miao1007.animewallpaper.support.api.ImageVO;
 import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +17,13 @@ import java.util.List;
 /**
  * Created by leon on 6/30/15.
  */
-public class CardAdapter extends BaseAdapter<ImageAdapter> {
+public class CardAdapter extends BaseAdapter<ImageVO> {
 
   public CardAdapter() {
-    super(new ArrayList<ImageAdapter>());
+    super(new ArrayList<ImageVO>());
   }
 
-  public CardAdapter(List<ImageAdapter> mDataset) {
+  public CardAdapter(List<ImageVO> mDataset) {
     super(mDataset);
   }
 
@@ -43,7 +43,7 @@ public class CardAdapter extends BaseAdapter<ImageAdapter> {
     final MyViewHolder holder = (MyViewHolder) baseViewHolder;
     final Context context = holder.itemView.getContext();
     SquareUtils.getPicasso(context)
-        .load(data.get(position).getPrev_url())
+        .load(data.get(position).getPrevurl())
         .placeholder(R.drawable.place_holder)
         .into(holder.imageView);
   }

@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.miao1007.animewallpaper.R;
 import com.github.miao1007.animewallpaper.support.GlobalContext;
-import com.github.miao1007.animewallpaper.support.api.ImageAdapter;
+import com.github.miao1007.animewallpaper.support.api.ImageVO;
 import com.github.miao1007.animewallpaper.support.api.konachan.DanbooruAPI;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
 import com.github.miao1007.animewallpaper.ui.adapter.BaseAdapter;
@@ -42,7 +42,6 @@ import com.google.gson.stream.MalformedJsonException;
 import com.squareup.picasso.Picasso;
 import im.fir.sdk.FIR;
 import java.io.File;
-import java.net.ConnectException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -196,13 +195,17 @@ public class MainActivity extends AppCompatActivity
             return Observable.from(imageResults);
           }
         })
-        .map(new Func1<ImageResult, ImageAdapter>() {
-          @Override public ImageAdapter call(ImageResult result) {
-            return ImageAdapter.from(result);
+        .map(new Func1<ImageResult, ImageVO>() {
+          @Override public ImageVO call(ImageResult result) {
+            try {
+              return new ImageVO.VOconverter().convert(result);
+            } catch (Exception ignore) {
+              return null;
+            }
           }
         })
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Subscriber<ImageAdapter>() {
+        .subscribe(new Subscriber<ImageVO>() {
           @Override public void onCompleted() {
             if (mRvFragCard != null && mRvFragCard.getAdapter() != null) {
               mRvFragCard.getAdapter().notifyDataSetChanged();
@@ -231,7 +234,7 @@ public class MainActivity extends AppCompatActivity
 
             //fix bugs on gfw
             //ConnectException << SocketException
-            if (e instanceof SocketException  | e instanceof UnknownHostException) {
+            if (e instanceof SocketException | e instanceof UnknownHostException) {
               Toast.makeText(MainActivity.this, R.string.please_try_proxy, Toast.LENGTH_SHORT)
                   .show();
               FIR.addCustomizeValue("SOCKET", "can't connect by xxx");
@@ -239,14 +242,14 @@ public class MainActivity extends AppCompatActivity
             }
           }
 
-          @Override public void onNext(ImageAdapter imageResult) {
-            ((CardAdapter) mRvFragCard.getAdapter()).getData().add(imageResult);
+          @Override public void onNext(ImageVO imageVO) {
+            ((CardAdapter) mRvFragCard.getAdapter()).getData().add(imageVO);
           }
         });
   }
 
   @Override public void onItemClick(View v, int position) {
-    List<ImageAdapter> imageResult = ((CardAdapter) mRvFragCard.getAdapter()).getData();
+    List<ImageVO> imageResult = ((CardAdapter) mRvFragCard.getAdapter()).getData();
     DetailedActivity.startActivity(v.getContext(), Position.from(v), imageResult.get(position));
   }
 
