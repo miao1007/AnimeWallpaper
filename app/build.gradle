@@ -10,8 +10,8 @@ android {
     applicationId "com.github.miao1007.animewallpaper"
     minSdkVersion 15
     targetSdkVersion 22
-    versionCode 16
-    versionName "1.2.6"
+    versionCode 130
+    versionName "1.3.0"
     buildConfigField("String", "BUG_HD_SDK_GENERAL_KEY", BUG_HD_SDK_GENERAL_KEY)
   }
 
