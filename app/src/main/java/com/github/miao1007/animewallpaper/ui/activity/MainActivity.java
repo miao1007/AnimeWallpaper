@@ -195,15 +195,7 @@ public class MainActivity extends AppCompatActivity
             return Observable.from(imageResults);
           }
         })
-        .map(new Func1<ImageResult, ImageVO>() {
-          @Override public ImageVO call(ImageResult result) {
-            try {
-              return new ImageVO.VOconverter().convert(result);
-            } catch (Exception ignore) {
-              return null;
-            }
-          }
-        })
+        .map(ImageVO.FROM_IMAGE_RESULT)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Subscriber<ImageVO>() {
           @Override public void onCompleted() {

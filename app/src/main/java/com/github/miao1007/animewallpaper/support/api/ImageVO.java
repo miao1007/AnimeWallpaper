@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import retrofit2.Converter;
+import rx.functions.Func1;
 
 /**
  * Created by leon on 7/21/16.
@@ -78,14 +79,11 @@ public class ImageVO implements Parcelable {
     dest.writeStringList(this.tags);
   }
 
-
-
-
-   public static class VOconverter implements Converter<ImageResult, ImageVO> {
-    @Override public ImageVO convert(ImageResult value) throws IOException {
-      //final list
+  public static final Func1<ImageResult,ImageVO> FROM_IMAGE_RESULT = new Func1<ImageResult, ImageVO>() {
+    @Override public ImageVO call(ImageResult value) {
       final List<String> tags = Arrays.asList(value.getTags().split(" "));
       return new ImageVO(value.getPreviewUrl(), value.getSampleUrl(), tags);
     }
-  }
+  };
+
 }
