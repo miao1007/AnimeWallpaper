@@ -151,7 +151,7 @@ public abstract class SquareUtils {
   }
 
   /**
-   * Singleton Picasso shared cache with OkH ttp/Retrofit
+   * Singleton Picasso shared cache with OkHttp/Retrofit
    */
   static public Picasso getPicasso(Context context) {
 

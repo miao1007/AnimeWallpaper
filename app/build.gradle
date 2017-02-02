@@ -47,10 +47,10 @@ android {
 ext {
   v_support = '23.4.0'
   v_butter = '8.0.1'
-  v_okhttp = '3.3.1'
-  v_retrofit = '2.0.2'
+  v_okhttp = '3.6.0'
+  v_retrofit = '2.1.0'
   v_picasso = '2.5.3-SNAPSHOT'
-  v_rxbinding = '0.4.0'
+  v_rxbinding = '1.0.0'
 }
 
 dependencies {

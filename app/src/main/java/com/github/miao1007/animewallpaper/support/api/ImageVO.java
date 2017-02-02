@@ -3,10 +3,8 @@ package com.github.miao1007.animewallpaper.support.api;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import retrofit2.Converter;
 import rx.functions.Func1;
 
 /**
@@ -22,6 +20,15 @@ public class ImageVO implements Parcelable {
       return new ImageVO[size];
     }
   };
+  public static final Func1<ImageResult, ImageVO> FROM_IMAGE_RESULT =
+      new Func1<ImageResult, ImageVO>() {
+        @Override public ImageVO call(ImageResult value) {
+          final List<String> tags = Arrays.asList(value.getTags().split(" "));
+          //fixed on api changed
+          final String HTTP = "http:";
+          return new ImageVO(HTTP + value.getPreviewUrl(), HTTP + value.getSampleUrl(), tags);
+        }
+      };
   private String prevurl;
   private String downloadUrl;
   private List<String> tags;
@@ -78,12 +85,4 @@ public class ImageVO implements Parcelable {
     dest.writeString(this.downloadUrl);
     dest.writeStringList(this.tags);
   }
-
-  public static final Func1<ImageResult,ImageVO> FROM_IMAGE_RESULT = new Func1<ImageResult, ImageVO>() {
-    @Override public ImageVO call(ImageResult value) {
-      final List<String> tags = Arrays.asList(value.getTags().split(" "));
-      return new ImageVO(value.getPreviewUrl(), value.getSampleUrl(), tags);
-    }
-  };
-
 }
