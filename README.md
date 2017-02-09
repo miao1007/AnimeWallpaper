@@ -53,18 +53,18 @@ Getting started
 1. clone the project
 
   ```
-  git clone https://github.com/miao1007/AnimeWallpaper.git --depth=1
+  git clone https://github.com/miao1007/AnimeWallpaper.git
   ```
 
-2. remove or change your own key in [GlobalContext.java](https://github.com/miao1007/AnimeWallpaper/blob/master/app/src/main/java/com/github/miao1007/animewallpaper/support/GlobalContext.java)
-
-  ```
-  public class GlobalContext extends Application {
+2. remove `buildConfigField` in [build.gradle](https://github.com/miao1007/AnimeWallpaper/blob/master/app/build.gradle) and [GlobalContext.java](https://github.com/miao1007/AnimeWallpaper/blob/master/app/src/main/java/com/github/miao1007/animewallpaper/support/GlobalContext.java)
+  
+  ```java
+  public class GlobalContext extends Application {
 
     static public void startThirdFrameWork() {
       /*
-      * TODO: replace the key
-      * see {@link <a href="http://bughd.com/doc/android">BUGHD</a>}
+      * TODO: replace the key or rwmove the two line
+      * see {@link <a href="http://bughd.com/doc/android">BUGHD</a>}
       * */
       FIR.init(instance,BuildConfig.BUG_HD_SDK_GENERAL_KEY);
       FIR.addCustomizeValue("DEBUG", BuildConfig.DEBUG + "");
