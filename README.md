@@ -12,12 +12,6 @@ Download high quality pictures from Konachan.net.
 ![Search](search.gif)
 
 
-AppStore
---------
-[Wandoujia](http://www.wandoujia.com/apps/com.github.miao1007.animewallpaper)
-
-
-
 
 Build Environment
 -------------
@@ -27,27 +21,27 @@ Android Studio 2.0 or higher
 Feature
 -------
 
-####1. FullHD Wallpaper
+#### 1. FullHD Wallpaper
 
 1. download, preview and share full HD anime wallpaper for free.
 2. search by name (eg. yosuga_no_sora)
 
-####2. iOS design implementation for Android
+#### 2. iOS design implementation for Android
 
 1. Toolbar with translucent statusbar for Kitkat device above
 2. Realtime blur on Android(Dialog/ActionSheet/ListView)
 3. Search/Indicator(Progressbar)/Translation animation
 
-####3. A practice with latest library
+#### 3. A practice with latest library
 
 1. OkHttp/Picasso/Retrofit
 2. RxJava
 
 
-####4. Recommend iOS UIView for Android
+####4. Resources
 
-see [iOS UIView for Android](github_best_ios.md)
-
+1. Recommend iOS UIView for Android: see [iOS UIView for Android](github_best_ios.md)
+2. Konachan API Doc: https://konachan.com/help/api
 
 
 
