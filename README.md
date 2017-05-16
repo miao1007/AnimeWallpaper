@@ -24,7 +24,7 @@ Feature
 #### 1. FullHD Wallpaper
 
 1. download, preview and share full HD anime wallpaper for free.
-2. search by name (eg. yosuga_no_sora)
+2. search by name (eg. hunter_x_hunter)
 
 #### 2. iOS design implementation for Android
 
