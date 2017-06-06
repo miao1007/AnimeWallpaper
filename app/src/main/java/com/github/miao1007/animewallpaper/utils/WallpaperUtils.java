@@ -47,11 +47,17 @@ import java.io.IOException;
     }
   }
 
+  /**
+   * Open with setWallpaper or set contact
+   * @param context
+   * @param file
+   */
   @TargetApi(Build.VERSION_CODES.KITKAT)
   private static void setWallpaperKitkat(Context context, File file) {
     Uri uri = Uri.fromFile(file);
-    Intent intent = new Intent(WallpaperManager.ACTION_CROP_AND_SET_WALLPAPER);
+    Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
     String mime = "image/*";
+    intent.putExtra("mimeType", "image/jpg");
     intent.setDataAndType(uri, mime);
     try {
       context.startActivity(intent);

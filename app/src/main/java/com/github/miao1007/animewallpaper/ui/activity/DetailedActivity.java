@@ -231,30 +231,18 @@ public class DetailedActivity extends AppCompatActivity {
         .load(imageResult.getPrevurl())
         .into(ivDetailedCard, new Callback.EmptyCallback() {
           @Override public void onSuccess() {
-            Observable.just(ivDetailedCard)
-                .map(new Func1<ImageView, Bitmap>() {
-                  @Override public Bitmap call(ImageView imageView) {
-                    return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                  }
-                })
-                .map(new Func1<Bitmap, Bitmap>() {
-                  @Override public Bitmap call(Bitmap bitmap) {
-                    return Blur.apply(DetailedActivity.this, bitmap, 20);
-                  }
-                })
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Bitmap>() {
-                  @TargetApi(Build.VERSION_CODES.JELLY_BEAN) @Override
-                  public void call(final Bitmap bitmap) {
-                    anim(getPosition(getIntent()), new BitmapDrawable(bitmap), true,
-                        new Runnable() {
-                          @Override public void run() {
+            Bitmap  bitmap = ((BitmapDrawable) ivDetailedCard.getDrawable()).getBitmap();
+            final Bitmap blur = Blur.apply(DetailedActivity.this, bitmap, 20);
+            ivDetailedCard.post(new Runnable() {
+              @Override public void run() {
+                anim(getPosition(getIntent()), new BitmapDrawable(blur), true,
+                    new Runnable() {
+                      @Override public void run() {
 
-                          }
-                        }, ivDetailedCard, mLlDetailedDownloads, ivDetailedCardBlur);
-                  }
-                });
+                      }
+                    }, ivDetailedCard, mLlDetailedDownloads, ivDetailedCardBlur);
+              }
+            });
           }
         });
   }
@@ -267,18 +255,20 @@ public class DetailedActivity extends AppCompatActivity {
     if (isPlaying) {
       return;
     }
+    View detailImg = views[0];
     //记住括号哦，我这里调试了一小时
     float delta = ((float) (position.width)) / ((float) (position.height));
     //243 - 168(navi) = 75 = status_bar
     float[] y_img = {
-        position.top - (views[0].getY() + (in ? (StatusBarUtils.getStatusBarOffsetPx(this)) : 0)), 0
+        position.top - (detailImg.getY() + (in ? (StatusBarUtils.getStatusBarOffsetPx(this)) : 0)),
+        0
     };
     float[] s_img = { 1f, delta };
 
     float[] y_icn = { views[1].getHeight() * 4, 0 };
 
-    views[0].setPivotX(views[0].getWidth() / 2);
-    views[0].setPivotY(0);
+    detailImg.setPivotX(detailImg.getWidth() / 2);
+    detailImg.setPivotY(0);
     views[1].setPivotX(views[1].getWidth() / 2);
     views[1].setPivotY(0);
     ImageView bg = ((ImageView) views[2]);
@@ -286,12 +276,13 @@ public class DetailedActivity extends AppCompatActivity {
       bg.setImageDrawable(drawable);
     }
     Animator trans_Y =
-        ObjectAnimator.ofFloat(views[0], View.TRANSLATION_Y, in ? y_img[0] : y_img[1],
+        ObjectAnimator.ofFloat(detailImg, View.TRANSLATION_Y, in ? y_img[0] : y_img[1],
             in ? y_img[1] : y_img[0]);
-    Animator scale_X = ObjectAnimator.ofFloat(views[0], View.SCALE_X, in ? s_img[0] : s_img[1],
+    Animator scale_X = ObjectAnimator.ofFloat(detailImg, View.SCALE_X, in ? s_img[0] : s_img[1],
         in ? s_img[1] : s_img[0]);
-    Animator scale_Y = ObjectAnimator.ofFloat(views[0], View.SCALE_Y, in ? s_img[0] : s_img[1],
+    Animator scale_Y = ObjectAnimator.ofFloat(detailImg, View.SCALE_Y, in ? s_img[0] : s_img[1],
         in ? s_img[1] : s_img[0]);
+
     Animator alpha_icn = ObjectAnimator.ofFloat(views[1], View.ALPHA, in ? 0f : 1f, in ? 1f : 0f);
     Animator alpha_bg = ObjectAnimator.ofFloat(views[2], View.ALPHA, in ? 0f : 1f, in ? 1f : 0f);
 
