@@ -12,6 +12,9 @@ Download high quality pictures from Konachan.net.
 ![Search](search.gif)
 
 
+## Latest APK
+see [releases](https://github.com/miao1007/AnimeWallpaper/releases)
+
 
 Build Environment
 -------------
@@ -24,7 +27,7 @@ Feature
 #### 1. FullHD Wallpaper
 
 1. download, preview and share full HD anime wallpaper for free.
-2. search by name (eg. hunter_x_hunter)
+2. search by name (eg. hunter_x_hunter, inuyasha, bakemonogatari)
 
 #### 2. iOS design implementation for Android
 
@@ -38,7 +41,7 @@ Feature
 2. RxJava
 
 
-####4. Resources
+#### 4. Resources
 
 1. Recommend iOS UIView for Android: see [iOS UIView for Android](github_best_ios.md)
 2. Konachan API Doc: https://konachan.com/help/api
@@ -58,9 +61,9 @@ git clone https://github.com/miao1007/AnimeWallpaper.git
 
 #### 2. remove the SDK keys
 
-this is my crash report's key, you can delete the config
+This is my private crash report's key, you can delete it in the config
 
-first remove `buildConfigField` line in [build.gradle](https://github.com/miao1007/AnimeWallpaper/blob/master/app/build.gradle)
+first remove `buildConfigField` line in [build.gradle](app/build.gradle)
 
 ```diff
 defaultConfig {
@@ -73,7 +76,7 @@ defaultConfig {
   }
 ```
 
-and remove following lines in [GlobalContext.java](https://github.com/miao1007/AnimeWallpaper/blob/master/app/src/main/java/com/github/miao1007/animewallpaper/support/GlobalContext.java)
+then remove following lines in [GlobalContext.java](app/src/main/java/com/github/miao1007/animewallpaper/support/GlobalContext.java)
 
 ```diff
 public class GlobalContext extends Application {
