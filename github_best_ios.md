@@ -27,7 +27,7 @@ The Collection of implementation of iOS UIView for Android.
 
 
 
-# UISegmentedControl
+## UISegmentedControl
 
 <https://github.com/Kaopiz/android-segmented-control>
 
