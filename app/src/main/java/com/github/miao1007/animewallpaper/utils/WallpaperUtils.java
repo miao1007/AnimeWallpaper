@@ -8,12 +8,14 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.os.StrictMode;
 import android.support.annotation.RequiresPermission;
 import android.support.annotation.UiThread;
 import android.widget.Toast;
 import com.github.miao1007.animewallpaper.R;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 /**
  * Created by leon on 1/30/16.
@@ -39,6 +41,14 @@ import java.io.IOException;
     intent.putExtra("mimeType", "image/jpg");
     intent.setDataAndType(uri, mime);
     try {
+      if(Build.VERSION.SDK_INT>=24){
+        try{
+          Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+          m.invoke(null);
+        }catch(Exception e){
+          e.printStackTrace();
+        }
+      }
       context.startActivity(intent);
     } catch (ActivityNotFoundException e) {
       e.printStackTrace();
