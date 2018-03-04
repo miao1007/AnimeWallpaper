@@ -8,6 +8,7 @@ import android.support.annotation.WorkerThread;
 import com.github.miao1007.animewallpaper.R;
 import com.github.miao1007.animewallpaper.support.GlobalContext;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import okhttp3.ResponseBody;
@@ -25,8 +26,6 @@ import okio.Okio;
       + GlobalContext.getInstance().getString(R.string.app_name)
       + File.separator;
 
-
-
   /**
    * Save bitmap to /sdcard/${name}
    */
@@ -40,6 +39,9 @@ import okio.Okio;
       return wallpaper;
     } catch (IOException e) {
       e.printStackTrace();
+      if (e instanceof FileNotFoundException){
+
+      }
       return null;
     }
   }

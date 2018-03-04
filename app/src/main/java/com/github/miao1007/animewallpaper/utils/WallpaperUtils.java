@@ -26,27 +26,6 @@ import java.io.IOException;
     throw new IllegalStateException("Can't be a instance");
   }
 
-  //public static void onActivityResult(int requestCode, int resultCode, Intent data) {
-  //  if (requestCode != TAG) {
-  //    return;
-  //  }
-  //  setWallPaperCompat();
-  //}
-
-  /**
-   * Kitkat lower can't effectively use planet wallpaper
-   * so crop is not required
-   */
-  private static void setWallPaperCompat(Context context, File file) {
-    WallpaperManager wm = WallpaperManager.getInstance(context);
-    try {
-      wm.setBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));
-    } catch (IOException | OutOfMemoryError e) {
-      Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-      previewImage(context, file);
-    }
-  }
-
   /**
    * Open with setWallpaper or set contact
    * @param context
@@ -62,24 +41,22 @@ import java.io.IOException;
     try {
       context.startActivity(intent);
     } catch (ActivityNotFoundException e) {
-      setWallPaperCompat(context, file);
       e.printStackTrace();
     }
   }
 
+  /**
+   * call system image viewer to share
+   * @param context
+   * @param file
+   */
   public static void previewImage(Context context, File file) {
     final Intent shareIntent = new Intent(Intent.ACTION_VIEW);
     shareIntent.setDataAndType(Uri.fromFile(file), "image/*");
-    context.startActivity(
-        Intent.createChooser(shareIntent, context.getString(R.string.view_image_by)));
+    context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.view_image_by)));
   }
 
-  @RequiresPermission(android.Manifest.permission.SET_WALLPAPER)
   public static void setWallpaper(Context context, File file) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-      setWallpaperKitkat(context, file);
-    } else {
-      setWallPaperCompat(context, file);
-    }
+    setWallpaperKitkat(context, file);
   }
 }

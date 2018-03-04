@@ -11,7 +11,7 @@ import com.github.miao1007.animewallpaper.R;
 /**
  * Created by leon on 2/19/16.
  */
-public class ExitAlertDialog extends Dialog {
+public class YesOrNoAlertDialog extends Dialog {
 
   private final View.OnClickListener okListener;
 
@@ -24,7 +24,7 @@ public class ExitAlertDialog extends Dialog {
     dismiss();
   }
 
-  public ExitAlertDialog(Context context, View.OnClickListener okListener) {
+  public YesOrNoAlertDialog(Context context, View.OnClickListener okListener) {
     super(context,android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
     this.okListener = okListener;
     getWindow().setWindowAnimations(R.style.iosalertdialog);

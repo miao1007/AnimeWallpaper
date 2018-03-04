@@ -24,7 +24,6 @@ import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import com.github.miao1007.animewallpaper.utils.StatusBarUtils;
 import com.jakewharton.rxbinding.widget.RxTextView;
-import im.fir.sdk.FIR;
 import java.io.InterruptedIOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +123,6 @@ public class SearchActivity extends AppCompatActivity {
           }
 
           @Override public void onError(Throwable e) {
-            FIR.sendCrashManually(e);
             progressBar.setVisibility(View.INVISIBLE);
             e.printStackTrace();
             Toast.makeText(SearchActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();

@@ -7,7 +7,6 @@ import android.util.Log;
 import com.github.miao1007.animewallpaper.support.GlobalContext;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
-import im.fir.sdk.FIR;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -63,8 +62,6 @@ public abstract class SquareUtils {
         }
         return Arrays.asList(InetAddress.getAllByName(s));
       } catch (IOException e) {
-        FIR.addCustomizeValue("DNS", "err:" + dnsRequest.toString());
-        FIR.sendCrashManually(e);
         return Dns.SYSTEM.lookup(hostname);
       }
     }

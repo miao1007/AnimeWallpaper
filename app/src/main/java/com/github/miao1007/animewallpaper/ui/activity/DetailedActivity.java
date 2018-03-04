@@ -3,7 +3,7 @@ package com.github.miao1007.animewallpaper.ui.activity;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.annotation.TargetApi;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,7 +11,6 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
@@ -43,15 +42,12 @@ import com.github.miao1007.animewallpaper.utils.picasso.Blur;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import java.io.File;
+import java.io.IOException;
 import okhttp3.CacheControl;
+import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
-import rx.Observable;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * 用户默认的交互区主要在左下角
@@ -67,6 +63,7 @@ public class DetailedActivity extends AppCompatActivity {
   @BindView(R.id.navigation_bar) NavigationBar mNavigationBar;
   @BindView(R.id.ll_detailed_downloads) LinearLayout mLlDetailedDownloads;
   @BindView(R.id.image_share) ImageView mImageShare;
+
   BlurDrawable drawable;
 
   private ImageVO imageResult;
@@ -111,17 +108,16 @@ public class DetailedActivity extends AppCompatActivity {
   }
 
   @OnClick(R.id.image_download) void image_download() {
-    downloadViaPicasso(new Subscriber<File>() {
-      @Override public void onCompleted() {
+    downloadLargeImgViaPicasso(new okhttp3.Callback() {
+      @Override public void onFailure(Call call, IOException e) {
 
       }
 
-      @Override public void onError(Throwable e) {
-
-      }
-
-      @Override public void onNext(File file) {
+      @Override
+      public void onResponse(Call call, Response response) throws IOException {
         final Intent shareIntent = new Intent(Intent.ACTION_VIEW);
+        File file = FileUtils.saveBodytoExtStorage(response.body(),
+            Uri.parse(call.request().url().toString()).getLastPathSegment());
         shareIntent.setDataAndType(Uri.fromFile(file), "image/*");
         startActivity(Intent.createChooser(shareIntent, getString(R.string.view_image_by)));
       }
@@ -130,15 +126,15 @@ public class DetailedActivity extends AppCompatActivity {
 
   @OnClick(R.id.image_setwallpaper) void image_setWallpaper(ImageView v) {
     Toast.makeText(DetailedActivity.this, R.string.start_download_image, Toast.LENGTH_SHORT).show();
-    downloadViaPicasso(new Subscriber<File>() {
-      @Override public void onCompleted() {
-      }
-
-      @Override public void onError(Throwable e) {
+    downloadLargeImgViaPicasso(new okhttp3.Callback() {
+      @Override public void onFailure(Call call, IOException e) {
 
       }
 
-      @Override public void onNext(File file) {
+      @Override
+      public void onResponse(Call call, Response response) throws IOException {
+        File file = FileUtils.saveBodytoExtStorage(response.body(),
+            Uri.parse(call.request().url().toString()).getLastPathSegment());
         WallpaperUtils.setWallpaper(DetailedActivity.this, file);
       }
     });
@@ -149,54 +145,37 @@ public class DetailedActivity extends AppCompatActivity {
   }
 
   @OnClick(R.id.image_share) void image_share(ImageView v) {
-    downloadViaPicasso(new Subscriber<File>() {
-      @Override public void onCompleted() {
+    downloadLargeImgViaPicasso(new okhttp3.Callback() {
+      @Override public void onFailure(Call call, IOException e) {
 
       }
 
-      @Override public void onError(Throwable e) {
-
-      }
-
-      @Override public void onNext(File file) {
+      @Override
+      public void onResponse(Call call, Response response) throws IOException {
+        File file = FileUtils.saveBodytoExtStorage(response.body(),
+            Uri.parse(call.request().url().toString()).getLastPathSegment());
         WallpaperUtils.previewImage(DetailedActivity.this, file);
       }
     });
   }
 
-  private void downloadViaPicasso(final Subscriber<File> subscriber) {
+  private void downloadLargeImgViaPicasso(final okhttp3.Callback callback) {
     if (mNavigationBar.getProgress()) {
       //debounce
       return;
     }
     mNavigationBar.setProgressBar(true);
-    largeImagepicasso.load(imageResult.getDownload_url()).placeholder(ivDetailedCard.getDrawable())
+    final String largeImgUrl = imageResult.getDownload_url();
+    largeImagepicasso.load(largeImgUrl).placeholder(ivDetailedCard.getDrawable())
         //fix oom
         .config(Bitmap.Config.ARGB_4444).into(ivDetailedCard, new Callback() {
       @Override public void onSuccess() {
         mNavigationBar.setProgressBar(false);
-        final Request request = new Request.Builder().url(imageResult.getDownload_url())
+        final Request request = new Request.Builder().url(largeImgUrl)
             .cacheControl(CacheControl.FORCE_CACHE)
             .get()
             .build();
-        Observable.create(new Observable.OnSubscribe<Response>() {
-          @Override public void call(final Subscriber<? super Response> subscriber) {
-            try {
-              subscriber.onNext(SquareUtils.getClient().newCall(request).execute());
-            } catch (Exception e) {
-              subscriber.onError(e);
-            }
-          }
-        })
-            .map(new Func1<Response, File>() {
-              @Override public File call(Response response) {
-                return FileUtils.saveBodytoExtStorage(response.body(),
-                    Uri.parse(imageResult.getDownload_url()).getLastPathSegment());
-              }
-            })
-            .subscribeOn(SquareUtils.getRxWorkerScheduler())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(subscriber);
+        SquareUtils.getClient().newCall(request).enqueue(callback);
       }
 
       @Override public void onError() {
@@ -227,20 +206,18 @@ public class DetailedActivity extends AppCompatActivity {
     largeImagepicasso = SquareUtils.getPicasso(this, listener);
     mNavigationBar.setTextColor(Color.WHITE);
     imageResult = getIntent().getParcelableExtra(EXTRA_IMAGE);
-    SquareUtils.getPicasso(this)
-        .load(imageResult.getPrevurl())
+    SquareUtils.getPicasso(this).load(imageResult.getPrevurl()) //shared disk cache
         .into(ivDetailedCard, new Callback.EmptyCallback() {
           @Override public void onSuccess() {
-            Bitmap  bitmap = ((BitmapDrawable) ivDetailedCard.getDrawable()).getBitmap();
+            Bitmap bitmap = ((BitmapDrawable) ivDetailedCard.getDrawable()).getBitmap();
             final Bitmap blur = Blur.apply(DetailedActivity.this, bitmap, 20);
             ivDetailedCard.post(new Runnable() {
               @Override public void run() {
-                anim(getPosition(getIntent()), new BitmapDrawable(blur), true,
-                    new Runnable() {
-                      @Override public void run() {
+                anim(getPosition(getIntent()), new BitmapDrawable(blur), true, new Runnable() {
+                  @Override public void run() {
 
-                      }
-                    }, ivDetailedCard, mLlDetailedDownloads, ivDetailedCardBlur);
+                  }
+                }, ivDetailedCard, mLlDetailedDownloads, ivDetailedCardBlur);
               }
             });
           }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import android.support.v4.view.ViewCompat;
@@ -29,7 +30,8 @@ import com.github.miao1007.animewallpaper.support.api.konachan.ImageResult;
 import com.github.miao1007.animewallpaper.ui.adapter.BaseAdapter;
 import com.github.miao1007.animewallpaper.ui.adapter.CardAdapter;
 import com.github.miao1007.animewallpaper.ui.widget.ActionSheet;
-import com.github.miao1007.animewallpaper.ui.widget.ExitAlertDialog;
+import com.github.miao1007.animewallpaper.ui.widget.PermissionDialogListener;
+import com.github.miao1007.animewallpaper.ui.widget.YesOrNoAlertDialog;
 import com.github.miao1007.animewallpaper.ui.widget.HistoryActionSheet;
 import com.github.miao1007.animewallpaper.ui.widget.NavigationBar;
 import com.github.miao1007.animewallpaper.ui.widget.Position;
@@ -39,8 +41,10 @@ import com.github.miao1007.animewallpaper.utils.LogUtils;
 import com.github.miao1007.animewallpaper.utils.SquareUtils;
 import com.github.miao1007.animewallpaper.utils.StatusBarUtils;
 import com.google.gson.stream.MalformedJsonException;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.listener.multi.DialogOnAnyDeniedMultiplePermissionsListener;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
-import im.fir.sdk.FIR;
 import java.io.File;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -51,6 +55,9 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivity extends AppCompatActivity
     implements CardAdapter.OnItemClickListener, BaseAdapter.OnLoadMoreListener {
@@ -131,6 +138,11 @@ public class MainActivity extends AppCompatActivity
         .setActionbarView(mNavigationBar)
         .process();
     setUpList();
+
+    Dexter.withActivity(this)
+        .withPermissions(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+        .withListener(new PermissionDialogListener( getYesOrNoAlertDialog()))
+        .check();
   }
 
   private void setUpList() {
@@ -229,8 +241,6 @@ public class MainActivity extends AppCompatActivity
             if (e instanceof SocketException | e instanceof UnknownHostException) {
               Toast.makeText(MainActivity.this, R.string.please_try_proxy, Toast.LENGTH_SHORT)
                   .show();
-              FIR.addCustomizeValue("SOCKET", "can't connect by xxx");
-              FIR.sendCrashManually(e);
             }
           }
 
@@ -273,8 +283,12 @@ public class MainActivity extends AppCompatActivity
    */
   @Override public void onBackPressed() {
     mRvFragCard.stopScroll();
+    final YesOrNoAlertDialog dialog = getYesOrNoAlertDialog();
+    dialog.show();
+  }
 
-    final ExitAlertDialog dialog = new ExitAlertDialog(this, new View.OnClickListener() {
+  @NonNull private YesOrNoAlertDialog getYesOrNoAlertDialog() {
+    final YesOrNoAlertDialog dialog = new YesOrNoAlertDialog(this, new View.OnClickListener() {
       @Override public void onClick(View v) {
         finish();
       }
@@ -305,7 +319,7 @@ public class MainActivity extends AppCompatActivity
         dialog.getWindow().setBackgroundDrawable(drawable);
       }
     });
-    dialog.show();
+    return dialog;
   }
 }
 
