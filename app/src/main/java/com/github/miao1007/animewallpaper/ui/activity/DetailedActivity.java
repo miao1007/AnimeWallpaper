@@ -3,7 +3,6 @@ package com.github.miao1007.animewallpaper.ui.activity;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -47,7 +46,6 @@ import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
-import rx.Subscriber;
 
 /**
  * 用户默认的交互区主要在左下角
@@ -113,8 +111,7 @@ public class DetailedActivity extends AppCompatActivity {
 
       }
 
-      @Override
-      public void onResponse(Call call, Response response) throws IOException {
+      @Override public void onResponse(Call call, Response response) throws IOException {
         final Intent shareIntent = new Intent(Intent.ACTION_VIEW);
         File file = FileUtils.saveBodytoExtStorage(response.body(),
             Uri.parse(call.request().url().toString()).getLastPathSegment());
@@ -131,8 +128,7 @@ public class DetailedActivity extends AppCompatActivity {
 
       }
 
-      @Override
-      public void onResponse(Call call, Response response) throws IOException {
+      @Override public void onResponse(Call call, Response response) throws IOException {
         File file = FileUtils.saveBodytoExtStorage(response.body(),
             Uri.parse(call.request().url().toString()).getLastPathSegment());
         WallpaperUtils.setWallpaper(DetailedActivity.this, file);
@@ -150,10 +146,10 @@ public class DetailedActivity extends AppCompatActivity {
 
       }
 
-      @Override
-      public void onResponse(Call call, Response response) throws IOException {
+      @Override public void onResponse(Call call, Response response) throws IOException {
         File file = FileUtils.saveBodytoExtStorage(response.body(),
             Uri.parse(call.request().url().toString()).getLastPathSegment());
+        WallpaperUtils.refreshAlbum(DetailedActivity.this, file, file.getName());
         WallpaperUtils.previewImage(DetailedActivity.this, file);
       }
     });
